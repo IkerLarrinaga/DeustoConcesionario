@@ -1,6 +1,6 @@
 package domain;
 
-public class Vehiculo {
+public abstract class Vehiculo {
 	
 	//Atributos
 	private int kilometros;
@@ -105,9 +105,6 @@ public class Vehiculo {
 	public void setNumPlazas(int numPlazas) {
 		this.numPlazas = numPlazas;
 	}
-	
-	
-	//Metodos
 	
 	
 	
