@@ -12,6 +12,7 @@ public abstract class Vehiculo {
 	private TipoCajaCambios tCajaCambios;
 	private int potencia;
 	private int numPlazas;
+	private Gama gama;
 	
 	//Constructores
 	public Vehiculo() {
@@ -19,7 +20,7 @@ public abstract class Vehiculo {
 	}
 	
 	public Vehiculo(int kilometros, String marca, String modelo, float precio, int año, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int potencia, int numPlazas) {
+			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
 		super();
 		this.kilometros = kilometros;
 		this.marca = marca;
@@ -30,6 +31,7 @@ public abstract class Vehiculo {
 		this.tCajaCambios = tCajaCambios;
 		this.potencia = potencia;
 		this.numPlazas = numPlazas;
+		this.gama = gama;
 	}
 
 
@@ -105,8 +107,14 @@ public abstract class Vehiculo {
 	public void setNumPlazas(int numPlazas) {
 		this.numPlazas = numPlazas;
 	}
-	
-	
+
+	public Gama getGama() {
+		return gama;
+	}
+
+	public void setGama(Gama gama) {
+		this.gama = gama;
+	}
 	
 	
 }

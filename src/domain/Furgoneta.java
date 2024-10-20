@@ -11,8 +11,8 @@ public class Furgoneta extends Vehiculo{
 		// TODO Auto-generated constructor stub
 	}
 	public Furgoneta(int kilometros, String marca, String modelo, float precio, int año, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, float cargaMax, boolean techoAlto) {
-		super(kilometros, marca, modelo, precio, año, tCombustible, tCajaCambios, potencia, numPlazas);
+			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama, float cargaMax, boolean techoAlto) {
+		super(kilometros, marca, modelo, precio, año, tCombustible, tCajaCambios, potencia, numPlazas, gama);
 		// TODO Auto-generated constructor stub
 		this.cargaMax = cargaMax;
 		this.techoAlto = techoAlto;

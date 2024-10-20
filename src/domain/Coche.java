@@ -10,8 +10,8 @@ public class Coche extends Vehiculo{
 	}
 	
 	public Coche(int kilometros, String marca, String modelo, float precio, int año, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, int numPuertas, String tipoTraccion) {
-		super(kilometros, marca, modelo, precio, año, tCombustible, tCajaCambios, potencia, numPlazas);
+			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama, int numPuertas, String tipoTraccion) {
+		super(kilometros, marca, modelo, precio, año, tCombustible, tCajaCambios, potencia, numPlazas, gama);
 		// TODO Auto-generated constructor stub
 		this.numPuertas = numPuertas;
 		this.tipoTraccion = tipoTraccion;
