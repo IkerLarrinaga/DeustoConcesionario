@@ -1,5 +1,9 @@
 package domain;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 public class Alquiler {
     protected Cliente cliente;
     protected Vehiculo vehiculo;
@@ -8,8 +12,28 @@ public class Alquiler {
     
     
     
+    public double calcularMeses() {
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
+        LocalDate fin = LocalDate.parse(fechaFin, formatter);
+
+        int mes = (int) (ChronoUnit.DAYS.between(inicio, fin) / 30);
+        return mes;
+    }
     
-    
+    public double calcularDias() {
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
+        LocalDate fin = LocalDate.parse(fechaFin, formatter);
+
+        double dias = ChronoUnit.DAYS.between(inicio, fin);
+        return dias;
+    }
+
+    public void finalizarAlquiler() {
+        System.out.println("Alquiler finalizado para el cliente " + cliente);
+    }
+
     
     
     
@@ -51,6 +75,11 @@ public class Alquiler {
 	public String toString() {
 		return "Alquiler [cliente=" + cliente + ", vehiculo=" + vehiculo + ", fechaInicio=" + fechaInicio
 				+ ", fechaFin=" + fechaFin + "]";
+	}
+
+	public double calcularPrecio() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
     
     

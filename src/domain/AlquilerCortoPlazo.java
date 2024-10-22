@@ -4,7 +4,12 @@ public class AlquilerCortoPlazo extends Alquiler {
 
     
     
-    
+    @Override
+    public double calcularPrecio() {
+        // Cálculo para alquiler a corto plazo
+        return precioPorDia * this.calcularDias(); 
+    }
+
     
 	public AlquilerCortoPlazo(Cliente cliente, Vehiculo vehiculo, String fechaInicio, String fechaFin,
 			double precioPorDia) {

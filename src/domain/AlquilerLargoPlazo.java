@@ -7,7 +7,12 @@ public class AlquilerLargoPlazo extends Alquiler {
     
     
     
-    
+    @Override
+    public double calcularPrecio() {
+        // Cálculo para alquiler a largo plazo
+        return precioMensual * this.calcularMeses() - descuentoLargoPlazo;  // Ejemplo para 3 meses con descuento
+    }
+
     
     
     public AlquilerLargoPlazo(double precioMensual, double descuentoLargoPlazo) {
