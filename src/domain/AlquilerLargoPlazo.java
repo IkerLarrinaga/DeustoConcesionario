@@ -1,8 +1,8 @@
 package domain;
 
 public class AlquilerLargoPlazo extends Alquiler {
-    private double precioMensual;
-    private double descuentoLargoPlazo;
+	protected double precioMensual;
+	protected double descuentoLargoPlazo;
 	
     
     

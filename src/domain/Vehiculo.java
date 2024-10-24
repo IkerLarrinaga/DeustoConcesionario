@@ -3,16 +3,16 @@ package domain;
 public abstract class Vehiculo {
 	
 	//Atributos
-	private int kilometros;
-	private String marca;
-	private String modelo;
-	private float precio;
-	private int año;
-	private TipoCombustible tCombustible;
-	private TipoCajaCambios tCajaCambios;
-	private int potencia;
-	private int numPlazas;
-	private Gama gama;
+	protected int kilometros;
+	protected String marca;
+	protected String modelo;
+	protected float precio;
+	protected int año;
+	protected TipoCombustible tCombustible;
+	protected TipoCajaCambios tCajaCambios;
+	protected int potencia;
+	protected int numPlazas;
+	protected Gama gama;
 	
 	//Constructores
 	public Vehiculo() {
@@ -115,6 +115,16 @@ public abstract class Vehiculo {
 	public void setGama(Gama gama) {
 		this.gama = gama;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Vehiculo [kilometros=" + kilometros + ", marca=" + marca + ", modelo=" + modelo + ", precio=" + precio
+				+ ", año=" + año + ", tCombustible=" + tCombustible + ", tCajaCambios=" + tCajaCambios + ", potencia="
+				+ potencia + ", numPlazas=" + numPlazas + ", gama=" + gama + "]";
+	}
+	public abstract void mostrarInformacion();
+    public abstract void alquilar();
+    public abstract void devolver();
+
 	
 }

@@ -1,8 +1,8 @@
 package domain;
 
 public class Empleado extends Persona {
-    private String puesto;
-    private double salario;
+    protected String puesto;
+    protected double salario;
     
     
     public Empleado(String nombre, String apellidos, String dni, String fechaNacimiento, int numTelefono,
@@ -32,4 +32,21 @@ public class Empleado extends Persona {
 	public void setSalario(double salario) {
 		this.salario = salario;
 	}
+
+	@Override
+	public String toString() {
+		return "Empleado [puesto=" + puesto + ", salario=" + salario + ", getNombre()=" + getNombre()
+				+ ", getApellidos()=" + getApellidos() + ", getDni()=" + getDni() + ", getFechaNacimiento()="
+				+ getFechaNacimiento() + ", getNumTelefono()=" + getNumTelefono() + ", getEmail()=" + getEmail()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ "]";
+	}
+    public void mostrarInformacion() {
+        System.out.println("Empleado: " + nombre + " " + apellidos + " - Puesto: " + puesto);
+    }
+
+    public void gestionarAlquiler(Cliente cliente, Vehiculo coche) {
+        System.out.println("El empleado está gestionando el alquiler del coche " + coche + " para el cliente " + cliente);
+    }
+
 }
