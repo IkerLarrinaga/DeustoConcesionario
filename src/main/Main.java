@@ -1,17 +1,48 @@
 package main;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
-public class Main {
+import gui.VentanaIncio;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		JFrame frame = new JFrame("Ventana Principal");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 200);
-        //MENSAJE DE PRUEBA
-        
-        
-        frame.setVisible(true);
-	}
 
+public class Main extends JFrame {
+	private static final long serialVersionUID = 1L;
+	
+	static JFrame frame = new JFrame("Cargando...");
+	static JPanel panel = new JPanel();
+	static JProgressBar progressBar = new JProgressBar();
+	
+    public static void main(String[] args) {
+    	frame.setSize(300, 70);
+    	frame.setLocationRelativeTo(null);
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	
+    	progressBar.setValue(0);
+    	progressBar.setStringPainted(true);
+    	panel.add(progressBar);
+    	frame.add(panel);
+    	
+    	frame.setVisible(true);
+    	
+    	fill();
+
+    	frame.dispose();
+    	
+    	new VentanaIncio();
+    }
+    
+    public static void fill() {
+    	int i = 0;
+    	while (i <= 100) {
+    		progressBar.setValue(i + 1);
+    		try {
+				Thread.sleep(30);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    		i += 1;
+    	}
+    }
 }
