@@ -1,20 +1,17 @@
 package domain;
 
 public abstract class Vehiculo {
+	private int kilometros;
+	private String marca;
+	private String modelo;
+	private float precio;
+	private int año;
+	private TipoCombustible tCombustible;
+	private TipoCajaCambios tCajaCambios;
+	private int potencia;
+	private int numPlazas;
+	private Gama gama;
 	
-	//Atributos
-	protected int kilometros;
-	protected String marca;
-	protected String modelo;
-	protected float precio;
-	protected int año;
-	protected TipoCombustible tCombustible;
-	protected TipoCajaCambios tCajaCambios;
-	protected int potencia;
-	protected int numPlazas;
-	protected Gama gama;
-	
-	//Constructores
 	public Vehiculo() {
 		
 	}
@@ -34,8 +31,6 @@ public abstract class Vehiculo {
 		this.gama = gama;
 	}
 
-
-	//Getters y Setters
 	public int getKilometros() {
 		return kilometros;
 	}
@@ -122,9 +117,10 @@ public abstract class Vehiculo {
 				+ ", año=" + año + ", tCombustible=" + tCombustible + ", tCajaCambios=" + tCajaCambios + ", potencia="
 				+ potencia + ", numPlazas=" + numPlazas + ", gama=" + gama + "]";
 	}
-	public abstract void mostrarInformacion();
-    public abstract void alquilar();
-    public abstract void devolver();
-
 	
+	public abstract void mostrarInformacion();
+	
+    public abstract void alquilar();
+    
+    public abstract void devolver();
 }

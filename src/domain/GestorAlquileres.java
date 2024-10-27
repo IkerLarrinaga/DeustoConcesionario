@@ -1,45 +1,21 @@
 package domain;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GestorAlquileres {
-    protected List<Alquiler> listaAlquileres;
-    protected List<Cliente> listaClientes;
-    protected List<Vehiculo> listaCoches;
-
+    private List<Alquiler> listaAlquileres;
+    private List<Cliente> listaClientes;
+    private List<Vehiculo> listaCoches;
+    
     public GestorAlquileres() {
-        this.listaAlquileres = new ArrayList<>();
-        this.listaClientes = new ArrayList<>();
-        this.listaCoches = new ArrayList<>();
-    }
+		super();
+	}
 
-    public void gestionarAlquiler(Cliente cliente, Vehiculo coche, String fechaInicio, String fechaFin) {
-        Alquiler alquiler = new Alquiler(cliente, coche, fechaInicio, fechaFin);
-        listaAlquileres.add(alquiler);
-        listaClientes.add(cliente);
-        listaCoches.add(coche);
-        System.out.println("Alquiler gestionado: Cliente " + cliente + " ha alquilado el coche " + coche);
-    }
-
-    public Alquiler consultarAlquilerPorCliente(Cliente cliente) {
-        for (Alquiler alquiler : listaAlquileres) {
-            if (alquiler.cliente.equals(cliente)) {
-                return alquiler;
-            }
-        }
-        System.out.println("No se encontró un alquiler para el cliente: " + cliente);
-        return null;
-    }
-
-    public Vehiculo consultarCocheAlquilado(Cliente cliente) {
-        for (Alquiler alquiler : listaAlquileres) {
-            if (alquiler.cliente.equals(cliente)) {
-                return alquiler.vehiculo;
-            }
-        }
-        System.out.println("El cliente no ha alquilado un coche.");
-        return null;
-    }
+	public GestorAlquileres(List<Alquiler> listaAlquileres, List<Cliente> listaClientes, List<Vehiculo> listaCoches) {
+		super();
+		this.listaAlquileres = listaAlquileres;
+		this.listaClientes = listaClientes;
+		this.listaCoches = listaCoches;
+	}
 
 	public List<Alquiler> getListaAlquileres() {
 		return listaAlquileres;
@@ -71,6 +47,32 @@ public class GestorAlquileres {
 				+ ", listaCoches=" + listaCoches + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
 				+ ", toString()=" + super.toString() + "]";
 	}
-    
-    
+
+    public void gestionarAlquiler(Cliente cliente, Vehiculo coche, String fechaInicio, String fechaFin) {
+        Alquiler alquiler = new Alquiler(cliente, coche, fechaInicio, fechaFin);
+        listaAlquileres.add(alquiler);
+        listaClientes.add(cliente);
+        listaCoches.add(coche);
+        System.out.println("Alquiler gestionado: Cliente " + cliente + " ha alquilado el coche " + coche);
+    }
+
+    public Alquiler consultarAlquilerPorCliente(Cliente cliente) {
+        for (Alquiler alquiler : listaAlquileres) {
+            if (alquiler.getCliente().equals(cliente)) {
+                return alquiler;
+            }
+        }
+        System.out.println("No se encontró un alquiler para el cliente: " + cliente);
+        return null;
+    }
+
+    public Vehiculo consultarCocheAlquilado(Cliente cliente) {
+        for (Alquiler alquiler : listaAlquileres) {
+            if (alquiler.getCliente().equals(cliente)) {
+                return alquiler.getVehiculo();
+            }
+        }
+        System.out.println("El cliente no ha alquilado un coche.");
+        return null;
+    }
 }

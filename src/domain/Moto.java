@@ -6,13 +6,16 @@ public class Moto extends Vehiculo{
 	
 	public Moto() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Moto(int kilometros, String marca, String modelo, float precio, int año, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
+		super(kilometros, marca, modelo, precio, año, tCombustible, tCajaCambios, potencia, numPlazas, gama);
+	}
+
+	public Moto(int kilometros, String marca, String modelo, float precio, int año, TipoCombustible tCombustible,
 			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama, int cilindrada, boolean baul) {
 		super(kilometros, marca, modelo, precio, año, tCombustible, tCajaCambios, potencia, numPlazas, gama);
-		// TODO Auto-generated constructor stub
 		this.cilindrada = cilindrada;
 		this.baul = baul;
 	}
@@ -66,7 +69,5 @@ public class Moto extends Vehiculo{
 				+ ", getGama()=" + getGama() + ", toString()=" + super.toString() + ", getClass()=" + getClass()
 				+ ", hashCode()=" + hashCode() + "]";
 	}
-
-	
 
 }

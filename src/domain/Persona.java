@@ -2,13 +2,12 @@ package domain;
 
 
 public abstract class Persona {
-	
-    protected String nombre;
-    protected String apellidos;
-    protected String dni;
-    protected String fechaNacimiento;
-    protected int numTelefono;
-    protected String email;
+    private String nombre;
+    private String apellidos;
+    private String dni;
+    private String fechaNacimiento;
+    private int numTelefono;
+    private String email;
     
 	public Persona(String nombre, String apellidos, String dni, String fechaNacimiento, int numTelefono, String email) {
 		super();
@@ -67,7 +66,7 @@ public abstract class Persona {
 	public void setEmail(String email) {
 		this.email = email;
 	}  
+	
     public abstract void mostrarInformacion();
 
-	
 }
