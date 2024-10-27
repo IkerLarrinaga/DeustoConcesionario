@@ -39,8 +39,8 @@ public class VentanaIncio extends JFrame {
         JButton login = new JButton("Iniciar Sesión");
         JButton register = new JButton("Registrarse");
         
-        login.setPreferredSize(new Dimension(200, 50));
-        register.setPreferredSize(new Dimension(200, 50));
+        login.setPreferredSize(new Dimension(250, 30));
+        register.setPreferredSize(new Dimension(250, 30));
         login.setBackground(new Color(240, 196, 170));
         register.setBackground(new Color(240, 183, 170));
         panel.add(login, gbc);
