@@ -8,14 +8,14 @@ public class Moto extends Vehiculo{
 		super();
 	}
 	
-	public Moto(int kilometros, String marca, String modelo, float precio, int año, TipoCombustible tCombustible,
+	public Moto(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
 			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
-		super(kilometros, marca, modelo, precio, año, tCombustible, tCajaCambios, potencia, numPlazas, gama);
+		super(kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas, gama);
 	}
 
-	public Moto(int kilometros, String marca, String modelo, float precio, int año, TipoCombustible tCombustible,
+	public Moto(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
 			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama, int cilindrada, boolean baul) {
-		super(kilometros, marca, modelo, precio, año, tCombustible, tCajaCambios, potencia, numPlazas, gama);
+		super(kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas, gama);
 		this.cilindrada = cilindrada;
 		this.baul = baul;
 	}
@@ -37,16 +37,16 @@ public class Moto extends Vehiculo{
 	}
 	@Override
     public void mostrarInformacion() {
-        System.out.println("Moto - Marca: " + super.marca + 
-                ", Modelo: " + super.modelo + 
-                ", Precio: " + super.precio + 
-                ", Año: " + super.año + 
-                ", Kilometros: " + super.kilometros + 
-                ", Combustible: " + super.tCombustible + 
-                ", Caja de Cambios: " + super.tCajaCambios + 
-                ", Potencia: " + super.potencia + 
-                ", Número de Plazas: " + super.numPlazas + 
-                ", Gama: " + super.gama + 
+        System.out.println("Moto - Marca: " + super.getMarca() + 
+                ", Modelo: " + super.getModelo() + 
+                ", Precio: " + super.getPrecio() + 
+                ", Año: " + super.getAnno() + 
+                ", Kilometros: " + super.getKilometros() + 
+                ", Combustible: " + super.gettCombustible() + 
+                ", Caja de Cambios: " + super.gettCajaCambios() + 
+                ", Potencia: " + super.getPotencia() + 
+                ", Número de Plazas: " + super.getNumPlazas() + 
+                ", Gama: " + super.getGama() + 
                 ", Cilindrada: " + cilindrada + 
                 ", Baul: " + baul);}
 
@@ -64,7 +64,7 @@ public class Moto extends Vehiculo{
 	public String toString() {
 		return "Moto [cilindrada=" + cilindrada + ", baul=" + baul + ", getKilometros()=" + getKilometros()
 				+ ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()=" + getPrecio()
-				+ ", getAño()=" + getAño() + ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()="
+				+ ", getAño()=" + getAnno() + ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()="
 				+ gettCajaCambios() + ", getPotencia()=" + getPotencia() + ", getNumPlazas()=" + getNumPlazas()
 				+ ", getGama()=" + getGama() + ", toString()=" + super.toString() + ", getClass()=" + getClass()
 				+ ", hashCode()=" + hashCode() + "]";

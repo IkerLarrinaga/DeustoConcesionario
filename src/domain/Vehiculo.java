@@ -5,7 +5,7 @@ public abstract class Vehiculo {
 	private String marca;
 	private String modelo;
 	private float precio;
-	private int año;
+	private int anno;
 	private TipoCombustible tCombustible;
 	private TipoCajaCambios tCajaCambios;
 	private int potencia;
@@ -16,14 +16,14 @@ public abstract class Vehiculo {
 		
 	}
 	
-	public Vehiculo(int kilometros, String marca, String modelo, float precio, int año, TipoCombustible tCombustible,
+	public Vehiculo(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
 			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
 		super();
 		this.kilometros = kilometros;
 		this.marca = marca;
 		this.modelo = modelo;
 		this.precio = precio;
-		this.año = año;
+		this.anno = anno;
 		this.tCombustible = tCombustible;
 		this.tCajaCambios = tCajaCambios;
 		this.potencia = potencia;
@@ -63,12 +63,12 @@ public abstract class Vehiculo {
 		this.precio = precio;
 	}
 
-	public int getAño() {
-		return año;
+	public int getAnno() {
+		return anno;
 	}
 
-	public void setAño(int año) {
-		this.año = año;
+	public void setAnno(int anno) {
+		this.anno = anno;
 	}
 
 	public TipoCombustible gettCombustible() {
@@ -114,7 +114,7 @@ public abstract class Vehiculo {
 	@Override
 	public String toString() {
 		return "Vehiculo [kilometros=" + kilometros + ", marca=" + marca + ", modelo=" + modelo + ", precio=" + precio
-				+ ", año=" + año + ", tCombustible=" + tCombustible + ", tCajaCambios=" + tCajaCambios + ", potencia="
+				+ ", año=" + anno + ", tCombustible=" + tCombustible + ", tCajaCambios=" + tCajaCambios + ", potencia="
 				+ potencia + ", numPlazas=" + numPlazas + ", gama=" + gama + "]";
 	}
 	

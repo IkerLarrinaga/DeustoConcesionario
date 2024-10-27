@@ -9,9 +9,14 @@ public class Furgoneta extends Vehiculo {
         super();
     }
 
-    public Furgoneta(int kilometros, String marca, String modelo, float precio, int año, TipoCombustible tCombustible,
+    public Furgoneta(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
+		super(kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas, gama);
+	}
+
+	public Furgoneta(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
                      TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama, float cargaMax, boolean techoAlto, int capacidadCarga) {
-        super(kilometros, marca, modelo, precio, año, tCombustible, tCajaCambios, potencia, numPlazas, gama);
+        super(kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas, gama);
         this.cargaMax = cargaMax;
         this.techoAlto = techoAlto;
         this.capacidadCarga = capacidadCarga;
@@ -45,7 +50,7 @@ public class Furgoneta extends Vehiculo {
 	public String toString() {
 		return "Furgoneta [cargaMax=" + cargaMax + ", techoAlto=" + techoAlto + ", capacidadCarga=" + capacidadCarga
 				+ ", getKilometros()=" + getKilometros() + ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo()
-				+ ", getPrecio()=" + getPrecio() + ", getAño()=" + getAño() + ", gettCombustible()=" + gettCombustible()
+				+ ", getPrecio()=" + getPrecio() + ", getAño()=" + getAnno() + ", gettCombustible()=" + gettCombustible()
 				+ ", gettCajaCambios()=" + gettCajaCambios() + ", getPotencia()=" + getPotencia() + ", getNumPlazas()="
 				+ getNumPlazas() + ", getGama()=" + getGama() + ", toString()=" + super.toString() + ", getClass()="
 				+ getClass() + ", hashCode()=" + hashCode() + "]";
@@ -53,16 +58,16 @@ public class Furgoneta extends Vehiculo {
 
     @Override
     public void mostrarInformacion() {
-        System.out.println("Furgoneta - Marca: " + super.marca + 
-                ", Modelo: " + super.modelo + 
-                ", Precio: " + super.precio + 
-                ", Año: " + super.año + 
-                ", Kilometros: " + super.kilometros + 
-                ", Combustible: " + super.tCombustible + 
-                ", Caja de Cambios: " + super.tCajaCambios + 
-                ", Potencia: " + super.potencia + 
-                ", Número de Plazas: " + super.numPlazas + 
-                ", Gama: " + super.gama + 
+        System.out.println("Furgoneta - Marca: " + super.getMarca() + 
+                ", Modelo: " + super.getModelo() + 
+                ", Precio: " + super.getPrecio() + 
+                ", Año: " + super.getAnno() + 
+                ", Kilometros: " + super.getKilometros() + 
+                ", Combustible: " + super.gettCombustible() + 
+                ", Caja de Cambios: " + super.gettCajaCambios() + 
+                ", Potencia: " + super.getPotencia() + 
+                ", Número de Plazas: " + super.getNumPlazas() + 
+                ", Gama: " + super.getGama() + 
                 ", Carga Máxima: " + cargaMax + 
                 ", Techo Alto: " + techoAlto + 
                 ", Capacidad de Carga: " + capacidadCarga + "kg");}

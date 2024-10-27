@@ -42,7 +42,7 @@ public class Empleado extends Persona {
 				+ "]";
 	}
     public void mostrarInformacion() {
-        System.out.println("Empleado: " + nombre + " " + apellidos + " - Puesto: " + puesto);
+        System.out.println("Empleado: " + getNombre() + " " + getApellidos() + " - Puesto: " + puesto);
     }
 
     public void gestionarAlquiler(Cliente cliente, Vehiculo coche) {

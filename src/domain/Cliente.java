@@ -42,11 +42,11 @@ public class Cliente extends Persona {
 				+ ", toString()=" + super.toString() + "]";
 	}
    public void mostrarInformacion() {
-        System.out.println("Cliente: " + nombre + " " + apellidos + " - Licencia: " + licenciaConducir);
+        System.out.println("Cliente: " + getNombre() + " " + getApellidos() + " - Licencia: " + licenciaConducir);
     }
 
     public void alquilarCoche(Vehiculo coche) {
-        System.out.println("El cliente " + nombre + " ha alquilado el coche " + coche);
+        System.out.println("El cliente " + getNombre() + " ha alquilado el coche " + coche);
     }
 
 }
