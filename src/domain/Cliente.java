@@ -3,10 +3,8 @@ package domain;
 import java.util.ArrayList;
 
 public class Cliente extends Persona {
-	
-	protected String licenciaConducir;
-	protected ArrayList<Alquiler> historialAlquileres;
-    
+	private String licenciaConducir;
+	private ArrayList<Alquiler> historialAlquileres;
     
 	public Cliente(String nombre, String apellidos, String dni, String fechaNacimiento, int numTelefono, String email) {
 		super(nombre, apellidos, dni, fechaNacimiento, numTelefono, email);

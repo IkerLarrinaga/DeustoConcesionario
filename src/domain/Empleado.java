@@ -1,8 +1,8 @@
 package domain;
 
 public class Empleado extends Persona {
-    protected String puesto;
-    protected double salario;
+    private String puesto;
+    private double salario;
     
     
     public Empleado(String nombre, String apellidos, String dni, String fechaNacimiento, int numTelefono,

@@ -3,12 +3,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Concesionario {
-	protected String nombre;
-	protected String direccion;
-	protected List<Vehiculo> listaCochesDisponibles;
-	protected List<Cliente> listaClientes;
-	protected List<Alquiler> historialAlquileres;
+	private String nombre;
+	private String direccion;
+	private List<Vehiculo> listaCochesDisponibles;
+	private List<Cliente> listaClientes;
+	private List<Alquiler> historialAlquileres;
 
+	public Concesionario() {
+		super();
+	}
+	
 	public Concesionario(String nombre, String direccion) {
         this.nombre = nombre;
         this.direccion = direccion;
@@ -16,10 +20,6 @@ public class Concesionario {
         this.listaClientes = new ArrayList<>();
         this.historialAlquileres = new ArrayList<>();
     }
-
-    public Concesionario() {
-		super();
-	}
 
 	public String getNombre() {
 		return nombre;
@@ -60,6 +60,14 @@ public class Concesionario {
 	public void setHistorialAlquileres(List<Alquiler> historialAlquileres) {
 		this.historialAlquileres = historialAlquileres;
 	}
+	
+	@Override
+	public String toString() {
+		return "Concesionario [nombre=" + nombre + ", direccion=" + direccion + ", listaCochesDisponibles="
+				+ listaCochesDisponibles + ", listaClientes=" + listaClientes + ", historialAlquileres="
+				+ historialAlquileres + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
+	}
 
 	public void añadirCoche(Vehiculo coche) {
         listaCochesDisponibles.add(coche);
@@ -80,7 +88,7 @@ public class Concesionario {
         for (Vehiculo coche : listaCochesDisponibles) {
             System.out.println(coche);
         }
-        return listaCochesDisponibles.isEmpty() ? null : listaCochesDisponibles.get(0);  // Retorna el primer coche disponible
+        return listaCochesDisponibles.isEmpty() ? null : listaCochesDisponibles.get(0);
     }
 
     public void realizarAlquiler(Cliente cliente, Vehiculo coche, String fechaInicio, String fechaFin) {
@@ -98,14 +106,4 @@ public class Concesionario {
         listaCochesDisponibles.add(coche);
         System.out.println("Coche devuelto: " + coche);
     }
-
-	@Override
-	public String toString() {
-		return "Concesionario [nombre=" + nombre + ", direccion=" + direccion + ", listaCochesDisponibles="
-				+ listaCochesDisponibles + ", listaClientes=" + listaClientes + ", historialAlquileres="
-				+ historialAlquileres + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
-				+ super.toString() + "]";
-	}
-    
-
 }
