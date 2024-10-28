@@ -9,16 +9,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Vector;
-import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
@@ -35,7 +29,10 @@ public class VentanaRegistro extends JFrame {
 	public JTextField fieldPrimerApellido = new JTextField();
 	public JTextField fieldSegundoApellido = new JTextField();
 	public JPasswordField fieldContrasenna = new JPasswordField();
-	public JDateChooser fechaNacimiento = new JDateChooser();
+	public JTextField fieldDni = new JTextField();
+	public JTextField fieldNumeroTelefono = new JTextField();
+	public JTextField fieldEmail = new JTextField();
+	public JDateChooser fieldFechaNacimiento = new JDateChooser();
 	public JRadioButton cliente = new JRadioButton("Cliente");
 	public JRadioButton trabajador = new JRadioButton("Trabajador");
 	
@@ -63,7 +60,13 @@ public class VentanaRegistro extends JFrame {
 		JLabel labelContrasenna = new JLabel("Introduzca su contraseña:");
 		fieldContrasenna.setPreferredSize(new Dimension(300, 20));
 		JLabel labelFechaNacimiento = new JLabel("Fecha nacimiento: ");
-		fechaNacimiento.setDateFormatString("yyyy-MM-dd");
+		fieldFechaNacimiento.setDateFormatString("yyyy-MM-dd");
+		JLabel labelDni = new JLabel("Introduzaca su DNI: ");
+		fieldDni.setPreferredSize(new Dimension(300, 20));
+		JLabel labelNumeroTelefono = new JLabel("Introduzca su numero de telefono: ");
+		fieldNumeroTelefono.setPreferredSize(new Dimension(300, 20));
+		JLabel labelEmail = new JLabel("Introduzca su email: ");
+		fieldEmail.setPreferredSize(new Dimension(300, 20));
 
 		ButtonGroup grupo = new ButtonGroup();
 		grupo.add(cliente);
@@ -91,7 +94,19 @@ public class VentanaRegistro extends JFrame {
 		panel.add(new JLabel(" "), gbc);
 		panel.add(labelFechaNacimiento, gbc);
 		panel.add(new JLabel(" "), gbc);
-		panel.add(fechaNacimiento, gbc);
+		panel.add(fieldFechaNacimiento, gbc);
+		panel.add(new JLabel(" "), gbc);
+		panel.add(labelDni, gbc);
+		panel.add(new JLabel(" "), gbc);
+		panel.add(fieldDni, gbc);
+		panel.add(new JLabel(" "), gbc);
+		panel.add(labelNumeroTelefono, gbc);
+		panel.add(new JLabel(" "), gbc);
+		panel.add(fieldNumeroTelefono, gbc);
+		panel.add(new JLabel(" "), gbc);
+		panel.add(labelEmail, gbc);
+		panel.add(new JLabel(" "), gbc);
+		panel.add(fieldEmail, gbc);
 		panel.add(new JLabel(" "), gbc);
 
 
