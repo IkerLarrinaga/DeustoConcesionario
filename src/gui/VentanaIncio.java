@@ -58,13 +58,12 @@ public class VentanaIncio extends JFrame {
 			}
 		});
         
-//        register.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				new WindowRegister();
-//        		dispose();
-//        		logger.info("Pulsado el botón Register.");
-//			}
-//		});
+        register.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new VentanaRegistro();
+        		dispose();
+			}
+		});
     }
 }
