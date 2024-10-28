@@ -10,14 +10,15 @@ public class Empleado extends Persona {
 		super();
 	}
 
-	public Empleado(String usuario, String nombre, String apellidos, String dni, GregorianCalendar fechaNacimiento,
-			int numTelefono, String email) {
-		super(usuario, nombre, apellidos, dni, fechaNacimiento, numTelefono, email);
+	public Empleado(String usuario, String nombre, String primerApellido, String segundoApellido, String dni,
+			GregorianCalendar fechaNacimiento, int numTelefono, String email, String contrasenna) {
+		super(usuario, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, numTelefono, email, contrasenna);
 	}
 
-	public Empleado(String usuario, String nombre, String apellidos, String dni, GregorianCalendar fechaNacimiento,
-			int numTelefono, String email, String puesto, double salario) {
-		super(usuario, nombre, apellidos, dni, fechaNacimiento, numTelefono, email);
+	public Empleado(String usuario, String nombre, String primerApellido, String segundoApellido, String dni,
+			GregorianCalendar fechaNacimiento, int numTelefono, String email, String contrasenna, String puesto,
+			double salario) {
+		super(usuario, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, numTelefono, email, contrasenna);
 		this.puesto = puesto;
 		this.salario = salario;
 	}
@@ -38,16 +39,17 @@ public class Empleado extends Persona {
 		this.salario = salario;
 	}
 
-	@Override
+    @Override
 	public String toString() {
-		return "Empleado [puesto=" + puesto + ", salario=" + salario + ", getNombre()=" + getNombre()
-				+ ", getApellidos()=" + getApellidos() + ", getDni()=" + getDni() + ", getFechaNacimiento()="
-				+ getFechaNacimiento() + ", getNumTelefono()=" + getNumTelefono() + ", getEmail()=" + getEmail()
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
-				+ "]";
+		return "Empleado [puesto=" + puesto + ", salario=" + salario + ", getUsuario()=" + getUsuario()
+				+ ", getNombre()=" + getNombre() + ", getPrimerApellido()=" + getPrimerApellido()
+				+ ", getSegundoApellido()=" + getSegundoApellido() + ", getDni()=" + getDni()
+				+ ", getFechaNacimiento()=" + getFechaNacimiento() + ", getNumTelefono()=" + getNumTelefono()
+				+ ", getEmail()=" + getEmail() + ", getContrasenna()=" + getContrasenna() + "]";
 	}
-    public void mostrarInformacion() {
-        System.out.println("Empleado: " + getNombre() + " " + getApellidos() + " - Puesto: " + puesto);
+
+	public void mostrarInformacion() {
+        System.out.println("Empleado: " + getNombre() + " " + getPrimerApellido() + " " + getSegundoApellido() + " - Puesto: " + puesto);
     }
 
     public void gestionarAlquiler(Cliente cliente, Vehiculo coche) {

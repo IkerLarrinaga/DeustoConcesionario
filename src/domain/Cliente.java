@@ -11,14 +11,15 @@ public class Cliente extends Persona {
 		super();
 	}
 
-	public Cliente(String usuario, String nombre, String apellidos, String dni, GregorianCalendar fechaNacimiento,
-			int numTelefono, String email) {
-		super(usuario, nombre, apellidos, dni, fechaNacimiento, numTelefono, email);
+	public Cliente(String usuario, String nombre, String primerApellido, String segundoApellido, String dni,
+			GregorianCalendar fechaNacimiento, int numTelefono, String email, String contrasenna) {
+		super(usuario, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, numTelefono, email, contrasenna);
 	}
 
-	public Cliente(String usuario, String nombre, String apellidos, String dni, GregorianCalendar fechaNacimiento,
-			int numTelefono, String email, String licenciaConducir, ArrayList<Alquiler> historialAlquileres) {
-		super(usuario, nombre, apellidos, dni, fechaNacimiento, numTelefono, email);
+	public Cliente(String usuario, String nombre, String primerApellido, String segundoApellido, String dni,
+			GregorianCalendar fechaNacimiento, int numTelefono, String email, String contrasenna,
+			String licenciaConducir, ArrayList<Alquiler> historialAlquileres) {
+		super(usuario, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, numTelefono, email, contrasenna);
 		this.licenciaConducir = licenciaConducir;
 		this.historialAlquileres = historialAlquileres;
 	}
@@ -39,16 +40,17 @@ public class Cliente extends Persona {
 		this.historialAlquileres = historialAlquileres;
 	}
 
-	@Override
+   @Override
 	public String toString() {
 		return "Cliente [licenciaConducir=" + licenciaConducir + ", historialAlquileres=" + historialAlquileres
-				+ ", getNombre()=" + getNombre() + ", getApellidos()=" + getApellidos() + ", getDni()=" + getDni()
+				+ ", getUsuario()=" + getUsuario() + ", getNombre()=" + getNombre() + ", getPrimerApellido()="
+				+ getPrimerApellido() + ", getSegundoApellido()=" + getSegundoApellido() + ", getDni()=" + getDni()
 				+ ", getFechaNacimiento()=" + getFechaNacimiento() + ", getNumTelefono()=" + getNumTelefono()
-				+ ", getEmail()=" + getEmail() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+				+ ", getEmail()=" + getEmail() + ", getContrasenna()=" + getContrasenna() + "]";
 	}
+
    public void mostrarInformacion() {
-        System.out.println("Cliente: " + getNombre() + " " + getApellidos() + " - Licencia: " + licenciaConducir);
+        System.out.println("Cliente: " + getNombre() + " " + getPrimerApellido() + " " + getSegundoApellido() + " - Licencia: " + licenciaConducir);
     }
 
     public void alquilarCoche(Vehiculo coche) {
