@@ -11,14 +11,13 @@ public class Empleado extends Persona {
 	}
 
 	public Empleado(String usuario, String nombre, String primerApellido, String segundoApellido, String dni,
-			GregorianCalendar fechaNacimiento, int numTelefono, String email, String contrasenna) {
-		super(usuario, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, numTelefono, email, contrasenna);
+			GregorianCalendar fechaNacimiento, String email, String contrasenna) {
+		super(usuario, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
 	}
 
 	public Empleado(String usuario, String nombre, String primerApellido, String segundoApellido, String dni,
-			GregorianCalendar fechaNacimiento, int numTelefono, String email, String contrasenna, String puesto,
-			double salario) {
-		super(usuario, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, numTelefono, email, contrasenna);
+			GregorianCalendar fechaNacimiento, String email, String contrasenna, String puesto, double salario) {
+		super(usuario, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
 		this.puesto = puesto;
 		this.salario = salario;
 	}
@@ -39,13 +38,13 @@ public class Empleado extends Persona {
 		this.salario = salario;
 	}
 
-    @Override
+	@Override
 	public String toString() {
 		return "Empleado [puesto=" + puesto + ", salario=" + salario + ", getUsuario()=" + getUsuario()
 				+ ", getNombre()=" + getNombre() + ", getPrimerApellido()=" + getPrimerApellido()
 				+ ", getSegundoApellido()=" + getSegundoApellido() + ", getDni()=" + getDni()
-				+ ", getFechaNacimiento()=" + getFechaNacimiento() + ", getNumTelefono()=" + getNumTelefono()
-				+ ", getEmail()=" + getEmail() + ", getContrasenna()=" + getContrasenna() + "]";
+				+ ", getFechaNacimiento()=" + getFechaNacimiento() + ", getEmail()=" + getEmail()
+				+ ", getContrasenna()=" + getContrasenna() + "]";
 	}
 
 	public void mostrarInformacion() {

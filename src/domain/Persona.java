@@ -9,7 +9,6 @@ public abstract class Persona {
     private String segundoApellido;
     private String dni;
     private GregorianCalendar fechaNacimiento;
-    private int numTelefono;
     private String email; 
     private String contrasenna;
 	
@@ -18,7 +17,7 @@ public abstract class Persona {
 	}
 
 	public Persona(String usuario, String nombre, String primerApellido, String segundoApellido, String dni,
-			GregorianCalendar fechaNacimiento, int numTelefono, String email, String contrasenna) {
+			GregorianCalendar fechaNacimiento, String email, String contrasenna) {
 		super();
 		this.usuario = usuario;
 		this.nombre = nombre;
@@ -26,7 +25,6 @@ public abstract class Persona {
 		this.segundoApellido = segundoApellido;
 		this.dni = dni;
 		this.fechaNacimiento = fechaNacimiento;
-		this.numTelefono = numTelefono;
 		this.email = email;
 		this.contrasenna = contrasenna;
 	}
@@ -77,14 +75,6 @@ public abstract class Persona {
 
 	public void setFechaNacimiento(GregorianCalendar fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
-	}
-
-	public int getNumTelefono() {
-		return numTelefono;
-	}
-
-	public void setNumTelefono(int numTelefono) {
-		this.numTelefono = numTelefono;
 	}
 
 	public String getEmail() {

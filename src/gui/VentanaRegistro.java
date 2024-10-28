@@ -30,7 +30,6 @@ public class VentanaRegistro extends JFrame {
 	public JTextField fieldSegundoApellido = new JTextField();
 	public JPasswordField fieldContrasenna = new JPasswordField();
 	public JTextField fieldDni = new JTextField();
-	public JTextField fieldNumeroTelefono = new JTextField();
 	public JTextField fieldEmail = new JTextField();
 	public JDateChooser fieldFechaNacimiento = new JDateChooser();
 	public JRadioButton cliente = new JRadioButton("Cliente");
@@ -63,8 +62,6 @@ public class VentanaRegistro extends JFrame {
 		fieldFechaNacimiento.setDateFormatString("yyyy-MM-dd");
 		JLabel labelDni = new JLabel("Introduzaca su DNI: ");
 		fieldDni.setPreferredSize(new Dimension(300, 20));
-		JLabel labelNumeroTelefono = new JLabel("Introduzca su numero de telefono: ");
-		fieldNumeroTelefono.setPreferredSize(new Dimension(300, 20));
 		JLabel labelEmail = new JLabel("Introduzca su email: ");
 		fieldEmail.setPreferredSize(new Dimension(300, 20));
 
@@ -99,10 +96,6 @@ public class VentanaRegistro extends JFrame {
 		panel.add(labelDni, gbc);
 		panel.add(new JLabel(" "), gbc);
 		panel.add(fieldDni, gbc);
-		panel.add(new JLabel(" "), gbc);
-		panel.add(labelNumeroTelefono, gbc);
-		panel.add(new JLabel(" "), gbc);
-		panel.add(fieldNumeroTelefono, gbc);
 		panel.add(new JLabel(" "), gbc);
 		panel.add(labelEmail, gbc);
 		panel.add(new JLabel(" "), gbc);
