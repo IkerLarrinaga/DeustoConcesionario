@@ -1,18 +1,23 @@
 package domain;
 
+import java.util.GregorianCalendar;
+
 public class Empleado extends Persona {
     private String puesto;
     private double salario;
-    
-    
-    public Empleado(String nombre, String apellidos, String dni, String fechaNacimiento, int numTelefono,
-			String email) {
-		super(nombre, apellidos, dni, fechaNacimiento, numTelefono, email);
+
+	public Empleado() {
+		super();
 	}
 
-	public Empleado(String nombre, String apellidos, String dni, String fechaNacimiento, int numTelefono, String email,
-			String puesto, double salario) {
-		super(nombre, apellidos, dni, fechaNacimiento, numTelefono, email);
+	public Empleado(String usuario, String nombre, String apellidos, String dni, GregorianCalendar fechaNacimiento,
+			int numTelefono, String email) {
+		super(usuario, nombre, apellidos, dni, fechaNacimiento, numTelefono, email);
+	}
+
+	public Empleado(String usuario, String nombre, String apellidos, String dni, GregorianCalendar fechaNacimiento,
+			int numTelefono, String email, String puesto, double salario) {
+		super(usuario, nombre, apellidos, dni, fechaNacimiento, numTelefono, email);
 		this.puesto = puesto;
 		this.salario = salario;
 	}
