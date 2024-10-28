@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import gui.VentanaIncio;
+import gui.VentanaLogIn;
 
 
 public class Main extends JFrame {

@@ -50,13 +50,13 @@ public class VentanaIncio extends JFrame {
         add(panel);
         setVisible(true);
 
-//        login.addActionListener(new ActionListener() {
-//        	@Override
-//        	public void actionPerformed(ActionEvent e) {
-//        		new VentanaLogIn();
-//        		dispose();
-//			}
-//		});
+        login.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		new VentanaLogIn();
+        		dispose();
+			}
+		});
         
 //        register.addActionListener(new ActionListener() {
 //			@Override
