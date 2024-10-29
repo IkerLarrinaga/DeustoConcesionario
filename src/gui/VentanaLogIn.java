@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 public class VentanaLogIn extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
-	public JTextField usuario = new JTextField();
+	public JTextField email = new JTextField();
 	public JPasswordField contrasenia = new JPasswordField();
 	public JButton confirmar = new JButton("Confirmar");
 	public JButton cancelar = new JButton("Cancelar");
@@ -35,14 +35,14 @@ public class VentanaLogIn extends JFrame {
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		
-		JLabel labelUsuario = new JLabel("Introduzca su nombre de usuario:");
-		usuario.setPreferredSize(new Dimension(300, 20));
+		JLabel labelEmail = new JLabel("Introduzca su email:");
+		email.setPreferredSize(new Dimension(300, 20));
 		JLabel labelContrasenia = new JLabel("Introduzca su contraseña:");
 		contrasenia.setPreferredSize(new Dimension(300, 20));
 		
-		panel.add(labelUsuario, gbc);
+		panel.add(labelEmail, gbc);
 		panel.add(new Label(" "), gbc);
-		panel.add(usuario, gbc);
+		panel.add(email, gbc);
 		panel.add(new Label(" "), gbc);
 		panel.add(labelContrasenia, gbc);
 		panel.add(new Label(" "), gbc);

@@ -11,15 +11,15 @@ public class Cliente extends Persona {
 		super();
 	}
 
-	public Cliente(String usuario, String nombre, String primerApellido, String segundoApellido, String dni,
+	public Cliente(String nombre, String primerApellido, String segundoApellido, String dni,
 			GregorianCalendar fechaNacimiento, String email, String contrasenna) {
-		super(usuario, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
+		super(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
 	}
 
-	public Cliente(String usuario, String nombre, String primerApellido, String segundoApellido, String dni,
+	public Cliente(String nombre, String primerApellido, String segundoApellido, String dni,
 			GregorianCalendar fechaNacimiento, String email, String contrasenna, String licenciaConducir,
 			ArrayList<Alquiler> historialAlquileres) {
-		super(usuario, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
+		super(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
 		this.licenciaConducir = licenciaConducir;
 		this.historialAlquileres = historialAlquileres;
 	}
@@ -43,8 +43,8 @@ public class Cliente extends Persona {
    @Override
 	public String toString() {
 		return "Cliente [licenciaConducir=" + licenciaConducir + ", historialAlquileres=" + historialAlquileres
-				+ ", getUsuario()=" + getUsuario() + ", getNombre()=" + getNombre() + ", getPrimerApellido()="
-				+ getPrimerApellido() + ", getSegundoApellido()=" + getSegundoApellido() + ", getDni()=" + getDni()
+				+ ", getNombre()=" + getNombre() + ", getPrimerApellido()=" + getPrimerApellido()
+				+ ", getSegundoApellido()=" + getSegundoApellido() + ", getDni()=" + getDni()
 				+ ", getFechaNacimiento()=" + getFechaNacimiento() + ", getEmail()=" + getEmail()
 				+ ", getContrasenna()=" + getContrasenna() + "]";
 	}

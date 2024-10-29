@@ -15,20 +15,20 @@ public class Main extends JFrame {
 	static JProgressBar progressBar = new JProgressBar();
 	
     public static void main(String[] args) {
-    	frame.setSize(300, 70);
-    	frame.setLocationRelativeTo(null);
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	
-    	progressBar.setValue(0);
-    	progressBar.setStringPainted(true);
-    	panel.add(progressBar);
-    	frame.add(panel);
-    	
-    	frame.setVisible(true);
-    	
-    	fill();
-
-    	frame.dispose();
+//    	frame.setSize(300, 70);
+//    	frame.setLocationRelativeTo(null);
+//    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    	
+//    	progressBar.setValue(0);
+//    	progressBar.setStringPainted(true);
+//    	panel.add(progressBar);
+//    	frame.add(panel);
+//    	
+//    	frame.setVisible(true);
+//    	
+//    	fill();
+//
+//    	frame.dispose();
     	
     	new VentanaIncio();
     }

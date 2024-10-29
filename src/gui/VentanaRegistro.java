@@ -24,7 +24,6 @@ import com.toedter.calendar.JDateChooser;
 public class VentanaRegistro extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
-	public JTextField fieldNombreUsuario = new JTextField();
 	public JTextField fieldNombre = new JTextField();
 	public JTextField fieldPrimerApellido = new JTextField();
 	public JTextField fieldSegundoApellido = new JTextField();
@@ -48,8 +47,6 @@ public class VentanaRegistro extends JFrame {
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		JLabel labelUsuario = new JLabel("Introduzca su nombre de usuario:");
-		fieldNombreUsuario.setPreferredSize(new Dimension(300, 20));
 		JLabel labelNombre = new JLabel("Introduzca su nombre:");
 		fieldNombre.setPreferredSize(new Dimension(300, 20));
 		JLabel labelPrimerApellido = new JLabel("Introduzca su primer apellido:");
@@ -69,10 +66,6 @@ public class VentanaRegistro extends JFrame {
 		grupo.add(cliente);
 		grupo.add(trabajador);
 
-		panel.add(labelUsuario, gbc);
-		panel.add(new JLabel(" "), gbc);
-		panel.add(fieldNombreUsuario, gbc);
-		panel.add(new JLabel(" "), gbc);
 		panel.add(labelNombre, gbc);
 		panel.add(new JLabel(" "), gbc);
 		panel.add(fieldNombre, gbc);
