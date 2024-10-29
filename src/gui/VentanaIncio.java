@@ -37,15 +37,20 @@ public class VentanaIncio extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
         JButton login = new JButton("Iniciar Sesión");
-        JButton register = new JButton("Registrarse");
+        JButton registro = new JButton("Registrarse");
+        JButton salir = new JButton("Salir");
         
         login.setPreferredSize(new Dimension(250, 30));
-        register.setPreferredSize(new Dimension(250, 30));
-        login.setBackground(new Color(240, 196, 170));
-        register.setBackground(new Color(240, 183, 170));
+        registro.setPreferredSize(new Dimension(250, 30));
+        salir.setPreferredSize(new Dimension(250, 30));
+//        login.setBackground(new Color(240, 196, 170));
+//        registro.setBackground(new Color(240, 183, 170));
+//        salir.setBackground(new Color(255, 0, 0));
         panel.add(login, gbc);
         panel.add(new JLabel(" "), gbc);
-        panel.add(register, gbc);
+        panel.add(registro, gbc);
+        panel.add(new JLabel(" "), gbc);
+        panel.add(salir, gbc);
         
         add(panel);
         setVisible(true);
@@ -58,11 +63,19 @@ public class VentanaIncio extends JFrame {
 			}
 		});
         
-        register.addActionListener(new ActionListener() {
+        registro.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new VentanaRegistro();
         		dispose();
+			}
+		});
+        
+        salir.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
 			}
 		});
     }
