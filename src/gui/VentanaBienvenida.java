@@ -14,7 +14,7 @@ public class VentanaBienvenida extends JFrame{
 	public VentanaBienvenida() {
         
         setTitle("Bienvenida");
-        setSize(300, 200);
+        setSize(400, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -35,7 +35,9 @@ public class VentanaBienvenida extends JFrame{
         botonCatalogo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	dispose();
                 JOptionPane.showMessageDialog(null, "Bienvenido al Catálogo");
+                new VentanaCatalogo();
             }
         });
 
