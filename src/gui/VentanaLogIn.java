@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -59,6 +60,27 @@ public class VentanaLogIn extends JFrame {
 		add(panel);
 		setVisible(true);
 		
+		confirmar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String emailIntroducido = email.getText(); 
+				String contraIntroducida = contrasenia.getText();
+				if(emailIntroducido.equals("") && contraIntroducida.equals("")) {
+					JOptionPane.showMessageDialog(null, "Has iniciado sesión correctamente");
+					email.setText("");
+					contrasenia.setText("");
+					dispose(); 
+					new VentanaBienvenida();
+				}else {
+					JOptionPane.showMessageDialog(null,"Nombre de usuario y/o contraseña incorrectos", "ERROR", JOptionPane.ERROR_MESSAGE);
+					email.setText("");
+					contrasenia.setText("");
+				}
+			}
+		});
+		
+		
 		cancelar.addActionListener(new ActionListener() {
 			
 			@Override
@@ -69,5 +91,7 @@ public class VentanaLogIn extends JFrame {
 		});
 		
 	}
+	
+	
 
 }
