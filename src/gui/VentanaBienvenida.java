@@ -1,13 +1,18 @@
 package gui;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 public class VentanaBienvenida extends JFrame{
 	
@@ -22,11 +27,21 @@ public class VentanaBienvenida extends JFrame{
         JButton botonCerrarSesion = new JButton("Cerrar Sesión");
         
         JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        panel.add(new JLabel(" "), gbc);
         
-        panel.setLayout(new FlowLayout());
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        panel.add(botonCatalogo);
-        panel.add(botonCerrarSesion);
+        botonCatalogo.setPreferredSize(new Dimension(250, 30));
+        botonCerrarSesion.setPreferredSize(new Dimension(250, 30));
+        
+        panel.add(botonCatalogo, gbc);
+        panel.add(new JLabel(" "), gbc);
+        panel.add(botonCerrarSesion, gbc);
         
         add(panel);
         
