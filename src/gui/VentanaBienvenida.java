@@ -14,12 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class VentanaBienvenida extends JFrame{
-	
-	//FUENTE-EXTERNA
-	//URL: https://github.com/erikcoruna/Rebote/tree/main/src/gui
-	//El codigo ha sido obtenido del proyecto del año pasado para la adpataciopn de las ventanas con el GridBagConstraints, 
-	//después ha sido adaptado para el correcto funcionamiento de este proyecto. 
-	
+
 	private static final long serialVersionUID = 1L;
 
 	public VentanaBienvenida() {
