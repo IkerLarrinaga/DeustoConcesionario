@@ -11,7 +11,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -28,8 +27,6 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import com.toedter.calendar.JDateChooser;
-
-import domain.Cliente;
 
 public class VentanaRegistro extends JFrame {
 	private static final long serialVersionUID = 1L;

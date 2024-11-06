@@ -14,11 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.border.EmptyBorder;
 
-public class VentanaBienvenida extends JFrame{
+public class VentanaBienvenidaCliente extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 
-	public VentanaBienvenida() {
+	public VentanaBienvenidaCliente() {
         
         setTitle("Bienvenida");
         setSize(400, 300);

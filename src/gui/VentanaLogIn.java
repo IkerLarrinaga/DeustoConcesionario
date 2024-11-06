@@ -6,6 +6,9 @@ import java.awt.GridBagLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -64,19 +67,25 @@ public class VentanaLogIn extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String emailIntroducido = email.getText(); 
-				String contraIntroducida = contrasenia.getText();
-				if(emailIntroducido.equals("") && contraIntroducida.equals("")) {
-					JOptionPane.showMessageDialog(null, "Has iniciado sesión correctamente");
+				String emailIntro = email.getText();
+				String contrasennaIntro = String.valueOf(contrasenia.getPassword());
+				
+				String id = verificacion(emailIntro, contrasennaIntro);
+				if(!id.equals("")) {
+					if (id.equals("1")) { 
+                        new VentanaBienvenidaCliente();
+                    } else if (id.equals("2")) { 
+                        new VentanaBienvenidaEmpleado();
+                    }
+                    dispose();
+					
+					
+				} else {
+					JOptionPane.showMessageDialog(null, "Se ha introducido el usuario y/o la contraseña incorrectamente.", "Error", JOptionPane.ERROR_MESSAGE);
 					email.setText("");
-					contrasenia.setText("");
-					dispose(); 
-					new VentanaBienvenida();
-				}else {
-					JOptionPane.showMessageDialog(null,"Nombre de usuario y/o contraseña incorrectos", "ERROR", JOptionPane.ERROR_MESSAGE);
-					email.setText("");
-					contrasenia.setText("");
+                    contrasenia.setText("");
 				}
+				
 			}
 		});
 		
@@ -89,9 +98,25 @@ public class VentanaLogIn extends JFrame {
 				dispose();
 			}
 		});
-		
 	}
 	
-	
-
+	private String verificacion(String emailIntro, String contrasennaIntro) {
+		 try (BufferedReader reader = new BufferedReader(new FileReader("resource/data/registro.txt"))) {
+	            String linea;
+	            while ((linea = reader.readLine()) != null) {
+	                String[] datos = linea.split(";");
+	                
+	                String id = datos[0];
+	                String email = datos[5];
+                    String contrasenna = datos[6];
+                    if (email.equals(emailIntro) && contrasenna.equals(contrasennaIntro)) {
+                        return id;
+                    }
+	            }
+	        } catch (IOException ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(null, "Error al leer los datos", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+		 return "";
+	}
 }
