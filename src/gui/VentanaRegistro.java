@@ -153,7 +153,10 @@ public class VentanaRegistro extends JFrame {
 					
 					String datos = id + ";" + nombre + ";" + primerApellido + ";" + segundoApellido + ";" + dni + ";" + email + ";" + contrasenna + ";" + fechaNacimientoString;
 					
-					 try (BufferedWriter writer = new BufferedWriter(new FileWriter("resource/data/registro.txt"))) {
+					//IAG ChatGPT
+					//Se ha preguntado porque solo guarda un registro en el documento de texto, entonces ha corregido el código para que se guarden más de uno
+					
+					 try (BufferedWriter writer = new BufferedWriter(new FileWriter("resource/data/registro.txt", true))) {
 			                writer.write(datos);
 			                writer.newLine();
 			                JOptionPane.showMessageDialog(null, "Se ha registrado correctamente.", "Confirmacion", JOptionPane.INFORMATION_MESSAGE);
