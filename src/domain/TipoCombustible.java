@@ -1,5 +1,5 @@
 package domain;
 
 public enum TipoCombustible {
-	GASOLINA, DIÉSEL, HÍBRIDO, ELÉCTRICO  
+	GASOLINA, DIESEL, HIBRIDO, ELECTRICO  
 }

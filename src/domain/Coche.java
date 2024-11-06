@@ -2,7 +2,7 @@ package domain;
 
 public class Coche extends Vehiculo{
 	private int numPuertas;
-	private String tipoTraccion;
+	private Traccion tipoTraccion;
 	
 	public Coche() {
 		super();
@@ -14,7 +14,7 @@ public class Coche extends Vehiculo{
 	}
 	
 	public Coche(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama, int numPuertas, String tipoTraccion) {
+			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama, int numPuertas, Traccion tipoTraccion) {
 		super(kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas, gama);
 		this.numPuertas = numPuertas;
 		this.tipoTraccion = tipoTraccion;
@@ -28,11 +28,11 @@ public class Coche extends Vehiculo{
 		this.numPuertas = numPuertas;
 	}
 	
-	public String getTipoTraccion() {
+	public Traccion getTipoTraccion() {
 		return tipoTraccion;
 	}
 	
-	public void setTipoTraccion(String tipoTraccion) {
+	public void setTipoTraccion(Traccion tipoTraccion) {
 		this.tipoTraccion = tipoTraccion;
 	}
 	

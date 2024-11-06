@@ -1,8 +1,10 @@
 package domain;
 
 public class Moto extends Vehiculo{
-	protected int cilindrada;
+	
 	protected boolean baul;
+	protected int cilindrada;
+	
 	
 	public Moto() {
 		super();

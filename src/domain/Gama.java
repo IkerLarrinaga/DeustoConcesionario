@@ -1,5 +1,5 @@
 package domain;
 
 public enum Gama {
-	ESTANDAR, DEPORTIVO, LUJOSO
+	ESTANDAR, ALTA, BAJA
 }
