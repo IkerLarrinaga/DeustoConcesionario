@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.border.EmptyBorder;
 
 public class VentanaBienvenida extends JFrame{
@@ -47,12 +48,14 @@ public class VentanaBienvenida extends JFrame{
         add(panel);
         
         setVisible(true);
+        
+        
 
         botonCatalogo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	dispose();
-                JOptionPane.showMessageDialog(null, "Bienvenido al Catálogo");
+            	dispose();           	
+                JOptionPane.showMessageDialog(new JProgressBar(), "Bienvenido al Catálogo");
                 new VentanaCatalogo();
             }
         });
@@ -61,6 +64,7 @@ public class VentanaBienvenida extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 new VentanaIncio();
+                dispose();
             }
         });
         
