@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +10,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -22,6 +28,8 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import com.toedter.calendar.JDateChooser;
+
+import domain.Cliente;
 
 public class VentanaRegistro extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -80,10 +88,6 @@ public class VentanaRegistro extends JFrame {
 		panel.add(new JLabel(" "), gbc);
 		panel.add(fieldSegundoApellido, gbc);
 		panel.add(new JLabel(" "), gbc);
-		panel.add(labelContrasenna, gbc);
-		panel.add(new JLabel(" "), gbc);
-		panel.add(fieldContrasenna, gbc);
-		panel.add(new JLabel(" "), gbc);
 		panel.add(labelFechaNacimiento, gbc);
 		panel.add(new JLabel(" "), gbc);
 		panel.add(fieldFechaNacimiento, gbc);
@@ -95,6 +99,10 @@ public class VentanaRegistro extends JFrame {
 		panel.add(labelEmail, gbc);
 		panel.add(new JLabel(" "), gbc);
 		panel.add(fieldEmail, gbc);
+		panel.add(new JLabel(" "), gbc);
+		panel.add(labelContrasenna, gbc);
+		panel.add(new JLabel(" "), gbc);
+		panel.add(fieldContrasenna, gbc);
 		panel.add(new JLabel(" "), gbc);
 
 
@@ -136,6 +144,32 @@ public class VentanaRegistro extends JFrame {
 					Date fechaNacimiento = fieldFechaNacimiento.getDate();
 					GregorianCalendar calendar = new GregorianCalendar();
 					calendar.setTime(fechaNacimiento);
+					
+					String fechaNacimientoString = new SimpleDateFormat("yyyy-MM-dd").format(fechaNacimiento);
+					
+					String id = null;
+					if(cliente.isSelected()) {
+						id = "1";
+					} else if(trabajador.isSelected()) {
+						id = "2";
+					}
+					
+					String datos = id + ";" + nombre + ";" + primerApellido + ";" + segundoApellido + ";" + dni + ";" + email + ";" + contrasenna + ";" + fechaNacimientoString;
+					
+					 try (BufferedWriter writer = new BufferedWriter(new FileWriter("resource/data/registro.txt"))) {
+			                writer.write(datos);
+			                writer.newLine();
+			                JOptionPane.showMessageDialog(null, "Se ha registrado correctamente.", "Confirmacion", JOptionPane.INFORMATION_MESSAGE);
+			                new VentanaIncio();
+			                dispose();
+			                
+			            } catch (IOException ex) {
+			                ex.printStackTrace();
+			                JOptionPane.showMessageDialog(null, "Error al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+			            }
+					
+				} else {
+					JOptionPane.showMessageDialog(null, "Todos los campos deben estar rellenados.", "Advertencia", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
