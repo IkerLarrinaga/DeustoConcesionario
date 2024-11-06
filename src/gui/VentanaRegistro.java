@@ -9,6 +9,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -98,7 +100,7 @@ public class VentanaRegistro extends JFrame {
 
 		JPanel rolPanel = new JPanel();
 		rolPanel.setLayout(new GridBagLayout());
-		Border lineaBorder = BorderFactory.createLineBorder(Color.RED);
+		Border lineaBorder = BorderFactory.createLineBorder(Color.DARK_GRAY);
 		Border tituloBorder = BorderFactory.createTitledBorder(lineaBorder, "Elige tu rol");
 		rolPanel.setBorder(tituloBorder);
 		rolPanel.add(cliente, gbc);
@@ -117,6 +119,26 @@ public class VentanaRegistro extends JFrame {
 		
 		add(panel);
 		setVisible(true);
+		
+		confirmar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!fieldNombre.getText().isEmpty() && !fieldPrimerApellido.getText().isEmpty() && !fieldSegundoApellido.getText().isEmpty() && !fieldDni.getText().isEmpty()
+						&& !fieldEmail.getText().isEmpty() && !String.valueOf(fieldContrasenna.getPassword()).isEmpty() && !(fieldFechaNacimiento == null) && (cliente.isSelected() || trabajador.isSelected())) {
+					
+					String nombre = fieldNombre.getText();
+					String primerApellido = fieldPrimerApellido.getText();
+					String segundoApellido = fieldSegundoApellido.getText();
+					String dni = fieldDni.getText();
+					String email = fieldEmail.getText();
+					String contrasenna = String.valueOf(fieldContrasenna.getPassword());
+					Date fechaNacimiento = fieldFechaNacimiento.getDate();
+					GregorianCalendar calendar = new GregorianCalendar();
+					calendar.setTime(fechaNacimiento);
+				}
+			}
+		});
 		
 		
 		cancelar.addActionListener(new ActionListener() {
