@@ -10,14 +10,14 @@ public class Empleado extends Persona {
 		super();
 	}
 	
-	public Empleado(String nombre, String primerApellido, String segundoApellido, String dni,
+	public Empleado(int id, String nombre, String primerApellido, String segundoApellido, String dni,
 			GregorianCalendar fechaNacimiento, String email, String contrasenna) {
-		super(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
+		super(id, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
 	}
-
-	public Empleado(String nombre, String primerApellido, String segundoApellido, String dni,
+	
+	public Empleado(int id, String nombre, String primerApellido, String segundoApellido, String dni,
 			GregorianCalendar fechaNacimiento, String email, String contrasenna, String puesto, double salario) {
-		super(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
+		super(id, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
 		this.puesto = puesto;
 		this.salario = salario;
 	}

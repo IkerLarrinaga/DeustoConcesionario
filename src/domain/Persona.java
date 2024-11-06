@@ -3,6 +3,7 @@ package domain;
 import java.util.GregorianCalendar;
 
 public abstract class Persona {
+	private int id;
     private String nombre;
     private String primerApellido;
     private String segundoApellido;
@@ -25,6 +26,27 @@ public abstract class Persona {
 		this.fechaNacimiento = fechaNacimiento;
 		this.email = email;
 		this.contrasenna = contrasenna;
+	}
+
+	public Persona(int id, String nombre, String primerApellido, String segundoApellido, String dni,
+			GregorianCalendar fechaNacimiento, String email, String contrasenna) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.primerApellido = primerApellido;
+		this.segundoApellido = segundoApellido;
+		this.dni = dni;
+		this.fechaNacimiento = fechaNacimiento;
+		this.email = email;
+		this.contrasenna = contrasenna;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNombre() {
