@@ -9,20 +9,23 @@ public class Furgoneta extends Vehiculo {
         super();
     }
 
-    public Furgoneta(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
-		super(kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas, gama);
+    public Furgoneta(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
+		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
+				gama);
 	}
 
-	public Furgoneta(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
-                     TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama, float cargaMax, boolean techoAlto, int capacidadCarga) {
-        super(kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas, gama);
-        this.cargaMax = cargaMax;
-        this.techoAlto = techoAlto;
-        this.capacidadCarga = capacidadCarga;
-    }
+	public Furgoneta(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama,
+			float cargaMax, boolean techoAlto, int capacidadCarga) {
+		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
+				gama);
+		this.cargaMax = cargaMax;
+		this.techoAlto = techoAlto;
+		this.capacidadCarga = capacidadCarga;
+	}
 
-    public float getCargaMax() {
+	public float getCargaMax() {
         return cargaMax;
     }
 

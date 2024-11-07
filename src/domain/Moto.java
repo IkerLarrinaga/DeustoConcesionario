@@ -9,17 +9,20 @@ public class Moto extends Vehiculo{
 	public Moto() {
 		super();
 	}
-	
-	public Moto(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
-		super(kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas, gama);
+
+	public Moto(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
+		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
+				gama);
 	}
 
-	public Moto(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama, int cilindrada, boolean baul) {
-		super(kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas, gama);
-		this.cilindrada = cilindrada;
+	public Moto(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama,
+			boolean baul, int cilindrada) {
+		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
+				gama);
 		this.baul = baul;
+		this.cilindrada = cilindrada;
 	}
 
 	public int getCilindrada() {

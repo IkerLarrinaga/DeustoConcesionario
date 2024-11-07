@@ -7,15 +7,18 @@ public class Coche extends Vehiculo{
 	public Coche() {
 		super();
 	}
-	
-	public Coche(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
-		super(kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas, gama);
+
+	public Coche(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
+		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
+				gama);
 	}
-	
-	public Coche(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama, int numPuertas, Traccion tipoTraccion) {
-		super(kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas, gama);
+
+	public Coche(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama,
+			int numPuertas, Traccion tipoTraccion) {
+		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
+				gama);
 		this.numPuertas = numPuertas;
 		this.tipoTraccion = tipoTraccion;
 	}

@@ -1,6 +1,7 @@
 package domain;
 
 public abstract class Vehiculo {
+	private String matricula;
 	private int kilometros;
 	private String marca;
 	private String modelo;
@@ -15,10 +16,11 @@ public abstract class Vehiculo {
 	public Vehiculo() {
 		
 	}
-	
-	public Vehiculo(int kilometros, String marca, String modelo, float precio, int anno, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
+
+	public Vehiculo(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
 		super();
+		this.matricula = matricula;
 		this.kilometros = kilometros;
 		this.marca = marca;
 		this.modelo = modelo;
@@ -29,6 +31,14 @@ public abstract class Vehiculo {
 		this.potencia = potencia;
 		this.numPlazas = numPlazas;
 		this.gama = gama;
+	}
+
+	public String getMatricula() {
+		return matricula;
+	}
+
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
 	}
 
 	public int getKilometros() {
