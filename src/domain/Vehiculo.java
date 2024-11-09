@@ -1,5 +1,11 @@
 package domain;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Vehiculo {
 	private String matricula;
 	private int kilometros;
@@ -127,6 +133,64 @@ public abstract class Vehiculo {
 				+ ", año=" + anno + ", tCombustible=" + tCombustible + ", tCajaCambios=" + tCajaCambios + ", potencia="
 				+ potencia + ", numPlazas=" + numPlazas + ", gama=" + gama + "]";
 	}
+	
+	public static List<Vehiculo> cargarVehiculos(String archivo) {
+        List<Vehiculo> listaVehiculos = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) { 
+                String[] datos = linea.split(";");
+                String matricula = datos[1];
+            	int kilometros = Integer.parseInt(datos[2]);
+            	String marca = datos[3];
+                String modelo = datos[4];
+                float precio = Float.parseFloat(datos[5]);
+                int anno = Integer.parseInt(datos[6]);
+                String tCombustible = datos[7];
+                String tCajaCambios = datos[8];
+                int potencia = Integer.parseInt(datos[9]);
+                int numPlazas = Integer.parseInt(datos[10]);
+                String gama = datos[11];
+                
+                TipoCombustible tipoComb = TipoCombustible.valueOf(tCombustible.toUpperCase());
+                TipoCajaCambios tipoCajCam = TipoCajaCambios.valueOf(tCajaCambios.toUpperCase());
+                Gama gam = Gama.valueOf(gama.toUpperCase());
+                
+                Vehiculo vehiculo = null;
+                
+                if (datos[0].equals("Coche")) {
+                	int numPuertas = Integer.parseInt(datos[12]);
+                	String tipoTraccion = datos[13];
+                	Traccion traccion = Traccion.valueOf(tipoTraccion.toUpperCase());
+                	vehiculo = new Coche(matricula, kilometros, marca, modelo, precio, anno, 
+                			tipoComb, tipoCajCam, potencia, numPlazas, gam, numPuertas, traccion);
+                	
+                } else if(datos[0].equals("Furgoneta")) {
+                	float cargaMax = Float.parseFloat(datos[12]);
+                	boolean techoAlto = Boolean.parseBoolean(datos[13]);
+                	int capacidadCarga = Integer.parseInt(datos[14]);
+                	
+                	vehiculo = new Furgoneta(matricula, kilometros, marca, modelo, precio, anno, 
+                			tipoComb, tipoCajCam, potencia, numPlazas, gam, cargaMax, techoAlto, capacidadCarga);
+                	
+                } else {
+                	boolean baul = Boolean.parseBoolean(datos[12]);
+                	int cilindrada = Integer.parseInt(datos[13]);
+                	
+                	vehiculo = new Moto(matricula, kilometros, marca, modelo, precio, anno, 
+                			tipoComb, tipoCajCam, potencia, numPlazas, gam, baul, cilindrada);
+                	
+                }
+
+                if (vehiculo != null) {
+                        listaVehiculos.add(vehiculo);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return listaVehiculos;
+    }
 	
 	public abstract void mostrarInformacion();
 	
