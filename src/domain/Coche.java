@@ -60,4 +60,10 @@ public class Coche extends Vehiculo{
     public void devolver() {
         System.out.println("Devolviendo coche estándar...");
     }
+
+	@Override
+	public String getTipo() {
+		// TODO Auto-generated method stub
+		return "COCHE";
+	}
 }

@@ -84,4 +84,10 @@ public class Furgoneta extends Vehiculo {
     public void devolver() {
         System.out.println("Devolviendo furgoneta...");
     }
+
+	@Override
+	public String getTipo() {
+		// TODO Auto-generated method stub
+		return "FURGONETA";
+	}
 }

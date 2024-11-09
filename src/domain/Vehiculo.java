@@ -192,6 +192,8 @@ public abstract class Vehiculo {
         return listaVehiculos;
     }
 	
+	public abstract String getTipo();
+	
 	public abstract void mostrarInformacion();
 	
     public abstract void alquilar();

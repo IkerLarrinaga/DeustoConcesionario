@@ -75,4 +75,10 @@ public class Moto extends Vehiculo{
 				+ ", hashCode()=" + hashCode() + "]";
 	}
 
+	@Override
+	public String getTipo() {
+		// TODO Auto-generated method stub
+		return "MOTO";
+	}
+
 }

@@ -3,11 +3,15 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -18,19 +22,25 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import domain.Gama;
 import domain.Vehiculo;
 
 public class VentanaCatalogo extends JFrame{
-	
+
+	private static final long serialVersionUID = 1L;
 	private List<Vehiculo> listaVehiculos;
+	private JPanel panelCatalogo;
 	
 	public VentanaCatalogo() {
 		
-		this.listaVehiculos = Vehiculo.cargarVehiculos("vehiculos.txt");
+		this.listaVehiculos = Vehiculo.cargarVehiculos("resource/data/vehiculos.txt");
 		
 		setTitle("Catálogo");
         setSize(900, 500);
@@ -74,60 +84,83 @@ public class VentanaCatalogo extends JFrame{
         hilo.start();
         dialog.setVisible(true);
         
-        JPanel panelCatalogo = new JPanel();
-        panelCatalogo.setLayout(new GridLayout(0, 3, 10, 10)); // 3 filas, 3 columnas, espacio de 10 entre cada botón
-
-        // Añadir 9 coches como botones
-        for (int i = 1; i <= 15; i++) {
-            JButton botonCoche = new JButton("Coche " + i);
-            botonCoche.setPreferredSize(new Dimension(200, 150)); // Tamaño fijo para los botones
-            panelCatalogo.add(botonCoche); // Agregar el botón al panel
-        }
+        panelCatalogo = new JPanel();
+        panelCatalogo.setLayout(new GridLayout(0, 3, 10, 10));
 
         JScrollPane scrollPane = new JScrollPane(panelCatalogo);
-        scrollPane.setPreferredSize(new Dimension(800, 500)); // Establecer el tamaño del JScrollPane
-
-        // Crear panel de filtros a la izquierda
+        scrollPane.setPreferredSize(new Dimension(800, 500));
+        add(scrollPane, BorderLayout.CENTER);
+        
+        cargarVehiculosEnCatalogo();
+        
         JPanel panelFiltros = new JPanel();
+        panelFiltros.setBorder(new EmptyBorder(10, 10, 10, 10));
         panelFiltros.setLayout(new BoxLayout(panelFiltros, BoxLayout.Y_AXIS));
-        panelFiltros.setPreferredSize(new Dimension(200, 600)); // Ancho fijo para el panel de filtros
+        panelFiltros.setPreferredSize(new Dimension(200, 600));
 
-        // Filtros de búsqueda
+        JLabel labelTipo = new JLabel("Tipo de Vehículo");
+        JComboBox<String> comboTipo = new JComboBox<>(new String[]{"Todos","Coche", "Furgoneta", "Moto"});
+        comboTipo.setMaximumSize(minimumSize());
+        
         JLabel labelMarca = new JLabel("Marca:");
         JComboBox<String> comboMarca = new JComboBox<>(new String[]{"Todas", "Toyota", "Honda", 
         		"Ford", "Tesla","Chevrolet", "BMW", "Mercedes-Benz", "Renault", "Peugeot", "Fiat", 
-        		"Yamaha", "Kawasaki", "Suzuki"}); //recorrer lista de todas las marcas
+        		"Yamaha", "Kawasaki", "Suzuki"});
+        comboMarca.setMaximumSize(minimumSize());
+        
         JLabel labelModelo = new JLabel("Modelo:");
         JComboBox<String> comboModelo = new JComboBox<>(new String[]{"Todos", "Sedan", "SUV", "Hatchback", "Coupe"}); //recorrer lista de todos los modelos
-        JLabel labelPrecio = new JLabel("Precio máximo:");
-        JTextField textPrecio = new JTextField(10);
+        comboModelo.setMaximumSize(minimumSize());
+        
+        JSlider sliderPrecio = new JSlider(JSlider.HORIZONTAL, 0, 100000, 50000);
+        sliderPrecio.setMajorTickSpacing(10000); 
+        sliderPrecio.setMinorTickSpacing(10000);
+        sliderPrecio.setPaintTicks(true);
+        JLabel labelPrecioValor = new JLabel("Valor máximo: " + sliderPrecio.getValue());
+
         JLabel labelAño = new JLabel("Año de fabricación:");
         JTextField textAño = new JTextField(10);
-        JCheckBox checkNuevo = new JCheckBox("Solo coches nuevos");
-        JCheckBox checkUsado = new JCheckBox("Solo coches usados");
-
-        // Añadir filtros al panel
+        textAño.setMaximumSize(new Dimension(60, 30));
+        JCheckBox checkNuevo = new JCheckBox("Automático");
+        
+        JLabel labelCombustible = new JLabel("Tipo de Combustible:");
+        JComboBox<String> comboCombustible = new JComboBox<>(new String[] {"Todos", "Gasolina", "Diesel", "Híbrido", "Eléctrico"});
+        comboCombustible.setMaximumSize(minimumSize());
+       
+        panelFiltros.add(labelTipo);
+        panelFiltros.add(Box.createVerticalStrut(10));
+        panelFiltros.add(comboTipo);
+        panelFiltros.add(Box.createVerticalStrut(10));
         panelFiltros.add(labelMarca);
+        panelFiltros.add(Box.createVerticalStrut(10));
         panelFiltros.add(comboMarca);
+        panelFiltros.add(Box.createVerticalStrut(10));
         panelFiltros.add(labelModelo);
+        panelFiltros.add(Box.createVerticalStrut(10));
         panelFiltros.add(comboModelo);
-        panelFiltros.add(labelPrecio);
-        panelFiltros.add(textPrecio);
+        panelFiltros.add(Box.createVerticalStrut(10));
+        panelFiltros.add(labelPrecioValor);
+        panelFiltros.add(Box.createVerticalStrut(10));
+        panelFiltros.add(sliderPrecio);
+        panelFiltros.add(Box.createVerticalStrut(10));
         panelFiltros.add(labelAño);
+        panelFiltros.add(Box.createVerticalStrut(10));
         panelFiltros.add(textAño);
+        panelFiltros.add(Box.createVerticalStrut(10));
         panelFiltros.add(checkNuevo);
-        panelFiltros.add(checkUsado);
+        panelFiltros.add(Box.createVerticalStrut(10));
+        panelFiltros.add(labelCombustible);
+        panelFiltros.add(Box.createVerticalStrut(10));
+        panelFiltros.add(comboCombustible);
 
-        // Crear un panel para contener los filtros y el catálogo
+
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BorderLayout());
-        panelPrincipal.add(panelFiltros, BorderLayout.WEST); // Añadir los filtros a la izquierda
-        panelPrincipal.add(scrollPane, BorderLayout.CENTER); // Añadir el catálogo a la derecha
+        panelPrincipal.add(panelFiltros, BorderLayout.WEST);
+        panelPrincipal.add(scrollPane, BorderLayout.CENTER);
 
-        // Añadir el panel principal al contenedor de la ventana
         getContentPane().add(panelPrincipal);
      
-        
         botonCarrito.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -145,8 +178,103 @@ public class VentanaCatalogo extends JFrame{
             }
         });
         
+        sliderPrecio.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                labelPrecioValor.setText("Valor máximo: " + sliderPrecio.getValue());
+            }
+        });
+        
         setVisible(true);
 	}
 	
+	private void cargarVehiculosEnCatalogo() {
+        for (Vehiculo vehiculo : listaVehiculos) {
+            JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
+            botonVehiculo.setPreferredSize(new Dimension(200, 100));
+            
+            ImageIcon iconoVehiculo = getIconoPorTipo(vehiculo);
+            botonVehiculo.setIcon(iconoVehiculo);
+            
+            botonVehiculo.addActionListener(e -> {
+                String mensaje = "Marca: " + vehiculo.getMarca() + "\n" +
+            	        "Modelo: " + vehiculo.getModelo() + "\n" +
+            	        "Precio: " + vehiculo.getPrecio() + "\n" +
+            	        "Gama: " + vehiculo.getGama() + "\n" +
+            	        "Tipo: " + vehiculo.getTipo() + "\n" +
+            	        "Año: " + vehiculo.getAnno() + "\n" +
+            	        "Kilómetros: " + vehiculo.getKilometros() + " km\n" +
+            	        "Combustible: " + vehiculo.gettCombustible() + "\n" +
+            	        "Caja de Cambios: " + vehiculo.gettCajaCambios() + "\n" +
+            	        "Potencia: " + vehiculo.getPotencia() + "CV\n" +
+            	        "Número de plazas: " + vehiculo.getNumPlazas();
+
+                Object[] opciones = {"Comprar", "Alquilar", "Cerrar"};
+
+                int opcion = JOptionPane.showOptionDialog(
+                    this, mensaje, "Información del Vehículo", JOptionPane.DEFAULT_OPTION, 
+                    JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[2]           
+                );
+
+                if (opcion == 0) {
+                    JOptionPane.showMessageDialog(this, "Vehículo COMPRADO");
+                } else if(opcion == 1) {
+                	JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Operación cancelada.");
+                }
+            });
+
+            panelCatalogo.add(botonVehiculo);
+        }
+        
+    }
 	
+	private ImageIcon getIconoPorTipo(Vehiculo vehiculo) {
+        ImageIcon icon = null;
+
+        if (vehiculo.getTipo().equals("COCHE")) {
+        	if (vehiculo.getGama() != null) {
+                if (vehiculo.getGama().equals(Gama.ALTA)) {
+                    icon = new ImageIcon("resource/img/cocheGamaAlta.png");
+                } else if (vehiculo.getGama().equals(Gama.ESTANDAR)) {
+                    icon = new ImageIcon("resource/img/cocheGamaEstandar.png");
+                } else {
+                    icon = new ImageIcon("resource/img/cocheGamaBaja.png");
+                }
+            }
+        } else if (vehiculo.getTipo().equals("MOTO")) {
+        	if (vehiculo.getGama() != null) {
+        		if (vehiculo.getGama() != null) {
+                    if (vehiculo.getGama().equals(Gama.ALTA)) {
+                        icon = new ImageIcon("resource/img/motoGamaAlta.png");
+                    } else if (vehiculo.getGama().equals(Gama.ESTANDAR)) {
+                        icon = new ImageIcon("resource/img/motoGamaEstandar.png");
+                    } else {
+                        icon = new ImageIcon("resource/img/motoGamaBaja.png");
+                    }
+                }
+            }
+        } else if (vehiculo.getTipo().equals("FURGONETA")) {
+        	if (vehiculo.getGama() != null) {
+        		if (vehiculo.getGama() != null) {
+                    if (vehiculo.getGama().equals(Gama.ALTA)) {
+                        icon = new ImageIcon("resource/img/furgonetaGamaAlta.png");
+                    } else if (vehiculo.getGama().equals(Gama.ESTANDAR)) {
+                        icon = new ImageIcon("resource/img/furgonetaGamaEstandar.png");
+                    } else {
+                        icon = new ImageIcon("resource/img/furgonetaGamaBaja.png");
+                    }
+                }
+            }
+        }
+
+        if (icon != null) {
+            Image img = icon.getImage();
+            Image nuevaImagen = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(nuevaImagen);
+        }
+
+        return icon;
+    }
 }
