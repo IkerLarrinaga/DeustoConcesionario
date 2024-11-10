@@ -1,18 +1,18 @@
 package gui;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -31,10 +31,26 @@ public class VentanaIncio extends JFrame {
     	setLocationRelativeTo(null);
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Bienvenido");
+        
+        ImageIcon foto = new ImageIcon("resource/img/DeustoConcesionarioInicio.png");
+        Image fotoEscala = foto.getImage().getScaledInstance(300, 200, Image.SCALE_SMOOTH);
+        ImageIcon fotoFinal = new ImageIcon(fotoEscala); 
+        JLabel fondo = new JLabel(fotoFinal);
+        
+        Color colorPersonalizado = new Color(92, 184, 255);
+        
+        JPanel panelImagen = new JPanel();
+        panelImagen.setLayout(new BorderLayout());
+        panelImagen.setBorder(new EmptyBorder(50, 20, 0, 20));
+        panelImagen.setBackground(colorPersonalizado);
+        panelImagen.add(fondo, BorderLayout.CENTER);
+        add(panelImagen, BorderLayout.NORTH);
+        
 
         JPanel panel = new JPanel();
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         panel.setLayout(new GridBagLayout());
+        panel.setBorder(new EmptyBorder(0, 0, 50, 0));
+        panel.setBackground(colorPersonalizado);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         panel.add(new JLabel(" "), gbc);

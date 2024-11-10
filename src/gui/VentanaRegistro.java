@@ -50,6 +50,8 @@ public class VentanaRegistro extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
+		Color colorPersonalizado = new Color(92, 184, 255);
+        panel.setBackground(colorPersonalizado);
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;

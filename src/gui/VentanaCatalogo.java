@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -47,11 +48,14 @@ public class VentanaCatalogo extends JFrame{
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        Color colorPersonalizado = new Color(92, 184, 255);
+        
         JButton botonCarrito = new JButton("Ver Carrito");
         JButton botonCerrarSesion = new JButton("Cerrar Sesión");
         
         JPanel panel = new JPanel();
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));      
+        panel.setBackground(colorPersonalizado);
         getContentPane().add(panel, BorderLayout.SOUTH);
         panel.add(botonCarrito);
         panel.add(botonCerrarSesion);
@@ -86,7 +90,7 @@ public class VentanaCatalogo extends JFrame{
         
         panelCatalogo = new JPanel();
         panelCatalogo.setLayout(new GridLayout(0, 3, 10, 10));
-
+        panelCatalogo.setBackground(colorPersonalizado);
         JScrollPane scrollPane = new JScrollPane(panelCatalogo);
         scrollPane.setPreferredSize(new Dimension(800, 500));
         add(scrollPane, BorderLayout.CENTER);
@@ -95,6 +99,7 @@ public class VentanaCatalogo extends JFrame{
         
         JPanel panelFiltros = new JPanel();
         panelFiltros.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelFiltros.setBackground(colorPersonalizado);
         panelFiltros.setLayout(new BoxLayout(panelFiltros, BoxLayout.Y_AXIS));
         panelFiltros.setPreferredSize(new Dimension(200, 600));
 
