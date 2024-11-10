@@ -131,6 +131,9 @@ public class VentanaCatalogo extends JFrame{
         JLabel labelCombustible = new JLabel("Tipo de Combustible:");
         JComboBox<String> comboCombustible = new JComboBox<>(new String[] {"Todos", "Gasolina", "Diesel", "Híbrido", "Eléctrico"});
         comboCombustible.setMaximumSize(minimumSize());
+        
+        //IAG ChatGPT
+        //Se ha pedido que haga un menu con diferentes opciones de busqueda, después su ha modificado para nuestro proyecto
        
         panelFiltros.add(labelTipo);
         panelFiltros.add(Box.createVerticalStrut(10));
