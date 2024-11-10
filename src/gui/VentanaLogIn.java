@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -65,6 +67,7 @@ public class VentanaLogIn extends JFrame {
 		
 		add(panel);
 		setVisible(true);
+	
 		
 		confirmar.addActionListener(new ActionListener() {
 			
@@ -101,6 +104,22 @@ public class VentanaLogIn extends JFrame {
 				dispose();
 			}
 		});
+		
+		
+		//IAG ChatGPT
+		//Se ha preguntado como añadir un KeyListener para que actue como si dieras al boton confirma, se ha copia el codigo integro
+		
+		KeyAdapter enterListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    confirmar.doClick();
+                }
+            }
+        };
+        
+        email.addKeyListener(enterListener);
+        contrasenia.addKeyListener(enterListener);
 	}
 	
 	private String verificacion(String emailIntro, String contrasennaIntro) {

@@ -10,6 +10,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -184,5 +186,22 @@ public class VentanaRegistro extends JFrame {
 				dispose();
 			}
 		});
+		
+		KeyAdapter enterListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    confirmar.doClick();
+                }
+            }
+        };
+
+        fieldNombre.addKeyListener(enterListener);
+        fieldPrimerApellido.addKeyListener(enterListener);
+        fieldSegundoApellido.addKeyListener(enterListener);
+        fieldDni.addKeyListener(enterListener);
+        fieldEmail.addKeyListener(enterListener);
+        fieldContrasenna.addKeyListener(enterListener);
+        fieldFechaNacimiento.addKeyListener(enterListener);
 	}
 }
