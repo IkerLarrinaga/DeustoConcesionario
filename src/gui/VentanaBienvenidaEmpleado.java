@@ -73,6 +73,10 @@ public class VentanaBienvenidaEmpleado extends JFrame {
                         public void mostrarInformacion() {}
                         public void alquilar() {}
                         public void devolver() {}
+						@Override
+						public String getTipo() {
+							return null;
+						}
                     };
 
                     Alquiler alquiler = new Alquiler(cliente, vehiculo, datos[5], datos[6]);
