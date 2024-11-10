@@ -1,2 +1,6 @@
 2;admin;admin;admin;12345678A;admin;admin;2024-11-04
 1;user;user;user;12345678B;user;user;2024-11-04
+1;1;1;1;1;1;1;2024-11-13
+2;1;1;1;1;1;1;2024-11-30
+1;Roberto;Carballedo;Carballedo;45214478C;rcarballedo@deusto.es;roberto;1984-07-20
+2;Unai;Aguilera;Aguilera;23695547S;unai.aguilera@deusto.es;unai;1970-01-13
