@@ -78,8 +78,9 @@ public class VentanaLogIn extends JFrame {
 				
 				String id = verificacion(emailIntro, contrasennaIntro);
 				if(!id.equals("")) {
-					if (id.equals("1")) { 
-                        new VentanaBienvenidaCliente();
+					if (id.equals("1")) {
+						dispose();
+                        new VentanaCatalogo();
                     } else if (id.equals("2")) { 
                         new VentanaBienvenidaEmpleado();
                     }
