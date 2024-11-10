@@ -193,6 +193,72 @@ public class VentanaCatalogo extends JFrame{
             }
         });
         
+        comboTipo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+                String marcaSeleccionada = (String) comboMarca.getSelectedItem();
+                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
+                int precioMaximo = sliderPrecio.getValue();
+                String añoSeleccionado = textAño.getText().trim(); // Leer el año ingresado
+
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+            }
+        });
+
+        comboMarca.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+                String marcaSeleccionada = (String) comboMarca.getSelectedItem();
+                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
+                int precioMaximo = sliderPrecio.getValue();
+                String añoSeleccionado = textAño.getText().trim(); // Leer el año ingresado
+
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+            }
+        });
+
+        comboModelo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+                String marcaSeleccionada = (String) comboMarca.getSelectedItem();
+                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
+                int precioMaximo = sliderPrecio.getValue();
+                String añoSeleccionado = textAño.getText().trim(); // Leer el año ingresado
+
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+            }
+        });
+
+        sliderPrecio.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                labelPrecioValor.setText("Valor máximo: " + sliderPrecio.getValue());
+                String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+                String marcaSeleccionada = (String) comboMarca.getSelectedItem();
+                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
+                int precioMaximo = sliderPrecio.getValue();
+                String añoSeleccionado = textAño.getText().trim(); // Leer el año ingresado
+
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+            }
+        });
+        
+        textAño.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+                String marcaSeleccionada = (String) comboMarca.getSelectedItem();
+                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
+                int precioMaximo = sliderPrecio.getValue();
+                String añoSeleccionado = textAño.getText();
+
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+            }
+        });
+        
         setVisible(true);
 	}
 	
@@ -285,4 +351,59 @@ public class VentanaCatalogo extends JFrame{
 
         return icon;
     }
+	
+	
+	private void actualizarCatalogoConFiltros(String tipoSeleccionado, String marcaSeleccionada, String modeloSeleccionado, int precioMaximo, String añoSeleccionado) {
+	    panelCatalogo.removeAll();
+	    
+	    for (Vehiculo vehiculo : listaVehiculos) {
+	        boolean coincideTipo = tipoSeleccionado.equals("Todos") || vehiculo.getTipo().equalsIgnoreCase(tipoSeleccionado);
+	        boolean coincideMarca = marcaSeleccionada.equals("Todas") || vehiculo.getMarca().equalsIgnoreCase(marcaSeleccionada);
+	        boolean coincideModelo = modeloSeleccionado.equals("Todos") || vehiculo.getModelo().equalsIgnoreCase(modeloSeleccionado);
+	        boolean coincidePrecio = vehiculo.getPrecio() <= precioMaximo;
+	        boolean coincideAño = añoSeleccionado.isEmpty() || String.valueOf(vehiculo.getAnno()).equals(añoSeleccionado);
+
+	        if (coincideTipo && coincideMarca && coincideModelo && coincidePrecio && coincideAño) {
+	            JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
+	            botonVehiculo.setPreferredSize(new Dimension(200, 100));
+
+	            ImageIcon iconoVehiculo = getIconoPorTipo(vehiculo);
+	            botonVehiculo.setIcon(iconoVehiculo);
+
+	            botonVehiculo.addActionListener(e -> {
+	                String mensaje = "Marca: " + vehiculo.getMarca() + "\n" +
+	                        "Modelo: " + vehiculo.getModelo() + "\n" +
+	                        "Precio: " + vehiculo.getPrecio() + "\n" +
+	                        "Gama: " + vehiculo.getGama() + "\n" +
+	                        "Tipo: " + vehiculo.getTipo() + "\n" +
+	                        "Año: " + vehiculo.getAnno() + "\n" +
+	                        "Kilómetros: " + vehiculo.getKilometros() + " km\n" +
+	                        "Combustible: " + vehiculo.gettCombustible() + "\n" +
+	                        "Caja de Cambios: " + vehiculo.gettCajaCambios() + "\n" +
+	                        "Potencia: " + vehiculo.getPotencia() + "CV\n" +
+	                        "Número de plazas: " + vehiculo.getNumPlazas();
+
+	                Object[] opciones = {"Comprar", "Alquilar", "Cerrar"};
+
+	                int opcion = JOptionPane.showOptionDialog(
+	                    this, mensaje, "Información del Vehículo", JOptionPane.DEFAULT_OPTION,
+	                    JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[2]
+	                );
+
+	                if (opcion == 0) {
+	                    JOptionPane.showMessageDialog(this, "Vehículo COMPRADO");
+	                } else if (opcion == 1) {
+	                    JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
+	                } else {
+	                    JOptionPane.showMessageDialog(this, "Operación cancelada.");
+	                }
+	            });
+
+	            panelCatalogo.add(botonVehiculo);
+	        }
+	    }
+
+	    panelCatalogo.revalidate();
+	    panelCatalogo.repaint();
+	}
 }
