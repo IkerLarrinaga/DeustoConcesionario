@@ -84,14 +84,13 @@ public class VentanaIncio extends JFrame {
             }
         });
         
-        login.addKeyListener(new KeyAdapter() {
-        	@Override
-        	public void keyPressed(KeyEvent e) {
-        		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-        			new VentanaLogIn();
-                    dispose();
-                }
-        	}
+        login.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new VentanaLogIn();
+                dispose();
+			}
 		});
         
         Color colorRegistroAntes = new Color(25, 130, 215);

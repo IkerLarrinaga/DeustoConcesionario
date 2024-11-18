@@ -85,8 +85,6 @@ public class VentanaLogIn extends JFrame {
                         new VentanaBienvenidaEmpleado();
                     }
                     dispose();
-					
-					
 				} else {
 					JOptionPane.showMessageDialog(null, "Se ha introducido el usuario y/o la contraseña incorrectamente.", "Error", JOptionPane.ERROR_MESSAGE);
 					email.setText("");
