@@ -301,16 +301,51 @@ public class VentanaRegistro extends JFrame {
     private void obtenerAccionDependiendoBoton(int indice) {
         switch (indice) {
 		case 0: 
-			new VentanaLogIn();
-			dispose();
+			if (!fieldNombre.getText().isEmpty() && !fieldPrimerApellido.getText().isEmpty() && !fieldSegundoApellido.getText().isEmpty() && !fieldDni.getText().isEmpty()
+					&& !fieldEmail.getText().isEmpty() && !String.valueOf(fieldContrasenna.getPassword()).isEmpty() && !(fieldFechaNacimiento == null) && (cliente.isSelected() || trabajador.isSelected())) {
+				
+				String nombre = fieldNombre.getText();
+				String primerApellido = fieldPrimerApellido.getText();
+				String segundoApellido = fieldSegundoApellido.getText();
+				String dni = fieldDni.getText();
+				String email = fieldEmail.getText();
+				String contrasenna = String.valueOf(fieldContrasenna.getPassword());
+				Date fechaNacimiento = fieldFechaNacimiento.getDate();
+				GregorianCalendar calendar = new GregorianCalendar();
+				calendar.setTime(fechaNacimiento);
+				
+				String fechaNacimientoString = new SimpleDateFormat("yyyy-MM-dd").format(fechaNacimiento);
+				
+				String id = null;
+				if(cliente.isSelected()) {
+					id = "1";
+				} else if(trabajador.isSelected()) {
+					id = "2";
+				}
+				
+				String datos = id + ";" + nombre + ";" + primerApellido + ";" + segundoApellido + ";" + dni + ";" + email + ";" + contrasenna + ";" + fechaNacimientoString;
+				
+				 try (BufferedWriter writer = new BufferedWriter(new FileWriter("resource/data/registro.txt", true))) {
+		                writer.write(datos);
+		                writer.newLine();
+		                JOptionPane.showMessageDialog(null, "Se ha registrado correctamente.", "Confirmacion", JOptionPane.INFORMATION_MESSAGE);
+		                new VentanaIncio();
+		                dispose();
+		                
+		            } catch (IOException ex) {
+		                ex.printStackTrace();
+		                JOptionPane.showMessageDialog(null, "Error al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+		            }
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "Todos los campos deben estar rellenados.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+			}
+			
 			break;
 		case 1:
-			new VentanaRegistro();
+			new VentanaIncio();
             dispose();
             break;
-		case 2:
-			System.exit(0);
-			break;
 		default:
 			break;
 		}
