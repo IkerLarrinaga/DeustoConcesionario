@@ -158,21 +158,21 @@ public class VentanaRegistro extends JFrame {
 		lBotones[0] = confirmar;
 		lBotones[1] = cancelar;
 		
-		Color colorLoginAntes = new Color(40, 150, 255);
-        Color colorLoginDespues = new Color(20, 100, 220);
+		Color colorConfirmarAntes = new Color(40, 150, 255);
+        Color colorConfirmarDespues = new Color(20, 100, 220);
         
-        confirmar.setBackground(colorLoginAntes);
+        confirmar.setBackground(colorConfirmarAntes);
         confirmar.setForeground(Color.WHITE);
         confirmar.setFocusable(false);
         confirmar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                confirmar.setBackground(colorLoginDespues);
+                confirmar.setBackground(colorConfirmarDespues);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                confirmar.setBackground(colorLoginAntes);
+                confirmar.setBackground(colorConfirmarAntes);
             }
         });
         
