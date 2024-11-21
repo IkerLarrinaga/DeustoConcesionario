@@ -55,7 +55,7 @@ public class VentanaRegistro extends JFrame {
     private JButton[] lBotones = new JButton[2];
 	
 	public VentanaRegistro() {
-		setSize(480, 800);
+		setSize(500, 850);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Registrarse");
