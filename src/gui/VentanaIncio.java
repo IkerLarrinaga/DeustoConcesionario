@@ -27,7 +27,7 @@ public class VentanaIncio extends JFrame {
     private JButton[] lBotones = new JButton[3];
 
     public VentanaIncio() {
-        setSize(480, 500);
+        setSize(480, 560);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Bienvenido");
