@@ -44,7 +44,7 @@ public class VentanaCatalogo extends JFrame{
 		this.listaVehiculos = Vehiculo.cargarVehiculos("resource/data/vehiculos.txt");
 		
 		setTitle("Catálogo");
-        setSize(900, 500);
+        setSize(950, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -114,7 +114,7 @@ public class VentanaCatalogo extends JFrame{
         comboMarca.setMaximumSize(minimumSize());
         
         JLabel labelModelo = new JLabel("Modelo:");
-        JComboBox<String> comboModelo = new JComboBox<>(new String[]{"Todos", "Sedan", "SUV", "Hatchback", "Coupe"}); //recorrer lista de todos los modelos
+        JComboBox<String> comboModelo = new JComboBox<>(new String[]{"Todos", "Sedan", "SUV", "Hatchback", "Coupe"});
         comboModelo.setMaximumSize(minimumSize());
         
         JSlider sliderPrecio = new JSlider(JSlider.HORIZONTAL, 0, 100000, 50000);
@@ -200,7 +200,7 @@ public class VentanaCatalogo extends JFrame{
                 String marcaSeleccionada = (String) comboMarca.getSelectedItem();
                 String modeloSeleccionado = (String) comboModelo.getSelectedItem();
                 int precioMaximo = sliderPrecio.getValue();
-                String añoSeleccionado = textAño.getText().trim(); // Leer el año ingresado
+                String añoSeleccionado = textAño.getText().trim();
 
                 actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
             }
@@ -213,7 +213,7 @@ public class VentanaCatalogo extends JFrame{
                 String marcaSeleccionada = (String) comboMarca.getSelectedItem();
                 String modeloSeleccionado = (String) comboModelo.getSelectedItem();
                 int precioMaximo = sliderPrecio.getValue();
-                String añoSeleccionado = textAño.getText().trim(); // Leer el año ingresado
+                String añoSeleccionado = textAño.getText().trim();
 
                 actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
             }
@@ -226,7 +226,7 @@ public class VentanaCatalogo extends JFrame{
                 String marcaSeleccionada = (String) comboMarca.getSelectedItem();
                 String modeloSeleccionado = (String) comboModelo.getSelectedItem();
                 int precioMaximo = sliderPrecio.getValue();
-                String añoSeleccionado = textAño.getText().trim(); // Leer el año ingresado
+                String añoSeleccionado = textAño.getText().trim();
 
                 actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
             }
@@ -240,7 +240,7 @@ public class VentanaCatalogo extends JFrame{
                 String marcaSeleccionada = (String) comboMarca.getSelectedItem();
                 String modeloSeleccionado = (String) comboModelo.getSelectedItem();
                 int precioMaximo = sliderPrecio.getValue();
-                String añoSeleccionado = textAño.getText().trim(); // Leer el año ingresado
+                String añoSeleccionado = textAño.getText().trim();
 
                 actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
             }
