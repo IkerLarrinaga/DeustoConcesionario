@@ -8,13 +8,13 @@ public class Coche extends Vehiculo{
 		super();
 	}
 
-	public Coche(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+	public Coche(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
 			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
 		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
 				gama);
 	}
 
-	public Coche(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+	public Coche(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
 			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama,
 			int numPuertas, Traccion tipoTraccion) {
 		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
@@ -63,7 +63,6 @@ public class Coche extends Vehiculo{
 
 	@Override
 	public String getTipo() {
-		// TODO Auto-generated method stub
 		return "COCHE";
 	}
 }

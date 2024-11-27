@@ -10,13 +10,13 @@ public class Moto extends Vehiculo{
 		super();
 	}
 
-	public Moto(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+	public Moto(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
 			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
 		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
 				gama);
 	}
 
-	public Moto(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+	public Moto(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
 			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama,
 			boolean baul, int cilindrada) {
 		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
@@ -77,7 +77,6 @@ public class Moto extends Vehiculo{
 
 	@Override
 	public String getTipo() {
-		// TODO Auto-generated method stub
 		return "MOTO";
 	}
 

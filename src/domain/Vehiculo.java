@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class Vehiculo {
 	private String matricula;
 	private int kilometros;
-	private String marca;
+	private Marca marca;
 	private String modelo;
 	private float precio;
 	private int anno;
@@ -23,7 +23,7 @@ public abstract class Vehiculo {
 		
 	}
 
-	public Vehiculo(String matricula, int kilometros, String marca, String modelo, float precio, int anno,
+	public Vehiculo(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
 			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
 		super();
 		this.matricula = matricula;
@@ -55,11 +55,11 @@ public abstract class Vehiculo {
 		this.kilometros = kilometros;
 	}
 
-	public String getMarca() {
+	public Marca getMarca() {
 		return marca;
 	}
 
-	public void setMarca(String marca) {
+	public void setMarca(Marca marca) {
 		this.marca = marca;
 	}
 
@@ -142,7 +142,7 @@ public abstract class Vehiculo {
                 String[] datos = linea.split(";");
                 String matricula = datos[1];
             	int kilometros = Integer.parseInt(datos[2]);
-            	String marca = datos[3];
+            	Marca marca = Marca.valueOf(datos[3].toUpperCase());
                 String modelo = datos[4];
                 float precio = Float.parseFloat(datos[5]);
                 int anno = Integer.parseInt(datos[6]);
