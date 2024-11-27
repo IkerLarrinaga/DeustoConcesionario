@@ -1,8 +1,7 @@
 package domain;
 
 public enum Marca {
-	
-	Toyota,	Honda, Ford, Chevrolet, BMW, MercedesBenz, Audi, Volkswagen, Hyundai, Kia, Nissan, Lexus, Mazda, 
-	Subaru, Porsche, Ferrari, Lamborghini, Volvo, LandRover, Seat, Tesla, Peugeot, Renault, Mitsubishi
-
+    TOYOTA, HONDA, FORD, CHEVROLET, BMW, MERCEDESBENZ, AUDI, VOLKSWAGEN, HYUNDAI, KIA, NISSAN, 
+    LEXUS, MAZDA, SUBARU, PORSCHE, FERRARI, LAMBORGHINI, VOLVO, LANDROVER, SEAT, TESLA, PEUGEOT, 
+    RENAULT, MITSUBISHI, FIAT, YAMAHA, KAWASAKI, SUZUKI
 }
