@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import domain.Alquiler;
 import domain.Cliente;
+import domain.Marca;
 import domain.Vehiculo;
 
 public class VentanaBienvenidaEmpleado extends JFrame {
@@ -37,7 +38,7 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         for (Alquiler alquiler : lAlquileres) {
             String nombreUsuario = alquiler.getCliente().getNombre() + " " + alquiler.getCliente().getPrimerApellido() + " " + alquiler.getCliente().getSegundoApellido();
             String matricula = alquiler.getVehiculo().getMatricula();
-            String marca = alquiler.getVehiculo().getMarca();
+            String marca = alquiler.getVehiculo().getMarca().toString();
             String fechaInicio = alquiler.getFechaInicio();
             String fechaFin = alquiler.getFechaFin();
 
@@ -69,22 +70,24 @@ public class VentanaBienvenidaEmpleado extends JFrame {
                     cliente.setNombre(datos[0]);
                     cliente.setPrimerApellido(datos[1]);
 
-                    Vehiculo vehiculo = new Vehiculo(datos[2], 0, datos[3], datos[4], 0, 0, null, null, 0, 0, null) {
+                    Marca marca = Marca.valueOf(datos[3].toUpperCase());
+
+                    Vehiculo vehiculo = new Vehiculo(datos[2], 0, marca, datos[4], 0, 0, null, null, 0, 0, null) {
                         public void mostrarInformacion() {}
                         public void alquilar() {}
                         public void devolver() {}
-						@Override
-						public String getTipo() {
-							return null;
-						}
+                        @Override
+                        public String getTipo() {
+                            return null;
+                        }
                     };
 
                     Alquiler alquiler = new Alquiler(cliente, vehiculo, datos[5], datos[6]);
                     alquileres.add(alquiler);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | IllegalArgumentException e) {
+            e.printStackTrace(); 
         }
 
         return alquileres;

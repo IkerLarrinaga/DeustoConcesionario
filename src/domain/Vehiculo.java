@@ -142,7 +142,7 @@ public abstract class Vehiculo {
                 String[] datos = linea.split(";");
                 String matricula = datos[1];
             	int kilometros = Integer.parseInt(datos[2]);
-            	Marca marca = Marca.valueOf(datos[3].toUpperCase());
+            	Marca marca = Marca.valueOf(datos[3].toUpperCase());	
                 String modelo = datos[4];
                 float precio = Float.parseFloat(datos[5]);
                 int anno = Integer.parseInt(datos[6]);

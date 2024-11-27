@@ -14,32 +14,31 @@ import javax.swing.table.DefaultTableModel;
 
 import domain.Alquiler;
 import domain.Cliente;
+import domain.Marca;
 import domain.Vehiculo;
 
-public class VentanaCarrito extends JFrame{
-	
-	private static final long serialVersionUID = 1L;
+public class VentanaCarrito extends JFrame {
+    
+    private static final long serialVersionUID = 1L;
 
-	public VentanaCarrito(){
-		
-		ArrayList<Alquiler> lAlquileres = alquileresUsuario("resource/data/registro.txt");
-		
-		setTitle("Ventana Carrito");
-	    setSize(500, 400);
-	    setLocationRelativeTo(null);
-	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    
-	    String[] columnas = {"Marca", "Matricula", "Fecha Inicio", "Fecha Fin"};
-	    DefaultTableModel tablemodel = new DefaultTableModel(columnas, 0);
-	    
+    public VentanaCarrito() {
+        ArrayList<Alquiler> lAlquileres = alquileresUsuario("resource/data/registro.txt");
+        
+        setTitle("Ventana Carrito");
+        setSize(500, 400);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        String[] columnas = {"Marca", "Matricula", "Fecha Inicio", "Fecha Fin"};
+        DefaultTableModel tablemodel = new DefaultTableModel(columnas, 0);
+        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         
         for (Alquiler alquiler : lAlquileres) {
-            String marca = alquiler.getVehiculo().getMarca();
+            String marca = alquiler.getVehiculo().getMarca().toString();
             String matricula = alquiler.getVehiculo().getMatricula();
             String fechaInicio = alquiler.getFechaInicio();
             String fechaFin = alquiler.getFechaFin();
-
 
             Object[] data = {marca, matricula, fechaInicio, fechaFin};
             tablemodel.addRow(data);
@@ -50,12 +49,10 @@ public class VentanaCarrito extends JFrame{
 
         add(scrollPane);
         
-	    setVisible(true);
-	}
-	
-	
-	
-	private ArrayList<Alquiler> alquileresUsuario(String rutaArchivo) {
+        setVisible(true);
+    }
+
+    private ArrayList<Alquiler> alquileresUsuario(String rutaArchivo) {
         ArrayList<Alquiler> alquileres = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -68,14 +65,22 @@ public class VentanaCarrito extends JFrame{
                     cliente.setNombre(datos[0]);
                     cliente.setPrimerApellido(datos[1]);
 
-                    Vehiculo vehiculo = new Vehiculo(datos[2], 0, datos[3], datos[4], 0, 0, null, null, 0, 0, null) {
+                    Marca marca;
+                    try {
+                        marca = Marca.valueOf(datos[3].toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Marca inválida encontrada: " + datos[3]);
+                        continue;
+                    }
+
+                    Vehiculo vehiculo = new Vehiculo(datos[2], 0, marca, datos[4], 0, 0, null, null, 0, 0, null) {
                         public void mostrarInformacion() {}
                         public void alquilar() {}
                         public void devolver() {}
-						@Override
-						public String getTipo() {
-							return null;
-						}
+                        @Override
+                        public String getTipo() {
+                            return null;
+                        }
                     };
 
                     Alquiler alquiler = new Alquiler(cliente, vehiculo, datos[5], datos[6]);
@@ -88,5 +93,4 @@ public class VentanaCarrito extends JFrame{
 
         return alquileres;
     }
-
 }
