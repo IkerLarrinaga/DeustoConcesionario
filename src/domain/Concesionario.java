@@ -1,4 +1,5 @@
 package domain;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +92,7 @@ public class Concesionario {
         return listaCochesDisponibles.isEmpty() ? null : listaCochesDisponibles.get(0);
     }
 
-    public void realizarAlquiler(Cliente cliente, Vehiculo coche, String fechaInicio, String fechaFin) {
+    public void realizarAlquiler(Cliente cliente, Vehiculo coche, LocalDate fechaInicio, LocalDate fechaFin) {
         if (listaCochesDisponibles.contains(coche)) {
             Alquiler nuevoAlquiler = new Alquiler(cliente, coche, fechaInicio, fechaFin);
             historialAlquileres.add(nuevoAlquiler);

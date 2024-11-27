@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -36,17 +37,14 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         String[] columnNames = {"Nombre de Usuario", "Matrícula", "Marca", "Fecha de Inicio", "Fecha Fin", "Días Restantes"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
         for (Alquiler alquiler : lAlquileres) {
             String nombreUsuario = alquiler.getCliente().getNombre() + " " + alquiler.getCliente().getPrimerApellido() + " " + alquiler.getCliente().getSegundoApellido();
             String matricula = alquiler.getVehiculo().getMatricula();
             String marca = alquiler.getVehiculo().getMarca().toString();
-            String fechaInicio = alquiler.getFechaInicio();
-            String fechaFin = alquiler.getFechaFin();
+            LocalDate fechaInicio = alquiler.getFechaInicio();
+            LocalDate fechaFin = alquiler.getFechaFin();
 
-            LocalDate fechaFinDate = LocalDate.parse(fechaFin, formatter);
-            long diasRestantes = LocalDate.now().until(fechaFinDate, java.time.temporal.ChronoUnit.DAYS);
+            long diasRestantes = LocalDate.now().until(fechaFin, java.time.temporal.ChronoUnit.DAYS);
 
             Object[] data = {nombreUsuario, matricula, marca, fechaInicio, fechaFin, diasRestantes};
             tableModel.addRow(data);
@@ -62,26 +60,36 @@ public class VentanaBienvenidaEmpleado extends JFrame {
     private ArrayList<Alquiler> alquileresUsuario(String rutaArchivo) {
         ArrayList<Alquiler> alquileres = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(",");
+                System.out.println("Leyendo línea: " + linea); // Depuración
+                String[] datos = linea.split(";");
                 if (datos.length == 7) {
-                    Cliente cliente = new Cliente();
-                    cliente.setNombre(datos[0]);
-                    cliente.setPrimerApellido(datos[1]);
-                    cliente.setSegundoApellido(datos[2]);
+                    try {
+                        Cliente cliente = new Cliente();
+                        cliente.setNombre(datos[0]);
+                        cliente.setPrimerApellido(datos[1]);
+                        cliente.setSegundoApellido(datos[2]);
 
-                    Marca marca = Marca.valueOf(datos[3].toUpperCase());
-                    Vehiculo vehiculo = crearVehiculo(datos[4], marca, datos[5], datos[6]);
+                        Marca marca = Marca.valueOf(datos[3].toUpperCase());
+                        Vehiculo vehiculo = crearVehiculo(datos[4], marca, datos[5], datos[6]);
 
-                    Alquiler alquiler = new Alquiler(cliente, vehiculo, datos[5], datos[6]);
-                    alquileres.add(alquiler);
+                        LocalDate fechaInicio = LocalDate.parse(datos[5], formatter);
+                        LocalDate fechaFin = LocalDate.parse(datos[6], formatter);
+
+                        Alquiler alquiler = new Alquiler(cliente, vehiculo, fechaInicio, fechaFin);
+                        alquileres.add(alquiler);
+                        System.out.println("Alquiler creado: " + alquiler); // Depuración
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Error al parsear la fecha: " + e.getMessage());
+                    }
+                } else {
+                    System.out.println("Formato incorrecto: " + linea); // Depuración
                 }
             }
         } catch (IOException | IllegalArgumentException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
 
         return alquileres;

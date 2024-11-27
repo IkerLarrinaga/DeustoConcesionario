@@ -1,4 +1,5 @@
 package domain;
+import java.time.LocalDate;
 import java.util.List;
 
 public class GestorAlquileres {
@@ -48,7 +49,7 @@ public class GestorAlquileres {
 				+ ", toString()=" + super.toString() + "]";
 	}
 
-    public void gestionarAlquiler(Cliente cliente, Vehiculo coche, String fechaInicio, String fechaFin) {
+    public void gestionarAlquiler(Cliente cliente, Vehiculo coche, LocalDate fechaInicio, LocalDate fechaFin) {
         Alquiler alquiler = new Alquiler(cliente, coche, fechaInicio, fechaFin);
         listaAlquileres.add(alquiler);
         listaClientes.add(cliente);

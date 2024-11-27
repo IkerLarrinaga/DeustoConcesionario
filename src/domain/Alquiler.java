@@ -7,14 +7,14 @@ import java.time.temporal.ChronoUnit;
 public class Alquiler {
     private Cliente cliente;
     private Vehiculo vehiculo;
-    private String fechaInicio;
-    private String fechaFin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     
     public Alquiler() {
 		super();
 	}
     
-	public Alquiler(Cliente cliente, Vehiculo vehiculo, String fechaInicio, String fechaFin) {
+	public Alquiler(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, LocalDate fechaFin) {
 		super();
 		this.cliente = cliente;
 		this.vehiculo = vehiculo;
@@ -38,19 +38,19 @@ public class Alquiler {
 		this.vehiculo = vehiculo;
 	}
 	
-	public String getFechaInicio() {
+	public LocalDate getFechaInicio() {
 		return fechaInicio;
 	}
 	
-	public void setFechaInicio(String fechaInicio) {
+	public void setFechaInicio(LocalDate fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
 	
-	public String getFechaFin() {
+	public LocalDate getFechaFin() {
 		return fechaFin;
 	}
 	
-	public void setFechaFin(String fechaFin) {
+	public void setFechaFin(LocalDate fechaFin) {
 		this.fechaFin = fechaFin;
 	}
 	
@@ -64,20 +64,12 @@ public class Alquiler {
 	}
     
     public double calcularMeses() {
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
-        LocalDate fin = LocalDate.parse(fechaFin, formatter);
-
-        int mes = (int) (ChronoUnit.DAYS.between(inicio, fin) / 30);
-        return mes;
+        int meses = (int) (ChronoUnit.DAYS.between(fechaInicio, fechaFin) / 30);
+        return meses;
     }
-    
-    public double calcularDias() {
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
-        LocalDate fin = LocalDate.parse(fechaFin, formatter);
 
-        double dias = ChronoUnit.DAYS.between(inicio, fin);
+    public double calcularDias() {
+        double dias = ChronoUnit.DAYS.between(fechaInicio, fechaFin);
         return dias;
     }
 

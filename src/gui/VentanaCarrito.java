@@ -37,8 +37,8 @@ public class VentanaCarrito extends JFrame {
         for (Alquiler alquiler : lAlquileres) {
             String marca = alquiler.getVehiculo().getMarca().toString();
             String matricula = alquiler.getVehiculo().getMatricula();
-            String fechaInicio = alquiler.getFechaInicio();
-            String fechaFin = alquiler.getFechaFin();
+            LocalDate fechaInicio = alquiler.getFechaInicio();
+            LocalDate fechaFin = alquiler.getFechaFin();
 
             Object[] data = {marca, matricula, fechaInicio, fechaFin};
             tablemodel.addRow(data);
@@ -83,8 +83,7 @@ public class VentanaCarrito extends JFrame {
                         }
                     };
 
-                    Alquiler alquiler = new Alquiler(cliente, vehiculo, datos[5], datos[6]);
-                    alquileres.add(alquiler);
+                    
                 }
             }
         } catch (IOException e) {
