@@ -25,7 +25,7 @@ public class VentanaBienvenidaEmpleado extends JFrame {
     private static final long serialVersionUID = 1L;
 
     public VentanaBienvenidaEmpleado() {
-        ArrayList<Alquiler> lAlquileres = alquileresUsuario("resource/data/registro.txt");
+        ArrayList<Alquiler> lAlquileres = alquileresUsuario("resource/data/clientes.txt");
 
         setSize(800, 600);
         setLocationRelativeTo(null);
@@ -95,9 +95,5 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         } else {
             return new Moto("matriculaEjemplo", 0, marca, modelo, 0, Integer.parseInt(año), null, null, 0, 0, null, false, 0);
         }
-    }
-
-    public static void main(String[] args) {
-        new VentanaBienvenidaEmpleado();
     }
 }

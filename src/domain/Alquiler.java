@@ -84,4 +84,6 @@ public class Alquiler {
     public void finalizarAlquiler() {
         System.out.println("Alquiler finalizado para el cliente " + cliente);
     }
+    
+    //TODO Hacer metodo que haga descuento si el numero de meses es mayor a X meses
 }
