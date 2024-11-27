@@ -227,11 +227,40 @@ public class VentanaCatalogo extends JFrame {
 
     private void cargarVehiculosEnCatalogo() {
         for (Vehiculo vehiculo : listaVehiculos) {
-            JLabel etiquetaVehiculo = new JLabel(vehiculo.getMatricula());
-            panelCatalogo.add(etiquetaVehiculo);
+            JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
+            botonVehiculo.setPreferredSize(new Dimension(200, 100));
+            
+            ImageIcon iconoVehiculo = getIconoPorTipo(vehiculo);
+            botonVehiculo.setIcon(iconoVehiculo);
+            
+            botonVehiculo.addActionListener(e -> {
+                String mensaje = "Marca: " + vehiculo.getMarca() + "\n" +
+            	        "Modelo: " + vehiculo.getModelo() + "\n" +
+            	        "Precio: " + vehiculo.getPrecio() + "\n" +
+            	        "Gama: " + vehiculo.getGama() + "\n" +
+            	        "Tipo: " + vehiculo.getTipo() + "\n" +
+            	        "Año: " + vehiculo.getAnno() + "\n" +
+            	        "Kilómetros: " + vehiculo.getKilometros() + " km\n" +
+            	        "Combustible: " + vehiculo.gettCombustible() + "\n" +
+            	        "Caja de Cambios: " + vehiculo.gettCajaCambios() + "\n" +
+            	        "Potencia: " + vehiculo.getPotencia() + "CV\n" +
+            	        "Número de plazas: " + vehiculo.getNumPlazas();
+                Object[] opciones = {"Comprar", "Alquilar", "Cerrar"};
+                int opcion = JOptionPane.showOptionDialog(
+                    this, mensaje, "Información del Vehículo", JOptionPane.DEFAULT_OPTION, 
+                    JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[2]           
+                );
+                if (opcion == 0) {
+                    JOptionPane.showMessageDialog(this, "Vehículo COMPRADO");
+                } else if(opcion == 1) {
+                	JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Operación cancelada.");
+                }
+            });
+            panelCatalogo.add(botonVehiculo);
         }
-        panelCatalogo.revalidate();
-        panelCatalogo.repaint();
+        
     }
     
     private ImageIcon getIconoPorTipo(Vehiculo vehiculo) {
