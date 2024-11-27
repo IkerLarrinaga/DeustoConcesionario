@@ -9,6 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import domain.Gama;
+import domain.Marca;
 import domain.Vehiculo;
 
 public class VentanaCatalogo extends JFrame {
@@ -163,69 +164,61 @@ public class VentanaCatalogo extends JFrame {
             }
         });
 
+        comboTipo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+                String marcaSeleccionada = (String) comboMarca.getSelectedItem();
+                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
+                int precioMaximo = sliderPrecio.getValue();
+                String añoSeleccionado = textAño.getText().trim();
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+            }
+        });
+        comboMarca.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+                String marcaSeleccionada = (String) comboMarca.getSelectedItem();
+                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
+                int precioMaximo = sliderPrecio.getValue();
+                String añoSeleccionado = textAño.getText().trim();
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+            }
+        });
+        comboModelo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+                String marcaSeleccionada = (String) comboMarca.getSelectedItem();
+                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
+                int precioMaximo = sliderPrecio.getValue();
+                String añoSeleccionado = textAño.getText().trim();
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+            }
+        });
         sliderPrecio.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 labelPrecioValor.setText("Valor máximo: " + sliderPrecio.getValue());
-                actualizarCatalogoConFiltros(
-                        (String) comboTipo.getSelectedItem(),
-                        (String) comboMarca.getSelectedItem(),
-                        (String) comboModelo.getSelectedItem(),
-                        sliderPrecio.getValue(),
-                        textAño.getText().trim()
-                );
+                String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+                String marcaSeleccionada = (String) comboMarca.getSelectedItem();
+                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
+                int precioMaximo = sliderPrecio.getValue();
+                String añoSeleccionado = textAño.getText().trim();
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
             }
         });
-
-        comboTipo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actualizarCatalogoConFiltros(
-                        (String) comboTipo.getSelectedItem(),
-                        (String) comboMarca.getSelectedItem(),
-                        (String) comboModelo.getSelectedItem(),
-                        sliderPrecio.getValue(),
-                        textAño.getText().trim()
-                );
-            }
-        });
-
-        comboMarca.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actualizarCatalogoConFiltros(
-                        (String) comboTipo.getSelectedItem(),
-                        (String) comboMarca.getSelectedItem(),
-                        (String) comboModelo.getSelectedItem(),
-                        sliderPrecio.getValue(),
-                        textAño.getText().trim()
-                );
-            }
-        });
-
-        comboModelo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actualizarCatalogoConFiltros(
-                        (String) comboTipo.getSelectedItem(),
-                        (String) comboMarca.getSelectedItem(),
-                        (String) comboModelo.getSelectedItem(),
-                        sliderPrecio.getValue(),
-                        textAño.getText().trim()
-                );
-            }
-        });
-
+        
         textAño.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                actualizarCatalogoConFiltros(
-                        (String) comboTipo.getSelectedItem(),
-                        (String) comboMarca.getSelectedItem(),
-                        (String) comboModelo.getSelectedItem(),
-                        sliderPrecio.getValue(),
-                        textAño.getText().trim()
-                );
+                String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+                String marcaSeleccionada = (String) comboMarca.getSelectedItem();
+                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
+                int precioMaximo = sliderPrecio.getValue();
+                String añoSeleccionado = textAño.getText();
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
             }
         });
 
@@ -234,22 +227,101 @@ public class VentanaCatalogo extends JFrame {
 
     private void cargarVehiculosEnCatalogo() {
         for (Vehiculo vehiculo : listaVehiculos) {
-            JLabel etiquetaVehiculo = new JLabel(vehiculo.getNombre());
+            JLabel etiquetaVehiculo = new JLabel(vehiculo.getMatricula());
             panelCatalogo.add(etiquetaVehiculo);
         }
         panelCatalogo.revalidate();
         panelCatalogo.repaint();
     }
-
-    private void actualizarCatalogoConFiltros(String tipo, String marca, String modelo, int precio, String anio) {
-        panelCatalogo.removeAll();
-        for (Vehiculo vehiculo : listaVehiculos) {
-            if (vehiculo.coincideConFiltros(tipo, marca, modelo, precio, anio)) {
-                JLabel etiquetaVehiculo = new JLabel(vehiculo.getNombre());
-                panelCatalogo.add(etiquetaVehiculo);
+    
+    private ImageIcon getIconoPorTipo(Vehiculo vehiculo) {
+        ImageIcon icon = null;
+        if (vehiculo.getTipo().equals("COCHE")) {
+        	if (vehiculo.getGama() != null) {
+                if (vehiculo.getGama().equals(Gama.ALTA)) {
+                    icon = new ImageIcon("resource/img/cocheGamaAlta.png");
+                } else if (vehiculo.getGama().equals(Gama.ESTANDAR)) {
+                    icon = new ImageIcon("resource/img/cocheGamaEstandar.png");
+                } else {
+                    icon = new ImageIcon("resource/img/cocheGamaBaja.png");
+                }
+            }
+        } else if (vehiculo.getTipo().equals("MOTO")) {
+        	if (vehiculo.getGama() != null) {
+        		if (vehiculo.getGama() != null) {
+                    if (vehiculo.getGama().equals(Gama.ALTA)) {
+                        icon = new ImageIcon("resource/img/motoGamaAlta.png");
+                    } else if (vehiculo.getGama().equals(Gama.ESTANDAR)) {
+                        icon = new ImageIcon("resource/img/motoGamaEstandar.png");
+                    } else {
+                        icon = new ImageIcon("resource/img/motoGamaBaja.png");
+                    }
+                }
+            }
+        } else if (vehiculo.getTipo().equals("FURGONETA")) {
+        	if (vehiculo.getGama() != null) {
+        		if (vehiculo.getGama() != null) {
+                    if (vehiculo.getGama().equals(Gama.ALTA)) {
+                        icon = new ImageIcon("resource/img/furgonetaGamaAlta.png");
+                    } else if (vehiculo.getGama().equals(Gama.ESTANDAR)) {
+                        icon = new ImageIcon("resource/img/furgonetaGamaEstandar.png");
+                    } else {
+                        icon = new ImageIcon("resource/img/furgonetaGamaBaja.png");
+                    }
+                }
             }
         }
-        panelCatalogo.revalidate();
-        panelCatalogo.repaint();
+        if (icon != null) {
+            Image img = icon.getImage();
+            Image nuevaImagen = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(nuevaImagen);
+        }
+        return icon;
     }
+
+    private void actualizarCatalogoConFiltros(String tipoSeleccionado, String marcaSeleccionada, String modeloSeleccionado, int precioMaximo, String añoSeleccionado) {
+	    panelCatalogo.removeAll();
+	    
+	    for (Vehiculo vehiculo : listaVehiculos) {
+	        boolean coincideTipo = tipoSeleccionado.equals("Todos") || vehiculo.getTipo().equalsIgnoreCase(tipoSeleccionado);
+	        boolean coincideMarca = marcaSeleccionada.equals("Todas") || vehiculo.getMarca() == Marca.valueOf(marcaSeleccionada.toUpperCase());
+	        boolean coincideModelo = modeloSeleccionado.equals("Todos") || vehiculo.getModelo().equalsIgnoreCase(modeloSeleccionado);
+	        boolean coincidePrecio = vehiculo.getPrecio() <= precioMaximo;
+	        boolean coincideAño = añoSeleccionado.isEmpty() || String.valueOf(vehiculo.getAnno()).equals(añoSeleccionado);
+	        if (coincideTipo && coincideMarca && coincideModelo && coincidePrecio && coincideAño) {
+	            JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
+	            botonVehiculo.setPreferredSize(new Dimension(200, 100));
+	            ImageIcon iconoVehiculo = getIconoPorTipo(vehiculo);
+	            botonVehiculo.setIcon(iconoVehiculo);
+	            botonVehiculo.addActionListener(e -> {
+	                String mensaje = "Marca: " + vehiculo.getMarca() + "\n" +
+	                        "Modelo: " + vehiculo.getModelo() + "\n" +
+	                        "Precio: " + vehiculo.getPrecio() + "\n" +
+	                        "Gama: " + vehiculo.getGama() + "\n" +
+	                        "Tipo: " + vehiculo.getTipo() + "\n" +
+	                        "Año: " + vehiculo.getAnno() + "\n" +
+	                        "Kilómetros: " + vehiculo.getKilometros() + " km\n" +
+	                        "Combustible: " + vehiculo.gettCombustible() + "\n" +
+	                        "Caja de Cambios: " + vehiculo.gettCajaCambios() + "\n" +
+	                        "Potencia: " + vehiculo.getPotencia() + "CV\n" +
+	                        "Número de plazas: " + vehiculo.getNumPlazas();
+	                Object[] opciones = {"Comprar", "Alquilar", "Cerrar"};
+	                int opcion = JOptionPane.showOptionDialog(
+	                    this, mensaje, "Información del Vehículo", JOptionPane.DEFAULT_OPTION,
+	                    JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[2]
+	                );
+	                if (opcion == 0) {
+	                    JOptionPane.showMessageDialog(this, "Vehículo COMPRADO");
+	                } else if (opcion == 1) {
+	                    JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
+	                } else {
+	                    JOptionPane.showMessageDialog(this, "Operación cancelada.");
+	                }
+	            });
+	            panelCatalogo.add(botonVehiculo);
+	        }
+	    }
+	    panelCatalogo.revalidate();
+	    panelCatalogo.repaint();
+	}
 }
