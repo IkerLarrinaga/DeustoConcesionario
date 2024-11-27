@@ -14,7 +14,10 @@ import javax.swing.table.DefaultTableModel;
 
 import domain.Alquiler;
 import domain.Cliente;
+import domain.Coche;
+import domain.Furgoneta;
 import domain.Marca;
+import domain.Moto;
 import domain.Vehiculo;
 
 public class VentanaBienvenidaEmpleado extends JFrame {
@@ -51,7 +54,6 @@ public class VentanaBienvenidaEmpleado extends JFrame {
 
         JTable table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
-
         add(scrollPane);
 
         setVisible(true);
@@ -69,18 +71,10 @@ public class VentanaBienvenidaEmpleado extends JFrame {
                     Cliente cliente = new Cliente();
                     cliente.setNombre(datos[0]);
                     cliente.setPrimerApellido(datos[1]);
+                    cliente.setSegundoApellido(datos[2]);
 
                     Marca marca = Marca.valueOf(datos[3].toUpperCase());
-
-                    Vehiculo vehiculo = new Vehiculo(datos[2], 0, marca, datos[4], 0, 0, null, null, 0, 0, null) {
-                        public void mostrarInformacion() {}
-                        public void alquilar() {}
-                        public void devolver() {}
-                        @Override
-                        public String getTipo() {
-                            return null;
-                        }
-                    };
+                    Vehiculo vehiculo = crearVehiculo(datos[4], marca, datos[5], datos[6]);
 
                     Alquiler alquiler = new Alquiler(cliente, vehiculo, datos[5], datos[6]);
                     alquileres.add(alquiler);
@@ -91,6 +85,16 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         }
 
         return alquileres;
+    }
+
+    private Vehiculo crearVehiculo(String tipoVehiculo, Marca marca, String modelo, String año) {
+        if (tipoVehiculo.equals("Coche")) {
+            return new Coche("matriculaEjemplo", 0, marca, modelo, 0, Integer.parseInt(año), null, null, 0, 0, null, 0, null);
+        } else if (tipoVehiculo.equals("Furgoneta")) {
+            return new Furgoneta("matriculaEjemplo", 0, marca, modelo, 0, Integer.parseInt(año), null, null, 0, 0, null, 0, false, 0);
+        } else {
+            return new Moto("matriculaEjemplo", 0, marca, modelo, 0, Integer.parseInt(año), null, null, 0, 0, null, false, 0);
+        }
     }
 
     public static void main(String[] args) {
