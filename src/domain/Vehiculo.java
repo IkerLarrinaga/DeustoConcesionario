@@ -6,37 +6,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public abstract class Vehiculo {
 	private String matricula;
-	private int kilometros;
 	private Marca marca;
 	private String modelo;
 	private float precio;
-	private int anno;
 	private TipoCombustible tCombustible;
 	private TipoCajaCambios tCajaCambios;
-	private int potencia;
 	private int numPlazas;
-	private Gama gama;
 	
 	public Vehiculo() {
 		
 	}
 
-	public Vehiculo(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
-			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
+	public Vehiculo(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas) {
 		super();
 		this.matricula = matricula;
-		this.kilometros = kilometros;
 		this.marca = marca;
 		this.modelo = modelo;
 		this.precio = precio;
-		this.anno = anno;
 		this.tCombustible = tCombustible;
 		this.tCajaCambios = tCajaCambios;
-		this.potencia = potencia;
 		this.numPlazas = numPlazas;
-		this.gama = gama;
 	}
 
 	public String getMatricula() {
@@ -45,14 +38,6 @@ public abstract class Vehiculo {
 
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
-	}
-
-	public int getKilometros() {
-		return kilometros;
-	}
-
-	public void setKilometros(int kilometros) {
-		this.kilometros = kilometros;
 	}
 
 	public Marca getMarca() {
@@ -79,14 +64,6 @@ public abstract class Vehiculo {
 		this.precio = precio;
 	}
 
-	public int getAnno() {
-		return anno;
-	}
-
-	public void setAnno(int anno) {
-		this.anno = anno;
-	}
-
 	public TipoCombustible gettCombustible() {
 		return tCombustible;
 	}
@@ -103,14 +80,6 @@ public abstract class Vehiculo {
 		this.tCajaCambios = tCajaCambios;
 	}
 
-	public int getPotencia() {
-		return potencia;
-	}
-
-	public void setPotencia(int potencia) {
-		this.potencia = potencia;
-	}
-
 	public int getNumPlazas() {
 		return numPlazas;
 	}
@@ -118,43 +87,31 @@ public abstract class Vehiculo {
 	public void setNumPlazas(int numPlazas) {
 		this.numPlazas = numPlazas;
 	}
-
-	public Gama getGama() {
-		return gama;
-	}
-
-	public void setGama(Gama gama) {
-		this.gama = gama;
-	}
-
+	
 	@Override
 	public String toString() {
-		return "Vehiculo [kilometros=" + kilometros + ", marca=" + marca + ", modelo=" + modelo + ", precio=" + precio
-				+ ", año=" + anno + ", tCombustible=" + tCombustible + ", tCajaCambios=" + tCajaCambios + ", potencia="
-				+ potencia + ", numPlazas=" + numPlazas + ", gama=" + gama + "]";
+		return "Vehiculo [matricula=" + matricula + ", marca=" + marca + ", modelo=" + modelo + ", precio=" + precio
+				+ ", tCombustible=" + tCombustible + ", tCajaCambios=" + tCajaCambios + ", numPlazas=" + numPlazas
+				+ "]";
 	}
 	
+	//TODO CORREGIR ESTE METODO PARA QUE CARGUE LOS VEHICULOS CON LA NUEVA ACTUALIZACION, ES DECIR, REDUCIR LA INFORMACIÓN DEL FICHERO TXT
 	public static List<Vehiculo> cargarVehiculos(String archivo) {
         List<Vehiculo> listaVehiculos = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-            String linea;
+            String linea;            
             while ((linea = br.readLine()) != null) { 
                 String[] datos = linea.split(";");
                 String matricula = datos[1];
-            	int kilometros = Integer.parseInt(datos[2]);
             	Marca marca = Marca.valueOf(datos[3].toUpperCase());	
                 String modelo = datos[4];
                 float precio = Float.parseFloat(datos[5]);
-                int anno = Integer.parseInt(datos[6]);
                 String tCombustible = datos[7];
                 String tCajaCambios = datos[8];
-                int potencia = Integer.parseInt(datos[9]);
                 int numPlazas = Integer.parseInt(datos[10]);
-                String gama = datos[11];
                 
                 TipoCombustible tipoComb = TipoCombustible.valueOf(tCombustible.toUpperCase());
                 TipoCajaCambios tipoCajCam = TipoCajaCambios.valueOf(tCajaCambios.toUpperCase());
-                Gama gam = Gama.valueOf(gama.toUpperCase());
                 
                 Vehiculo vehiculo = null;
                 
@@ -162,23 +119,19 @@ public abstract class Vehiculo {
                 	int numPuertas = Integer.parseInt(datos[12]);
                 	String tipoTraccion = datos[13];
                 	Traccion traccion = Traccion.valueOf(tipoTraccion.toUpperCase());
-                	vehiculo = new Coche(matricula, kilometros, marca, modelo, precio, anno, 
-                			tipoComb, tipoCajCam, potencia, numPlazas, gam, numPuertas, traccion);
+                	vehiculo = new Coche(matricula, marca, modelo, precio, tipoComb, tipoCajCam, numPlazas, numPuertas, traccion);
                 	
                 } else if(datos[0].equals("Furgoneta")) {
                 	float cargaMax = Float.parseFloat(datos[12]);
-                	boolean techoAlto = Boolean.parseBoolean(datos[13]);
                 	int capacidadCarga = Integer.parseInt(datos[14]);
                 	
-                	vehiculo = new Furgoneta(matricula, kilometros, marca, modelo, precio, anno, 
-                			tipoComb, tipoCajCam, potencia, numPlazas, gam, cargaMax, techoAlto, capacidadCarga);
+                	vehiculo = new Furgoneta(matricula, marca, modelo, precio, tipoComb, tipoCajCam, numPlazas, cargaMax, capacidadCarga);
                 	
                 } else {
                 	boolean baul = Boolean.parseBoolean(datos[12]);
                 	int cilindrada = Integer.parseInt(datos[13]);
                 	
-                	vehiculo = new Moto(matricula, kilometros, marca, modelo, precio, anno, 
-                			tipoComb, tipoCajCam, potencia, numPlazas, gam, baul, cilindrada);
+                	vehiculo = new Moto(matricula, marca, modelo, precio, tipoComb, tipoCajCam, numPlazas, baul, cilindrada);
                 	
                 }
 

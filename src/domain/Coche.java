@@ -7,18 +7,10 @@ public class Coche extends Vehiculo{
 	public Coche() {
 		super();
 	}
-
-	public Coche(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
-			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
-		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
-				gama);
-	}
-
-	public Coche(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
-			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama,
-			int numPuertas, Traccion tipoTraccion) {
-		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
-				gama);
+	
+	public Coche(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas, int numPuertas, Traccion tipoTraccion) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
 		this.numPuertas = numPuertas;
 		this.tipoTraccion = tipoTraccion;
 	}
@@ -41,14 +33,12 @@ public class Coche extends Vehiculo{
 	
 	@Override
 	public String toString() {
-		return "Coche [numPuertas=" + numPuertas + ", tipoTraccion=" + tipoTraccion + ", getKilometros()="
-				+ getKilometros() + ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()="
-				+ getPrecio() + ", getAño()=" + getAnno() + ", gettCombustible()=" + gettCombustible()
-				+ ", gettCajaCambios()=" + gettCajaCambios() + ", getPotencia()=" + getPotencia() + ", getNumPlazas()="
-				+ getNumPlazas() + ", getGama()=" + getGama() + ", getClass()=" + getClass() + ", hashCode()="
-				+ hashCode() + ", toString()=" + super.toString() + "]";
+		return "Coche [numPuertas=" + numPuertas + ", tipoTraccion=" + tipoTraccion + ", getMatricula()="
+				+ getMatricula() + ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()="
+				+ getPrecio() + ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios()
+				+ ", getNumPlazas()=" + getNumPlazas() + "]";
 	}
-	
+
 	public void mostrarInformacion() {
         System.out.println("Coche Estándar - Marca: " + super.getMarca() + ", Modelo: " + super.getModelo());
     }

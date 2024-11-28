@@ -1,7 +1,6 @@
 package domain;
 
 public class Moto extends Vehiculo{
-	
 	protected boolean baul;
 	protected int cilindrada;
 	
@@ -10,17 +9,9 @@ public class Moto extends Vehiculo{
 		super();
 	}
 
-	public Moto(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
-			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
-		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
-				gama);
-	}
-
-	public Moto(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
-			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama,
-			boolean baul, int cilindrada) {
-		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
-				gama);
+	public Moto(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean baul, int cilindrada) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
 		this.baul = baul;
 		this.cilindrada = cilindrada;
 	}
@@ -45,13 +36,9 @@ public class Moto extends Vehiculo{
         System.out.println("Moto - Marca: " + super.getMarca() + 
                 ", Modelo: " + super.getModelo() + 
                 ", Precio: " + super.getPrecio() + 
-                ", Año: " + super.getAnno() + 
-                ", Kilometros: " + super.getKilometros() + 
                 ", Combustible: " + super.gettCombustible() + 
                 ", Caja de Cambios: " + super.gettCajaCambios() + 
-                ", Potencia: " + super.getPotencia() + 
                 ", Número de Plazas: " + super.getNumPlazas() + 
-                ", Gama: " + super.getGama() + 
                 ", Cilindrada: " + cilindrada + 
                 ", Baul: " + baul);}
 
@@ -67,12 +54,10 @@ public class Moto extends Vehiculo{
 
 	@Override
 	public String toString() {
-		return "Moto [cilindrada=" + cilindrada + ", baul=" + baul + ", getKilometros()=" + getKilometros()
+		return "Moto [baul=" + baul + ", cilindrada=" + cilindrada + ", getMatricula()=" + getMatricula()
 				+ ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()=" + getPrecio()
-				+ ", getAño()=" + getAnno() + ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()="
-				+ gettCajaCambios() + ", getPotencia()=" + getPotencia() + ", getNumPlazas()=" + getNumPlazas()
-				+ ", getGama()=" + getGama() + ", toString()=" + super.toString() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + "]";
+				+ ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios()
+				+ ", getNumPlazas()=" + getNumPlazas() + "]";
 	}
 
 	@Override

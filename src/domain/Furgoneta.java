@@ -2,26 +2,16 @@ package domain;
 
 public class Furgoneta extends Vehiculo {
 	private float cargaMax;
-	private boolean techoAlto;
 	private int capacidadCarga;
 
     public Furgoneta() {
         super();
     }
 
-	public Furgoneta(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
-			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama) {
-		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
-				gama);
-	}
-
-	public Furgoneta(String matricula, int kilometros, Marca marca, String modelo, float precio, int anno,
-			TipoCombustible tCombustible, TipoCajaCambios tCajaCambios, int potencia, int numPlazas, Gama gama,
-			float cargaMax, boolean techoAlto, int capacidadCarga) {
-		super(matricula, kilometros, marca, modelo, precio, anno, tCombustible, tCajaCambios, potencia, numPlazas,
-				gama);
+	public Furgoneta(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas, float cargaMax, int capacidadCarga) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
 		this.cargaMax = cargaMax;
-		this.techoAlto = techoAlto;
 		this.capacidadCarga = capacidadCarga;
 	}
 
@@ -33,14 +23,6 @@ public class Furgoneta extends Vehiculo {
         this.cargaMax = cargaMax;
     }
 
-    public boolean isTechoAlto() {
-        return techoAlto;
-    }
-
-    public void setTechoAlto(boolean techoAlto) {
-        this.techoAlto = techoAlto;
-    }
-
     public int getCapacidadCarga() {
         return capacidadCarga;
     }
@@ -48,31 +30,24 @@ public class Furgoneta extends Vehiculo {
     public void setCapacidadCarga(int capacidadCarga) {
         this.capacidadCarga = capacidadCarga;
     }
-    
-    @Override
-	public String toString() {
-		return "Furgoneta [cargaMax=" + cargaMax + ", techoAlto=" + techoAlto + ", capacidadCarga=" + capacidadCarga
-				+ ", getKilometros()=" + getKilometros() + ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo()
-				+ ", getPrecio()=" + getPrecio() + ", getAño()=" + getAnno() + ", gettCombustible()=" + gettCombustible()
-				+ ", gettCajaCambios()=" + gettCajaCambios() + ", getPotencia()=" + getPotencia() + ", getNumPlazas()="
-				+ getNumPlazas() + ", getGama()=" + getGama() + ", toString()=" + super.toString() + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + "]";
-	}
 
     @Override
+	public String toString() {
+		return "Furgoneta [cargaMax=" + cargaMax + ", capacidadCarga=" + capacidadCarga + ", getMatricula()="
+				+ getMatricula() + ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()="
+				+ getPrecio() + ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios()
+				+ ", getNumPlazas()=" + getNumPlazas() + "]";
+	}
+
+	@Override
     public void mostrarInformacion() {
         System.out.println("Furgoneta - Marca: " + super.getMarca() + 
                 ", Modelo: " + super.getModelo() + 
-                ", Precio: " + super.getPrecio() + 
-                ", Año: " + super.getAnno() + 
-                ", Kilometros: " + super.getKilometros() + 
+                ", Precio: " + super.getPrecio() +  
                 ", Combustible: " + super.gettCombustible() + 
                 ", Caja de Cambios: " + super.gettCajaCambios() + 
-                ", Potencia: " + super.getPotencia() + 
-                ", Número de Plazas: " + super.getNumPlazas() + 
-                ", Gama: " + super.getGama() + 
+                ", Número de Plazas: " + super.getNumPlazas() +  
                 ", Carga Máxima: " + cargaMax + 
-                ", Techo Alto: " + techoAlto + 
                 ", Capacidad de Carga: " + capacidadCarga + "kg");}
 
     @Override
