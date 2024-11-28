@@ -70,9 +70,9 @@ public class DataBaseManager {
 	
 	public void crearTablaAlquiler() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS alquiler (id INTEGER PRIMARY KEY AUTOINCREMENT, idCliente INTEGER, idVehiculo INTEGER,"
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS alquiler (id INTEGER PRIMARY KEY AUTOINCREMENT, idCliente INTEGER, matricula VARCHAR,"
 					+ "fechaInicio TEXT, fechaFinal TEXT, FOREIGN KEY(idCliente) REFERENCES cliente(id), FOREIGN KEY(matricula) REFERENCES coche(matricula),"
-					+ "FOREIGN KEY(matricula) REFERENCES furgoneta(matricula), FOREIGN KEY(matricula) REFERENCES moto(matricula)");
+					+ "FOREIGN KEY(matricula) REFERENCES furgoneta(matricula), FOREIGN KEY(matricula) REFERENCES moto(matricula))");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -81,8 +81,8 @@ public class DataBaseManager {
 	
 	public void crearTablaCoche() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS coche (id INTEGER PRIMARY KEY AUTOINCREMENT, matricula VARCHAR, marca VARCHAR,"
-					+ "modelo VARCHAR, precio REAL, tCombustible VARCHAR, tCajaCambios VARCHAR, numPlazas INTEGER, numPuertas INTEGER)"
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS coche (matricula VARCHAR PRIMARY KEY, marca VARCHAR, modelo VARCHAR, precio REAL, tCombustible VARCHAR,"
+					+ "tCajaCambios VARCHAR, numPlazas INTEGER, numPuertas INTEGER)"
 		        );
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -91,8 +91,8 @@ public class DataBaseManager {
 	
 	public void crearTablaFurgoneta() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS furgoneta (id INTEGER PRIMARY KEY AUTOINCREMENT, matricula VARCHAR, marca VARCHAR,"
-					+ "modelo VARCHAR, precio REAL, tCombustible VARCHAR, tCajaCambios VARCHAR, numPlazas INTEGER, cargaMax REAL, capacidadCarga INTEGER)"
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS furgoneta (matricula VARCHAR PRIMARY KEY, marca VARCHAR, modelo VARCHAR, precio REAL, tCombustible VARCHAR, "
+					+ "tCajaCambios VARCHAR, numPlazas INTEGER, cargaMax REAL, capacidadCarga INTEGER)"
 		        );
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -101,8 +101,8 @@ public class DataBaseManager {
 	
 	public void crearTablaMoto() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS moto (id INTEGER PRIMARY KEY AUTOINCREMENT, matricula VARCHAR, marca VARCHAR,"
-					+ "modelo VARCHAR, precio REAL, tCombustible VARCHAR, tCajaCambios VARCHAR, numPlazas INTEGER, baul BOOLEAN, cilindrada INTEGER)"
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS moto (matricula VARCHAR PRIMARY KEY, marca VARCHAR, modelo VARCHAR, precio REAL, tCombustible VARCHAR,"
+					+ "tCajaCambios VARCHAR, numPlazas INTEGER, baul BOOLEAN, cilindrada INTEGER)"
 		        );
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -112,8 +112,7 @@ public class DataBaseManager {
 	public void crearTablaFactura() {
 		try (Statement statement = conexion.createStatement()) {
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS factura (id INTEGER PRIMARY KEY AUTOINCREMENT, idAlquiler INTEGER, importeTotal REAL,"
-					+ "fechaFactura TEXT, FOREIGN KEY(idAlquiler) REFERENCES alquiler(id)"
-		        );
+					+ "fechaFactura TEXT, FOREIGN KEY(idAlquiler) REFERENCES alquiler(id))");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
