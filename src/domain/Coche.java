@@ -2,17 +2,15 @@ package domain;
 
 public class Coche extends Vehiculo{
 	private int numPuertas;
-	private Traccion tipoTraccion;
 	
 	public Coche() {
 		super();
 	}
-	
+
 	public Coche(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas, int numPuertas, Traccion tipoTraccion) {
+			TipoCajaCambios tCajaCambios, int numPlazas, int numPuertas) {
 		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
 		this.numPuertas = numPuertas;
-		this.tipoTraccion = tipoTraccion;
 	}
 
 	public int getNumPuertas() {
@@ -22,21 +20,13 @@ public class Coche extends Vehiculo{
 	public void setNumPuertas(int numPuertas) {
 		this.numPuertas = numPuertas;
 	}
-	
-	public Traccion getTipoTraccion() {
-		return tipoTraccion;
-	}
-	
-	public void setTipoTraccion(Traccion tipoTraccion) {
-		this.tipoTraccion = tipoTraccion;
-	}
-	
+
 	@Override
 	public String toString() {
-		return "Coche [numPuertas=" + numPuertas + ", tipoTraccion=" + tipoTraccion + ", getMatricula()="
-				+ getMatricula() + ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()="
-				+ getPrecio() + ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios()
-				+ ", getNumPlazas()=" + getNumPlazas() + "]";
+		return "Coche [numPuertas=" + numPuertas + ", getMatricula()=" + getMatricula() + ", getMarca()=" + getMarca()
+				+ ", getModelo()=" + getModelo() + ", getPrecio()=" + getPrecio() + ", gettCombustible()="
+				+ gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios() + ", getNumPlazas()=" + getNumPlazas()
+				+ "]";
 	}
 
 	public void mostrarInformacion() {
