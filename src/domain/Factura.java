@@ -1,7 +1,7 @@
 package domain;
 
 public class Factura {
-    private String IDFactura;
+    private String id;
     private Alquiler alquiler;
     private double importeTotal;
     private String fechaFactura;
@@ -10,19 +10,19 @@ public class Factura {
 		super();
 	}
     
-    public Factura(String IDFactura, Alquiler alquiler, double importeTotal, String fechaFactura) {
-        this.IDFactura = IDFactura;
+    public Factura(String id, Alquiler alquiler, double importeTotal, String fechaFactura) {
+        this.id = id;
         this.alquiler = alquiler;
         this.importeTotal = importeTotal;
         this.fechaFactura = fechaFactura;
     }
     
 	public String getIDFactura() {
-		return IDFactura;
+		return id;
 	}
 
-	public void setIDFactura(String iDFactura) {
-		IDFactura = iDFactura;
+	public void setIDFactura(String id) {
+		this.id = id;
 	}
 
 	public Alquiler getAlquiler() {
@@ -51,14 +51,14 @@ public class Factura {
 
 	@Override
 	public String toString() {
-		return "Factura [IDFactura=" + IDFactura + ", alquiler=" + alquiler + ", importeTotal=" + importeTotal
+		return "Factura [IDFactura=" + id + ", alquiler=" + alquiler + ", importeTotal=" + importeTotal
 				+ ", fechaFactura=" + fechaFactura + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
 				+ ", toString()=" + super.toString() + "]";
 	}
 	
 	public void generarFactura() {
         System.out.println("Factura Generada:");
-        System.out.println("ID: " + IDFactura);
+        System.out.println("ID: " + id);
         System.out.println("Cliente: " + alquiler.getCliente());
         System.out.println("Vehículo: " + alquiler.getVehiculo());
         System.out.println("Importe Total: " + importeTotal + "€");
@@ -66,7 +66,7 @@ public class Factura {
     }
 
     public void mostrarFactura() {
-        System.out.println("Factura ID: " + IDFactura);
+        System.out.println("Factura ID: " + id);
         System.out.println("Cliente: " + alquiler.getCliente());
         System.out.println("Vehículo: " + alquiler.getVehiculo());
         System.out.println("Importe Total: " + importeTotal + "€");
