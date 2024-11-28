@@ -5,7 +5,7 @@ import java.util.GregorianCalendar;
 
 public class Cliente extends Persona {
 	private String licenciaConducir;
-	//private ArrayList<Alquiler> historialAlquileres;
+	private ArrayList<Alquiler> historialAlquileres;
 
 	public Cliente() {
 		super();
@@ -21,7 +21,7 @@ public class Cliente extends Persona {
 			ArrayList<Alquiler> historialAlquileres) {
 		super(id, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
 		this.licenciaConducir = licenciaConducir;
-		//this.historialAlquileres = historialAlquileres;
+		this.historialAlquileres = historialAlquileres;
 	}
 
 	public String getLicenciaConducir() {
@@ -32,17 +32,17 @@ public class Cliente extends Persona {
 		this.licenciaConducir = licenciaConducir;
 	}
 
-	/* public ArrayList<Alquiler> getHistorialAlquileres() {
+	public ArrayList<Alquiler> getHistorialAlquileres() {
 		return historialAlquileres;
 	}
 
 	public void setHistorialAlquileres(ArrayList<Alquiler> historialAlquileres) {
 		this.historialAlquileres = historialAlquileres;
-	}*/
+	}
 
    @Override
 	public String toString() {
-		return "Cliente [licenciaConducir=" + licenciaConducir /* + ", historialAlquileres=" + historialAlquileres*/
+		return "Cliente [licenciaConducir=" + licenciaConducir + ", historialAlquileres=" + historialAlquileres
 				+ ", getNombre()=" + getNombre() + ", getPrimerApellido()=" + getPrimerApellido()
 				+ ", getSegundoApellido()=" + getSegundoApellido() + ", getDni()=" + getDni()
 				+ ", getFechaNacimiento()=" + getFechaNacimiento() + ", getEmail()=" + getEmail()

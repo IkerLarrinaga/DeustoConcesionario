@@ -59,6 +59,10 @@ public class Alquiler {
 		return ("Alquiler [cliente=" + cliente + ", vehiculo=" + vehiculo + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]");
 	}
 	
+	public void registrarAlquiler() {
+        cliente.getHistorialAlquileres().add(this);
+    }
+	
 	public double calcularPrecio() {
 		return 0;
 	}
