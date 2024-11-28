@@ -71,7 +71,8 @@ public class DataBaseManager {
 	public void crearTablaAlquiler() {
 		try (Statement statement = conexion.createStatement()) {
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS alquiler (id INTEGER PRIMARY KEY AUTOINCREMENT, idCliente INTEGER, idVehiculo INTEGER,"
-					+ "fechaInicio TEXT, fechaFinal TEXT, FOREIGN KEY(idCliente) REFERENCES cliente(id)");
+					+ "fechaInicio TEXT, fechaFinal TEXT, FOREIGN KEY(idCliente) REFERENCES cliente(id), FOREIGN KEY(matricula) REFERENCES coche(matricula),"
+					+ "FOREIGN KEY(matricula) REFERENCES furgoneta(matricula), FOREIGN KEY(matricula) REFERENCES moto(matricula)");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
