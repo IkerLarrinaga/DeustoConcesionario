@@ -73,7 +73,7 @@ public class VentanaCarrito extends JFrame {
                         continue;
                     }
 
-                    Vehiculo vehiculo = new Vehiculo(datos[2], 0, marca, datos[4], 0, 0, null, null, 0, 0, null) {
+                    Vehiculo vehiculo = new Vehiculo() {
                         public void mostrarInformacion() {}
                         public void alquilar() {}
                         public void devolver() {}

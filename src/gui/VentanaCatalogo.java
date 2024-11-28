@@ -8,7 +8,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import domain.Gama;
 import domain.Marca;
 import domain.Vehiculo;
 
@@ -237,13 +236,9 @@ public class VentanaCatalogo extends JFrame {
                 String mensaje = "Marca: " + vehiculo.getMarca() + "\n" +
             	        "Modelo: " + vehiculo.getModelo() + "\n" +
             	        "Precio: " + vehiculo.getPrecio() + "\n" +
-            	        "Gama: " + vehiculo.getGama() + "\n" +
             	        "Tipo: " + vehiculo.getTipo() + "\n" +
-            	        "Año: " + vehiculo.getAnno() + "\n" +
-            	        "Kilómetros: " + vehiculo.getKilometros() + " km\n" +
             	        "Combustible: " + vehiculo.gettCombustible() + "\n" +
             	        "Caja de Cambios: " + vehiculo.gettCajaCambios() + "\n" +
-            	        "Potencia: " + vehiculo.getPotencia() + "CV\n" +
             	        "Número de plazas: " + vehiculo.getNumPlazas();
                 Object[] opciones = {"Comprar", "Alquilar", "Cerrar"};
                 int opcion = JOptionPane.showOptionDialog(
@@ -265,48 +260,48 @@ public class VentanaCatalogo extends JFrame {
     
     private ImageIcon getIconoPorTipo(Vehiculo vehiculo) {
         ImageIcon icon = null;
+
         if (vehiculo.getTipo().equals("COCHE")) {
-        	if (vehiculo.getGama() != null) {
-                if (vehiculo.getGama().equals(Gama.ALTA)) {
-                    icon = new ImageIcon("resource/img/cocheGamaAlta.png");
-                } else if (vehiculo.getGama().equals(Gama.ESTANDAR)) {
-                    icon = new ImageIcon("resource/img/cocheGamaEstandar.png");
+            if (vehiculo.getPrecio() > 0) {
+                if (vehiculo.getPrecio() < 35000) {
+                    icon = new ImageIcon("resource/img/cochePrecioBajo.png");
+                } else if (vehiculo.getPrecio() <= 50000) {
+                    icon = new ImageIcon("resource/img/cochePrecioMedio.png");
                 } else {
-                    icon = new ImageIcon("resource/img/cocheGamaBaja.png");
+                    icon = new ImageIcon("resource/img/cochePrecioAlto.png");
                 }
             }
         } else if (vehiculo.getTipo().equals("MOTO")) {
-        	if (vehiculo.getGama() != null) {
-        		if (vehiculo.getGama() != null) {
-                    if (vehiculo.getGama().equals(Gama.ALTA)) {
-                        icon = new ImageIcon("resource/img/motoGamaAlta.png");
-                    } else if (vehiculo.getGama().equals(Gama.ESTANDAR)) {
-                        icon = new ImageIcon("resource/img/motoGamaEstandar.png");
-                    } else {
-                        icon = new ImageIcon("resource/img/motoGamaBaja.png");
-                    }
+            if (vehiculo.getPrecio() > 0) {
+                if (vehiculo.getPrecio() < 35000) {
+                    icon = new ImageIcon("resource/img/motoPrecioBajo.png");
+                } else if (vehiculo.getPrecio() <= 50000) {
+                    icon = new ImageIcon("resource/img/motoPrecioMedio.png");
+                } else {
+                    icon = new ImageIcon("resource/img/motoPrecioAlto.png");
                 }
             }
         } else if (vehiculo.getTipo().equals("FURGONETA")) {
-        	if (vehiculo.getGama() != null) {
-        		if (vehiculo.getGama() != null) {
-                    if (vehiculo.getGama().equals(Gama.ALTA)) {
-                        icon = new ImageIcon("resource/img/furgonetaGamaAlta.png");
-                    } else if (vehiculo.getGama().equals(Gama.ESTANDAR)) {
-                        icon = new ImageIcon("resource/img/furgonetaGamaEstandar.png");
-                    } else {
-                        icon = new ImageIcon("resource/img/furgonetaGamaBaja.png");
-                    }
+            if (vehiculo.getPrecio() > 0) {
+                if (vehiculo.getPrecio() < 35000) {
+                    icon = new ImageIcon("resource/img/furgonetaPrecioBajo.png");
+                } else if (vehiculo.getPrecio() <= 50000) {
+                    icon = new ImageIcon("resource/img/furgonetaPrecioMedio.png");
+                } else {
+                    icon = new ImageIcon("resource/img/furgonetaPrecioAlto.png");
                 }
             }
         }
+
         if (icon != null) {
             Image img = icon.getImage();
             Image nuevaImagen = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             icon = new ImageIcon(nuevaImagen);
         }
+
         return icon;
     }
+
 
     private void actualizarCatalogoConFiltros(String tipoSeleccionado, String marcaSeleccionada, String modeloSeleccionado, int precioMaximo, String añoSeleccionado) {
 	    panelCatalogo.removeAll();
@@ -316,8 +311,7 @@ public class VentanaCatalogo extends JFrame {
 	        boolean coincideMarca = marcaSeleccionada.equals("Todas") || vehiculo.getMarca() == Marca.valueOf(marcaSeleccionada.toUpperCase());
 	        boolean coincideModelo = modeloSeleccionado.equals("Todos") || vehiculo.getModelo().equalsIgnoreCase(modeloSeleccionado);
 	        boolean coincidePrecio = vehiculo.getPrecio() <= precioMaximo;
-	        boolean coincideAño = añoSeleccionado.isEmpty() || String.valueOf(vehiculo.getAnno()).equals(añoSeleccionado);
-	        if (coincideTipo && coincideMarca && coincideModelo && coincidePrecio && coincideAño) {
+	        if (coincideTipo && coincideMarca && coincideModelo && coincidePrecio) {
 	            JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
 	            botonVehiculo.setPreferredSize(new Dimension(200, 100));
 	            ImageIcon iconoVehiculo = getIconoPorTipo(vehiculo);
@@ -326,13 +320,9 @@ public class VentanaCatalogo extends JFrame {
 	                String mensaje = "Marca: " + vehiculo.getMarca() + "\n" +
 	                        "Modelo: " + vehiculo.getModelo() + "\n" +
 	                        "Precio: " + vehiculo.getPrecio() + "\n" +
-	                        "Gama: " + vehiculo.getGama() + "\n" +
 	                        "Tipo: " + vehiculo.getTipo() + "\n" +
-	                        "Año: " + vehiculo.getAnno() + "\n" +
-	                        "Kilómetros: " + vehiculo.getKilometros() + " km\n" +
 	                        "Combustible: " + vehiculo.gettCombustible() + "\n" +
 	                        "Caja de Cambios: " + vehiculo.gettCajaCambios() + "\n" +
-	                        "Potencia: " + vehiculo.getPotencia() + "CV\n" +
 	                        "Número de plazas: " + vehiculo.getNumPlazas();
 	                Object[] opciones = {"Comprar", "Alquilar", "Cerrar"};
 	                int opcion = JOptionPane.showOptionDialog(

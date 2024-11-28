@@ -63,7 +63,7 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                System.out.println("Leyendo línea: " + linea); // Depuración
+                System.out.println("Leyendo línea: " + linea);
                 String[] datos = linea.split(";");
                 if (datos.length == 7) {
                     try {
@@ -80,12 +80,12 @@ public class VentanaBienvenidaEmpleado extends JFrame {
 
                         Alquiler alquiler = new Alquiler(cliente, vehiculo, fechaInicio, fechaFin);
                         alquileres.add(alquiler);
-                        System.out.println("Alquiler creado: " + alquiler); // Depuración
+                        System.out.println("Alquiler creado: " + alquiler);
                     } catch (DateTimeParseException e) {
                         System.out.println("Error al parsear la fecha: " + e.getMessage());
                     }
                 } else {
-                    System.out.println("Formato incorrecto: " + linea); // Depuración
+                    System.out.println("Formato incorrecto: " + linea);
                 }
             }
         } catch (IOException | IllegalArgumentException e) {
@@ -97,11 +97,11 @@ public class VentanaBienvenidaEmpleado extends JFrame {
 
     private Vehiculo crearVehiculo(String tipoVehiculo, Marca marca, String modelo, String año) {
         if (tipoVehiculo.equals("Coche")) {
-            return new Coche("matriculaEjemplo", 0, marca, modelo, 0, Integer.parseInt(año), null, null, 0, 0, null, 0, null);
+            return new Coche();
         } else if (tipoVehiculo.equals("Furgoneta")) {
-            return new Furgoneta("matriculaEjemplo", 0, marca, modelo, 0, Integer.parseInt(año), null, null, 0, 0, null, 0, false, 0);
+            return new Furgoneta();
         } else {
-            return new Moto("matriculaEjemplo", 0, marca, modelo, 0, Integer.parseInt(año), null, null, 0, 0, null, false, 0);
+            return new Moto();
         }
     }
 }
