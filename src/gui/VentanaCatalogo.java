@@ -263,32 +263,32 @@ public class VentanaCatalogo extends JFrame {
 
         if (vehiculo.getTipo().equals("COCHE")) {
             if (vehiculo.getPrecio() > 0) {
-                if (vehiculo.getPrecio() < 35000) {
-                    icon = new ImageIcon("resource/img/cochePrecioBajo.png");
-                } else if (vehiculo.getPrecio() <= 50000) {
-                    icon = new ImageIcon("resource/img/cochePrecioMedio.png");
+                if (vehiculo.getPrecio() < 15000) {
+                    icon = new ImageIcon("resource/img/cocheGamaBaja.png");
+                } else if (vehiculo.getPrecio() <= 30000) {
+                    icon = new ImageIcon("resource/img/cocheGamaEstandar.png");
                 } else {
-                    icon = new ImageIcon("resource/img/cochePrecioAlto.png");
+                    icon = new ImageIcon("resource/img/cocheGamaAlta.png");
                 }
             }
         } else if (vehiculo.getTipo().equals("MOTO")) {
             if (vehiculo.getPrecio() > 0) {
-                if (vehiculo.getPrecio() < 35000) {
-                    icon = new ImageIcon("resource/img/motoPrecioBajo.png");
-                } else if (vehiculo.getPrecio() <= 50000) {
-                    icon = new ImageIcon("resource/img/motoPrecioMedio.png");
+                if (vehiculo.getPrecio() < 15000) {
+                    icon = new ImageIcon("resource/img/motoGamaBaja.png");
+                } else if (vehiculo.getPrecio() <= 30000) {
+                    icon = new ImageIcon("resource/img/motoGamaBaja.png");
                 } else {
-                    icon = new ImageIcon("resource/img/motoPrecioAlto.png");
+                    icon = new ImageIcon("resource/img/motoGamaBaja.png");
                 }
             }
         } else if (vehiculo.getTipo().equals("FURGONETA")) {
             if (vehiculo.getPrecio() > 0) {
-                if (vehiculo.getPrecio() < 35000) {
-                    icon = new ImageIcon("resource/img/furgonetaPrecioBajo.png");
-                } else if (vehiculo.getPrecio() <= 50000) {
-                    icon = new ImageIcon("resource/img/furgonetaPrecioMedio.png");
+                if (vehiculo.getPrecio() < 15000) {
+                    icon = new ImageIcon("resource/img/furgonetaGamaBaja.png");
+                } else if (vehiculo.getPrecio() <= 30000) {
+                    icon = new ImageIcon("resource/img/furgonetaGamaBaja.png");
                 } else {
-                    icon = new ImageIcon("resource/img/furgonetaPrecioAlto.png");
+                    icon = new ImageIcon("resource/img/furgonetaGamaBaja.png");
                 }
             }
         }
