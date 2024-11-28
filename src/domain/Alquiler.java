@@ -1,20 +1,21 @@
 package domain;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.GregorianCalendar;
 
 public class Alquiler {
+	private int id;
     private Cliente cliente;
     private Vehiculo vehiculo;
-    private LocalDate fechaInicio;
-    private LocalDate fechaFin;
+    private GregorianCalendar fechaInicio;
+    private GregorianCalendar fechaFin;
     
     public Alquiler() {
 		super();
 	}
     
-	public Alquiler(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, LocalDate fechaFin) {
+	public Alquiler(Cliente cliente, Vehiculo vehiculo, GregorianCalendar fechaInicio, GregorianCalendar fechaFin) {
 		super();
 		this.cliente = cliente;
 		this.vehiculo = vehiculo;
@@ -22,6 +23,14 @@ public class Alquiler {
 		this.fechaFin = fechaFin;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -38,19 +47,19 @@ public class Alquiler {
 		this.vehiculo = vehiculo;
 	}
 	
-	public LocalDate getFechaInicio() {
+	public GregorianCalendar getFechaInicio() {
 		return fechaInicio;
 	}
 	
-	public void setFechaInicio(LocalDate fechaInicio) {
+	public void setFechaInicio(GregorianCalendar fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
 	
-	public LocalDate getFechaFin() {
+	public GregorianCalendar getFechaFin() {
 		return fechaFin;
 	}
 	
-	public void setFechaFin(LocalDate fechaFin) {
+	public void setFechaFin(GregorianCalendar fechaFin) {
 		this.fechaFin = fechaFin;
 	}
 	
@@ -66,15 +75,21 @@ public class Alquiler {
 	public double calcularPrecio() {
 		return 0;
 	}
-    
-    public double calcularMeses() {
-        int meses = (int) (ChronoUnit.DAYS.between(fechaInicio, fechaFin) / 30);
-        return meses;
+	
+	//IAG ChatGPT
+	//Se ha pedido a ChatGPT que cambie el formato de la fecha de LocalDate a GregorianClaendar    
+	public long calcularMeses() {
+        LocalDate inicio = LocalDate.of(fechaInicio.get(GregorianCalendar.YEAR), fechaInicio.get(GregorianCalendar.MONTH) + 1, fechaInicio.get(GregorianCalendar.DAY_OF_MONTH));
+        LocalDate fin = LocalDate.of(fechaFin.get(GregorianCalendar.YEAR), fechaFin.get(GregorianCalendar.MONTH) + 1, fechaFin.get(GregorianCalendar.DAY_OF_MONTH));
+
+        return ChronoUnit.MONTHS.between(inicio, fin);
     }
 
-    public double calcularDias() {
-        double dias = ChronoUnit.DAYS.between(fechaInicio, fechaFin);
-        return dias;
+    public long calcularDias() {
+        LocalDate inicio = LocalDate.of(fechaInicio.get(GregorianCalendar.YEAR), fechaInicio.get(GregorianCalendar.MONTH) + 1, fechaInicio.get(GregorianCalendar.DAY_OF_MONTH));
+        LocalDate fin = LocalDate.of(fechaFin.get(GregorianCalendar.YEAR), fechaFin.get(GregorianCalendar.MONTH) + 1, fechaFin.get(GregorianCalendar.DAY_OF_MONTH));
+
+        return ChronoUnit.DAYS.between(inicio, fin);
     }
 
     public void finalizarAlquiler() {
