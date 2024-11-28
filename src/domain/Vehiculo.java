@@ -9,7 +9,7 @@ import java.util.List;
 
 public abstract class Vehiculo {
 	private String matricula;
-	private ArrayList<String> marca;
+	private Marca marca;
 	private String modelo;
 	private float precio;
 	private TipoCombustible tCombustible;
