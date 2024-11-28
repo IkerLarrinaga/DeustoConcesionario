@@ -104,9 +104,6 @@ public class VentanaCatalogo extends JFrame {
         sliderPrecio.setPaintTicks(true);
         JLabel labelPrecioValor = new JLabel("Valor máximo: " + sliderPrecio.getValue());
 
-        JLabel labelAño = new JLabel("Año de fabricación:");
-        JTextField textAño = new JTextField(10);
-        textAño.setMaximumSize(new Dimension(60, 30));
         JCheckBox checkNuevo = new JCheckBox("Automático");
 
         JLabel labelCombustible = new JLabel("Tipo de Combustible:");
@@ -128,10 +125,6 @@ public class VentanaCatalogo extends JFrame {
         panelFiltros.add(labelPrecioValor);
         panelFiltros.add(Box.createVerticalStrut(10));
         panelFiltros.add(sliderPrecio);
-        panelFiltros.add(Box.createVerticalStrut(10));
-        panelFiltros.add(labelAño);
-        panelFiltros.add(Box.createVerticalStrut(10));
-        panelFiltros.add(textAño);
         panelFiltros.add(Box.createVerticalStrut(10));
         panelFiltros.add(checkNuevo);
         panelFiltros.add(Box.createVerticalStrut(10));
@@ -170,8 +163,7 @@ public class VentanaCatalogo extends JFrame {
                 String marcaSeleccionada = (String) comboMarca.getSelectedItem();
                 String modeloSeleccionado = (String) comboModelo.getSelectedItem();
                 int precioMaximo = sliderPrecio.getValue();
-                String añoSeleccionado = textAño.getText().trim();
-                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo);
             }
         });
         comboMarca.addActionListener(new ActionListener() {
@@ -181,8 +173,7 @@ public class VentanaCatalogo extends JFrame {
                 String marcaSeleccionada = (String) comboMarca.getSelectedItem();
                 String modeloSeleccionado = (String) comboModelo.getSelectedItem();
                 int precioMaximo = sliderPrecio.getValue();
-                String añoSeleccionado = textAño.getText().trim();
-                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo);
             }
         });
         comboModelo.addActionListener(new ActionListener() {
@@ -192,8 +183,7 @@ public class VentanaCatalogo extends JFrame {
                 String marcaSeleccionada = (String) comboMarca.getSelectedItem();
                 String modeloSeleccionado = (String) comboModelo.getSelectedItem();
                 int precioMaximo = sliderPrecio.getValue();
-                String añoSeleccionado = textAño.getText().trim();
-                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo);
             }
         });
         sliderPrecio.addChangeListener(new ChangeListener() {
@@ -204,20 +194,7 @@ public class VentanaCatalogo extends JFrame {
                 String marcaSeleccionada = (String) comboMarca.getSelectedItem();
                 String modeloSeleccionado = (String) comboModelo.getSelectedItem();
                 int precioMaximo = sliderPrecio.getValue();
-                String añoSeleccionado = textAño.getText().trim();
-                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
-            }
-        });
-        
-        textAño.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String tipoSeleccionado = (String) comboTipo.getSelectedItem();
-                String marcaSeleccionada = (String) comboMarca.getSelectedItem();
-                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
-                int precioMaximo = sliderPrecio.getValue();
-                String añoSeleccionado = textAño.getText();
-                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, añoSeleccionado);
+                actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo);
             }
         });
 
@@ -303,7 +280,7 @@ public class VentanaCatalogo extends JFrame {
     }
 
 
-    private void actualizarCatalogoConFiltros(String tipoSeleccionado, String marcaSeleccionada, String modeloSeleccionado, int precioMaximo, String añoSeleccionado) {
+    private void actualizarCatalogoConFiltros(String tipoSeleccionado, String marcaSeleccionada, String modeloSeleccionado, int precioMaximo) {
 	    panelCatalogo.removeAll();
 	    
 	    for (Vehiculo vehiculo : listaVehiculos) {
@@ -324,17 +301,15 @@ public class VentanaCatalogo extends JFrame {
 	                        "Combustible: " + vehiculo.gettCombustible() + "\n" +
 	                        "Caja de Cambios: " + vehiculo.gettCajaCambios() + "\n" +
 	                        "Número de plazas: " + vehiculo.getNumPlazas();
-	                Object[] opciones = {"Comprar", "Alquilar", "Cerrar"};
+	                Object[] opciones = {"Alquilar", "Cerrar"};
 	                int opcion = JOptionPane.showOptionDialog(
 	                    this, mensaje, "Información del Vehículo", JOptionPane.DEFAULT_OPTION,
-	                    JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[2]
+	                    JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[1]
 	                );
 	                if (opcion == 0) {
-	                    JOptionPane.showMessageDialog(this, "Vehículo COMPRADO");
+	                	JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
 	                } else if (opcion == 1) {
-	                    JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
-	                } else {
-	                    JOptionPane.showMessageDialog(this, "Operación cancelada.");
+	                	JOptionPane.showMessageDialog(this, "Operación cancelada.");
 	                }
 	            });
 	            panelCatalogo.add(botonVehiculo);
