@@ -12,6 +12,7 @@ import java.util.GregorianCalendar;
 
 import domain.Alquiler;
 import domain.Cliente;
+import domain.Coche;
 import domain.Empleado;
 
 public class DataBaseManager {
@@ -215,4 +216,28 @@ public class DataBaseManager {
 		}
 	}
 	
+	public void almacenarCoche(Coche coche) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO coche (matricula, marca, modelo, precio, tCombustible,"
+				+ "tCajaCambios, numPlazas, numPuertas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+				Statement statement = conexion.createStatement()) {
+			pstatement.setString(1, coche.getMatricula());
+			pstatement.setString(2, coche.getMarca().name());
+			pstatement.setString(3, coche.getModelo());
+			pstatement.setFloat(4, coche.getPrecio());
+			pstatement.setString(5, coche.gettCombustible().name());
+			pstatement.setString(6, coche.gettCajaCambios().name());
+			pstatement.setInt(7, coche.getNumPlazas());
+			pstatement.setInt(8, coche.getNumPuertas());
+			
+			pstatement.executeUpdate();
+			
+			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM coche");
+			if (resultSet.next()) {
+				int newId = resultSet.getInt("id");
+				coche.setId(newId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
