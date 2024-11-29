@@ -11,9 +11,17 @@ public class Cliente extends Persona {
 		super();
 	}
 
-	public Cliente(int id, String nombre, String primerApellido, String segundoApellido, String dni,
+	public Cliente(String nombre, String primerApellido, String segundoApellido, String dni,
 			GregorianCalendar fechaNacimiento, String email, String contrasenna) {
-		super(id, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
+		super(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
+	}
+
+	public Cliente(String nombre, String primerApellido, String segundoApellido, String dni,
+			GregorianCalendar fechaNacimiento, String email, String contrasenna, String licenciaConducir,
+			ArrayList<Alquiler> historialAlquileres) {
+		super(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
+		this.licenciaConducir = licenciaConducir;
+		this.historialAlquileres = historialAlquileres;
 	}
 
 	public Cliente(int id, String nombre, String primerApellido, String segundoApellido, String dni,
