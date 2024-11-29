@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -14,6 +15,9 @@ import domain.Alquiler;
 import domain.Cliente;
 import domain.Coche;
 import domain.Empleado;
+import domain.Factura;
+import domain.Furgoneta;
+import domain.Moto;
 
 public class DataBaseManager {
 	
@@ -265,18 +269,39 @@ public class DataBaseManager {
 	}
 	
 	public void almacenarAlquiler(Alquiler alquiler) {
-		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO alquiler (idCliente, matricula, fechaInicio, fechaFinal)"
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO alquiler ("
+				+ "idCliente, "
+				+ "idCoche, "
+				+ "idFurgoneta, "
+				+ "idMoto, "
+				+ "fechaInicio, "
+				+ "fechaFinal)"
 				+ "VALUES (?, ?, ?, ?)");
+				
 				Statement statement = conexion.createStatement()) {
 			try {
 				pstatement.setInt(1, alquiler.getCliente().getId());
-				pstatement.setString(2, alquiler.getVehiculo().getMatricula());
+				if(alquiler.getVehiculo() instanceof Coche) {
+					pstatement.setInt(2, alquiler.getVehiculo().getId());
+					//IAG ChatGPT
+					//Se ha pedido a ChatGPT como utilizar el setNull
+					pstatement.setNull(3, Types.INTEGER);
+					pstatement.setNull(4, Types.INTEGER);
+				} else if(alquiler.getVehiculo() instanceof Furgoneta) {
+					pstatement.setNull(2, Types.INTEGER);
+					pstatement.setInt(3, alquiler.getVehiculo().getId());
+					pstatement.setNull(4, Types.INTEGER);
+				} else if(alquiler.getVehiculo() instanceof Moto) {
+					pstatement.setNull(2, Types.INTEGER);
+					pstatement.setInt(3, Types.INTEGER);
+					pstatement.setNull(4, alquiler.getVehiculo().getId());
+				}
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 			}
 			
-			pstatement.setString(3, fechaAString(alquiler.getFechaInicio()));
-			pstatement.setString(4, fechaAString(alquiler.getFechaFin()));
+			pstatement.setString(5, fechaAString(alquiler.getFechaInicio()));
+			pstatement.setString(6, fechaAString(alquiler.getFechaFin()));
 			
 			pstatement.executeUpdate();
 			
@@ -291,8 +316,17 @@ public class DataBaseManager {
 	}
 	
 	public void almacenarCoche(Coche coche) {
-		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO coche (matricula, marca, modelo, precio, tCombustible,"
-				+ "tCajaCambios, numPlazas, numPuertas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO coche ("
+				+ "matricula, "
+				+ "marca, "
+				+ "modelo, "
+				+ "precio, "
+				+ "tCombustible, "
+				+ "tCajaCambios, "
+				+ "numPlazas, "
+				+ "numPuertas) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+				
 				Statement statement = conexion.createStatement()) {
 			pstatement.setString(1, coche.getMatricula());
 			pstatement.setString(2, coche.getMarca().name());
@@ -309,6 +343,107 @@ public class DataBaseManager {
 			if (resultSet.next()) {
 				int newId = resultSet.getInt("id");
 				coche.setId(newId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void almacenarFurgoneta(Furgoneta furgoneta) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO furgoneta ("
+				+ "matricula, "
+				+ "marca, "
+				+ "modelo, "
+				+ "precio, "
+				+ "tCombustible, "
+				+ "tCajaCambios, "
+				+ "numPlazas, "
+				+ "cargaMax, "
+				+ "capacidadCarga)"
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				
+				Statement statement = conexion.createStatement()) {
+			pstatement.setString(1, furgoneta.getMatricula());
+			pstatement.setString(2, furgoneta.getMarca().name());
+			pstatement.setString(3, furgoneta.getModelo());
+			pstatement.setFloat(4, furgoneta.getPrecio());
+			pstatement.setString(5, furgoneta.gettCombustible().name());
+			pstatement.setString(6, furgoneta.gettCajaCambios().name());
+			pstatement.setInt(7, furgoneta.getNumPlazas());
+			pstatement.setDouble(8, furgoneta.getCargaMax());
+			pstatement.setInt(9, furgoneta.getCapacidadCarga());
+			
+			pstatement.executeUpdate();
+			
+			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM furgoneta");
+			if (resultSet.next()) {
+				int newId = resultSet.getInt("id");
+				furgoneta.setId(newId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void almacenarMoto(Moto moto) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO moto ("
+				+ "matricula, "
+				+ "marca, "
+				+ "modelo, "
+				+ "precio, "
+				+ "tCombustible, "
+				+ "tCajaCambios, "
+				+ "numPlazas, "
+				+ "baul, "
+				+ "cilindrada)"
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				
+				Statement statement = conexion.createStatement()) {
+			pstatement.setString(1, moto.getMatricula());
+			pstatement.setString(2, moto.getMarca().name());
+			pstatement.setString(3, moto.getModelo());
+			pstatement.setFloat(4, moto.getPrecio());
+			pstatement.setString(5, moto.gettCombustible().name());
+			pstatement.setString(6, moto.gettCajaCambios().name());
+			pstatement.setInt(7, moto.getNumPlazas());
+			pstatement.setBoolean(8, moto.isBaul());
+			pstatement.setInt(9, moto.getCilindrada());
+			
+			pstatement.executeUpdate();
+			
+			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM moto");
+			if (resultSet.next()) {
+				int newId = resultSet.getInt("id");
+				moto.setId(newId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void almacenarFactura(Factura factura) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO factura ("
+				+ "idAlquiler, "
+				+ "importeTotal, "
+				+ "fechaFactura)"
+				+ "VALUES (?, ?, ?)");
+				
+				Statement statement = conexion.createStatement()) {
+			try {
+				pstatement.setInt(1, factura.getAlquiler().getId());
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
+			
+			pstatement.setDouble(2, factura.getImporteTotal());
+			pstatement.setString(3, fechaAString(factura.getFechaFactura()));
+			
+			pstatement.executeUpdate();
+			
+			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM moto");
+			if (resultSet.next()) {
+				int newId = resultSet.getInt("id");
+				factura.setId(newId);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
