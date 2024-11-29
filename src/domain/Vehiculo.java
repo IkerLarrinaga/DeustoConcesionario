@@ -8,6 +8,7 @@ import java.util.List;
 
 
 public abstract class Vehiculo {
+	private int id = -1;
 	private String matricula;
 	private Marca marca;
 	private String modelo;
@@ -30,6 +31,26 @@ public abstract class Vehiculo {
 		this.tCombustible = tCombustible;
 		this.tCajaCambios = tCajaCambios;
 		this.numPlazas = numPlazas;
+	}
+
+	public Vehiculo(int id, String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas) {
+		super();
+		this.matricula = matricula;
+		this.marca = marca;
+		this.modelo = modelo;
+		this.precio = precio;
+		this.tCombustible = tCombustible;
+		this.tCajaCambios = tCajaCambios;
+		this.numPlazas = numPlazas;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getMatricula() {
