@@ -9,8 +9,20 @@ public class Furgoneta extends Vehiculo {
     }
 
 	public Furgoneta(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+	}
+
+	public Furgoneta(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
 			TipoCajaCambios tCajaCambios, int numPlazas, float cargaMax, int capacidadCarga) {
 		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+		this.cargaMax = cargaMax;
+		this.capacidadCarga = capacidadCarga;
+	}
+
+	public Furgoneta(int id, String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas, float cargaMax, int capacidadCarga) {
+		super(id, matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
 		this.cargaMax = cargaMax;
 		this.capacidadCarga = capacidadCarga;
 	}

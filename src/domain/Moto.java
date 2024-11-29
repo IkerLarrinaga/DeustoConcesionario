@@ -8,10 +8,22 @@ public class Moto extends Vehiculo{
 	public Moto() {
 		super();
 	}
+	
+	public Moto(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+	}
 
 	public Moto(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
 			TipoCajaCambios tCajaCambios, int numPlazas, boolean baul, int cilindrada) {
 		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+		this.baul = baul;
+		this.cilindrada = cilindrada;
+	}
+	
+	public Moto(int id, String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean baul, int cilindrada) {
+		super(id, matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
 		this.baul = baul;
 		this.cilindrada = cilindrada;
 	}

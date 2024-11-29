@@ -8,8 +8,19 @@ public class Coche extends Vehiculo{
 	}
 
 	public Coche(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+	}
+
+	public Coche(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
 			TipoCajaCambios tCajaCambios, int numPlazas, int numPuertas) {
 		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+		this.numPuertas = numPuertas;
+	}
+
+	public Coche(int id, String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas, int numPuertas) {
+		super(id, matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
 		this.numPuertas = numPuertas;
 	}
 
