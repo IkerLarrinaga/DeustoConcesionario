@@ -63,8 +63,16 @@ public class DataBaseManager {
 	
 	public void crearTablaCliente() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS cliente (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR, primerApellido VARCHAR,"
-					+ "segundoApellido VARCHAR, dni VARCHAR, fechaNacimiento TEXT, email VARCHAR, contrasena VARCHAR, licenciaConducir VARCHAR)");
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS cliente ("
+					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ "nombre VARCHAR, "
+					+ "primerApellido VARCHAR,"
+					+ "segundoApellido VARCHAR, "
+					+ "dni VARCHAR, "
+					+ "fechaNacimiento TEXT, "
+					+ "email VARCHAR, "
+					+ "contrasena VARCHAR, "
+					+ "licenciaConducir VARCHAR)");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -73,20 +81,37 @@ public class DataBaseManager {
 	
 	public void crearTablaEmpleado() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS empleado (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR, primerApellido VARCHAR,"
-					+ "segundoApellido VARCHAR, dni VARCHAR, fechaNacimiento TEXT, email VARCHAR, contrasena VARCHAR, puesto VARCHAR, salario REAL)");
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS empleado ("
+					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ "nombre VARCHAR, "
+					+ "primerApellido VARCHAR,"
+					+ "segundoApellido VARCHAR, "
+					+ "dni VARCHAR, "
+					+ "fechaNacimiento TEXT, "
+					+ "email VARCHAR, "
+					+ "contrasena VARCHAR, "
+					+ "puesto VARCHAR, "
+					+ "salario REAL)");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	//TODO: Corregir esta tabla
+
 	public void crearTablaAlquiler() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS alquiler (id INTEGER PRIMARY KEY AUTOINCREMENT, idCliente INTEGER, matricula VARCHAR,"
-					+ "fechaInicio TEXT, fechaFinal TEXT, FOREIGN KEY(idCliente) REFERENCES cliente(id), FOREIGN KEY(matricula) REFERENCES coche(matricula),"
-					+ "FOREIGN KEY(matricula) REFERENCES furgoneta(matricula), FOREIGN KEY(matricula) REFERENCES moto(matricula))");
-			
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS alquiler ("
+					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ "idCliente INTEGER, "
+					+ "idCoche INTEGER, "
+					+ "idFurgoneta INTEGER, "
+					+ "idMoto INTEGER,"
+					+ "fechaInicio TEXT, "
+					+ "fechaFinal TEXT, "
+					+ "FOREIGN KEY(idCliente) REFERENCES cliente(id), "
+					+ "FOREIGN KEY(idCoche) REFERENCES coche(id),"
+					+ "FOREIGN KEY(idFurgoneta) REFERENCES furgoneta(id), "
+					+ "FOREIGN KEY(idMoto) REFERENCES coche(idMoto))");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -94,8 +119,16 @@ public class DataBaseManager {
 	
 	public void crearTablaCoche() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS coche (matricula VARCHAR PRIMARY KEY, marca VARCHAR, modelo VARCHAR, precio REAL, tCombustible VARCHAR,"
-					+ "tCajaCambios VARCHAR, numPlazas INTEGER, numPuertas INTEGER)"
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS coche ("
+					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ "matricula VARCHAR, "
+					+ "marca VARCHAR, "
+					+ "modelo VARCHAR, "
+					+ "precio REAL, "
+					+ "tCombustible VARCHAR,"
+					+ "tCajaCambios VARCHAR, "
+					+ "numPlazas INTEGER, "
+					+ "numPuertas INTEGER)"
 		        );
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -104,8 +137,17 @@ public class DataBaseManager {
 	
 	public void crearTablaFurgoneta() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS furgoneta (matricula VARCHAR PRIMARY KEY, marca VARCHAR, modelo VARCHAR, precio REAL, tCombustible VARCHAR, "
-					+ "tCajaCambios VARCHAR, numPlazas INTEGER, cargaMax REAL, capacidadCarga INTEGER)"
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS furgoneta ("
+					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ "matricula VARCHAR, "
+					+ "marca VARCHAR, "
+					+ "modelo VARCHAR, "
+					+ "precio REAL, "
+					+ "tCombustible VARCHAR, "
+					+ "tCajaCambios VARCHAR, "
+					+ "numPlazas INTEGER, "
+					+ "cargaMax REAL, "
+					+ "capacidadCarga INTEGER)"
 		        );
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -114,8 +156,17 @@ public class DataBaseManager {
 	
 	public void crearTablaMoto() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS moto (matricula VARCHAR PRIMARY KEY, marca VARCHAR, modelo VARCHAR, precio REAL, tCombustible VARCHAR,"
-					+ "tCajaCambios VARCHAR, numPlazas INTEGER, baul BOOLEAN, cilindrada INTEGER)"
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS moto ("
+					+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+					+ "matricula VARCHAR, "
+					+ "marca VARCHAR, "
+					+ "modelo VARCHAR, "
+					+ "precio REAL, "
+					+ "tCombustible VARCHAR,"
+					+ "tCajaCambios VARCHAR, "
+					+ "numPlazas INTEGER, "
+					+ "baul BOOLEAN, "
+					+ "cilindrada INTEGER)"
 		        );
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -124,8 +175,12 @@ public class DataBaseManager {
 	
 	public void crearTablaFactura() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS factura (id INTEGER PRIMARY KEY AUTOINCREMENT, idAlquiler INTEGER, importeTotal REAL,"
-					+ "fechaFactura TEXT, FOREIGN KEY(idAlquiler) REFERENCES alquiler(id))");
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS factura ("
+					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ "idAlquiler INTEGER, "
+					+ "importeTotal REAL,"
+					+ "fechaFactura TEXT, "
+					+ "FOREIGN KEY(idAlquiler) REFERENCES alquiler(id))");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -140,9 +195,18 @@ public class DataBaseManager {
 	}
 	
 	public void almacenarCliente(Cliente cliente) {
-		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO cliente (nombre, primerApellido, segundoApellido,"
-				+ " dni, fechaNacimiento, email, contrasena, licenciaConducir) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-			Statement statement = conexion.createStatement()) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO cliente ("
+				+ "nombre, "
+				+ "primerApellido, "
+				+ "segundoApellido,"
+				+ "dni, "
+				+ "fechaNacimiento, "
+				+ "email, "
+				+ "contrasena, "
+				+ "licenciaConducir) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+				
+				Statement statement = conexion.createStatement()) {
 			pstatement.setString(1, cliente.getNombre());
 			pstatement.setString(2, cliente.getPrimerApellido());
 			pstatement.setString(3, cliente.getSegundoApellido());
@@ -165,8 +229,18 @@ public class DataBaseManager {
 	}
 	
 	public void almacenarEmpleado(Empleado empleado) {
-		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO empleado (nombre, primerApellido, segundoApellido, dni, "
-				+ "fechaNacimiento, email, contrasena, puesto, salario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO empleado ("
+				+ "nombre, "
+				+ "primerApellido, "
+				+ "segundoApellido, "
+				+ "dni, "
+				+ "fechaNacimiento, "
+				+ "email, "
+				+ "contrasena, "
+				+ "puesto, "
+				+ "salario)"
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				
 				Statement statement = conexion.createStatement()) {
 			pstatement.setString(1, empleado.getNombre());
 			pstatement.setString(2, empleado.getPrimerApellido());
