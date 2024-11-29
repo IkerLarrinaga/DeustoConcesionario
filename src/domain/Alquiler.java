@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.GregorianCalendar;
 
 public class Alquiler {
-	private int id;
+	private int id = -1;
     private Cliente cliente;
     private Vehiculo vehiculo;
     private GregorianCalendar fechaInicio;
@@ -14,7 +14,7 @@ public class Alquiler {
     public Alquiler() {
 		super();
 	}
-    
+	
 	public Alquiler(Cliente cliente, Vehiculo vehiculo, GregorianCalendar fechaInicio, GregorianCalendar fechaFin) {
 		super();
 		this.cliente = cliente;
@@ -23,6 +23,14 @@ public class Alquiler {
 		this.fechaFin = fechaFin;
 	}
 	
+	public Alquiler(int id, Cliente cliente, Vehiculo vehiculo, GregorianCalendar fechaInicio, GregorianCalendar fechaFin) {
+		super();
+		this.cliente = cliente;
+		this.vehiculo = vehiculo;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+	}
+
 	public int getId() {
 		return id;
 	}
