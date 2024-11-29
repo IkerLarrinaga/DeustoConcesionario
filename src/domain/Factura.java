@@ -1,27 +1,36 @@
 package domain;
 
+import java.util.GregorianCalendar;
+
 public class Factura {
-    private String id;
+    private int id = -1;
     private Alquiler alquiler;
     private double importeTotal;
-    private String fechaFactura;
-
-    public Factura() {
+    private GregorianCalendar fechaFactura;
+    
+	public Factura() {
 		super();
 	}
-    
-    public Factura(String id, Alquiler alquiler, double importeTotal, String fechaFactura) {
-        this.id = id;
-        this.alquiler = alquiler;
-        this.importeTotal = importeTotal;
-        this.fechaFactura = fechaFactura;
-    }
-    
-	public String getIDFactura() {
+
+	public Factura(Alquiler alquiler, double importeTotal, GregorianCalendar fechaFactura) {
+		super();
+		this.alquiler = alquiler;
+		this.importeTotal = importeTotal;
+		this.fechaFactura = fechaFactura;
+	}
+
+	public Factura(int id, Alquiler alquiler, double importeTotal, GregorianCalendar fechaFactura) {
+		super();
+		this.alquiler = alquiler;
+		this.importeTotal = importeTotal;
+		this.fechaFactura = fechaFactura;
+	}
+
+	public int getId() {
 		return id;
 	}
 
-	public void setIDFactura(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -41,11 +50,11 @@ public class Factura {
 		this.importeTotal = importeTotal;
 	}
 
-	public String getFechaFactura() {
+	public GregorianCalendar getFechaFactura() {
 		return fechaFactura;
 	}
 
-	public void setFechaFactura(String fechaFactura) {
+	public void setFechaFactura(GregorianCalendar fechaFactura) {
 		this.fechaFactura = fechaFactura;
 	}
 
