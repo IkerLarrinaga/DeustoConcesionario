@@ -9,7 +9,9 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import domain.Alquiler;
 import domain.Cliente;
@@ -453,6 +455,7 @@ public class DataBaseManager {
 		}
 	}
 	
+	//TODO: Falta por implementar el metodo de devolver la lista de historiales
 	public Cliente obtenerCliente(int id) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
 				+ "id, "
@@ -567,7 +570,6 @@ public class DataBaseManager {
 			e.printStackTrace();
 			return null;
 		}
-		
 	}
 	
 	public Coche obtenerCoche(int id) {
@@ -710,5 +712,213 @@ public class DataBaseManager {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public List<Cliente> obtenerTodosClientes() {
+		List<Cliente> lClientes = new ArrayList<>();
+		try (Statement statement = conexion.createStatement()) {
+			ResultSet resultSet = statement.executeQuery("SELECT "
+					+ "id, "
+					+ "nombre, "
+					+ "primerApellido, "
+					+ "segundoApellido, "
+					+ "dni, "
+					+ "fechaNacimiento, "
+					+ "email, "
+					+ "contrasena, "
+					+ "licenciaConducir "
+					+ "FROM cliente");
+			
+			while(resultSet.next()) {
+				lClientes.add(obtenerCliente(resultSet.getInt("id")));
+			}
+			
+			return lClientes;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public List<Empleado> obtenerTodosEmpleados() {
+		List<Empleado> lEmpleados = new ArrayList<>();
+		try (Statement statement = conexion.createStatement()) {
+			ResultSet resultSet = statement.executeQuery("SELECT "
+				+ "id, "
+				+ "nombre, "
+				+ "primerApellido, "
+				+ "segundoApellido, "
+				+ "dni, "
+				+ "fechaNacimiento, "
+				+ "email, "
+				+ "contrasena, "
+				+ "puesto,"
+				+ "salario "
+				+ "FROM empleado");
+			
+			while(resultSet.next()) {
+				lEmpleados.add(obtenerEmpleado(resultSet.getInt("id")));
+			}
+			
+			return lEmpleados;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Alquiler> obtenerTodosAlquileres() {
+		List<Alquiler> lAlquileres = new ArrayList<>();
+		
+		try (Statement statement = conexion.createStatement()) {
+			ResultSet resultSet = statement.executeQuery("SELECT "
+				+ "id, "
+				+ "idCliente, "
+				+ "idCoche, "
+				+ "idFurgoneta, "
+				+ "idMoto, "
+				+ "fechaInicio, "
+				+ "fechaFinal "
+				+ "FROM alquiler");
+			
+			while (resultSet.next()) {
+				lAlquileres.add(obtenerAlquiler(resultSet.getInt("id")));
+			}
+			
+			return lAlquileres;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}	
+	}
+	
+	public List<Coche> obtenerTodosCoches() {
+		List<Coche> lCoches = new ArrayList<>();
+		try (Statement statement = conexion.createStatement()) {
+			ResultSet resultSet = statement.executeQuery("SELECT "
+				+ "id, "
+				+ "matricula, "
+				+ "marca, "
+				+ "modelo, "
+				+ "precio, "
+				+ "tCombustible, "
+				+ "tCajaCambios, "
+				+ "numPlazas, "
+				+ "numPuertas"
+				+ "FROM coche");
+			
+			while(resultSet.next()) {
+				lCoches.add(obtenerCoche(resultSet.getInt("id")));
+			}
+					
+			return lCoches;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Furgoneta> obtenerTodasFurgonetas() {
+		List<Furgoneta> lFurgonetas = new ArrayList<>();
+		try (Statement statement = conexion.createStatement()) {
+			ResultSet resultSet = statement.executeQuery("SELECT "
+				+ "id, "
+				+ "matricula, "
+				+ "marca, "
+				+ "modelo, "
+				+ "precio, "
+				+ "tCombustible, "
+				+ "tCajaCambios, "
+				+ "numPlazas, "
+				+ "cargaMax, "
+				+ "capacidadCarga"
+				+ "FROM furgoneta");
+			
+			while(resultSet.next()) {
+				lFurgonetas.add(obtenerFurgoneta(resultSet.getInt("id")));
+			}
+				
+			return lFurgonetas;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Moto> obtenerTodasMotos() {
+		List<Moto> lMotos = new ArrayList<>();
+		try (Statement statement = conexion.createStatement()) {
+			ResultSet resultSet = statement.executeQuery("SELECT "
+					+ "id, "
+					+ "matricula, "
+					+ "marca, "
+					+ "modelo, "
+					+ "precio, "
+					+ "tCombustible, "
+					+ "tCajaCambios, "
+					+ "numPlazas, "
+					+ "baul, "
+					+ "cilindrada");
+			
+			while (resultSet.next()) {
+				lMotos.add(obtenerMoto(resultSet.getInt("id")));
+			}
+			
+			return lMotos;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Factura> obtenerTodasFacturas() {
+		List<Factura> lFacturas = new ArrayList<>();
+		try (Statement statement = conexion.createStatement()) {
+			ResultSet resultSet = statement.executeQuery("SELECT "
+				+ "id, "
+				+ "idAlquiler, "
+				+ "importeTotal, "
+				+ "fechaFactura"
+				+ "FROM factura");
+			
+			while(resultSet.next()) {
+				lFacturas.add(obtenerFactura(resultSet.getInt("id")));
+			}
+				
+			return lFacturas;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Alquiler> obtenerTodosAlquileresPorId(int id) {
+		List<Alquiler> lAlquileres = new ArrayList<>();
+		
+		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+				+ "id, "
+				+ "idCliente, "
+				+ "idCoche, "
+				+ "idFurgoneta, "
+				+ "idMoto, "
+				+ "fechaInicio, "
+				+ "fechaFinal "
+				+ "FROM alquiler WHERE id = ?")) {
+			pstatement.setInt(1, id);
+			
+			ResultSet resultSet = pstatement.executeQuery();
+			while (resultSet.next()) {
+				lAlquileres.add(obtenerAlquiler(resultSet.getInt("id")));
+			}
+			
+			return lAlquileres;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}	
 	}
 }
