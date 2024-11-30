@@ -449,4 +449,41 @@ public class DataBaseManager {
 			e.printStackTrace();
 		}
 	}
+	
+	public Cliente obtenerCliente(int id) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+				+ "id, "
+				+ "nombre, "
+				+ "primerApellido, "
+				+ "segundoApellido, "
+				+ "dni, "
+				+ "fechaNacimiento, "
+				+ "email, "
+				+ "contrasena, "
+				+ "licenciaConducir "
+				+ "FROM cliente WHERE id = ?")) {
+			pstatement.setInt(1, id);
+			
+			ResultSet resultSet = pstatement.executeQuery();
+			if (resultSet.next()) {
+				Cliente cliente = new Cliente();
+				cliente.setId(resultSet.getInt("id"));
+				cliente.setNombre(resultSet.getString("nombre"));
+				cliente.setPrimerApellido(resultSet.getString("primerApellido"));
+				cliente.setSegundoApellido(resultSet.getString("segundoApellido"));
+				cliente.setDni(resultSet.getString("dni"));
+				cliente.setFechaNacimiento(stringAFecha(resultSet.getString("fechaNacimiento")));
+				cliente.setEmail(resultSet.getString("email"));
+				cliente.setContrasenna(resultSet.getString("contrasena"));
+				cliente.setLicenciaConducir(resultSet.getString("licenciaConducir"));
+				cliente.setHistorialAlquileres(null);
+				
+				return cliente;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
