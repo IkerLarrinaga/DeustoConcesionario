@@ -17,7 +17,10 @@ import domain.Coche;
 import domain.Empleado;
 import domain.Factura;
 import domain.Furgoneta;
+import domain.Marca;
 import domain.Moto;
+import domain.TipoCajaCambios;
+import domain.TipoCombustible;
 
 public class DataBaseManager {
 	
@@ -484,6 +487,228 @@ public class DataBaseManager {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Empleado obtenerEmpleado(int id) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+				+ "id, "
+				+ "nombre, "
+				+ "primerApellido, "
+				+ "segundoApellido, "
+				+ "dni, "
+				+ "fechaNacimiento, "
+				+ "email, "
+				+ "contrasena, "
+				+ "puesto,"
+				+ "salario "
+				+ "FROM empleado WHERE id = ?")) {
+			pstatement.setInt(1, id);
+			
+			ResultSet resultSet = pstatement.executeQuery();
+			if (resultSet.next()) {
+				Empleado empleado = new Empleado();
+				empleado.setId(resultSet.getInt("id"));
+				empleado.setNombre(resultSet.getString("nombre"));
+				empleado.setPrimerApellido(resultSet.getString("primerApellido"));
+				empleado.setSegundoApellido(resultSet.getString("segundoApellido"));
+				empleado.setDni(resultSet.getString("dni"));
+				empleado.setFechaNacimiento(stringAFecha(resultSet.getString("fechaNacimiento")));
+				empleado.setEmail(resultSet.getString("email"));
+				empleado.setContrasenna(resultSet.getString("contrasena"));
+				empleado.setPuesto(resultSet.getString("puesto"));
+				empleado.setSalario(resultSet.getDouble("salario"));
+				
+				return empleado;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public Alquiler obtenerAlquiler(int id) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+				+ "id, "
+				+ "idCliente, "
+				+ "idCoche, "
+				+ "idFurgoneta, "
+				+ "idMoto, "
+				+ "fechaInicio, "
+				+ "fechaFinal "
+				+ "FROM alquiler WHERE id = ?")) {
+			pstatement.setInt(1, id);
+			
+			ResultSet resultSet = pstatement.executeQuery();
+			if (resultSet.next()) {
+				Alquiler alquiler = new Alquiler();
+				alquiler.setId(resultSet.getInt("id"));
+				alquiler.setCliente(obtenerCliente(resultSet.getInt("idCliente")));
+				
+				if(resultSet.getObject("idCoche") != null) {
+					alquiler.setVehiculo(obtenerCoche(resultSet.getInt("idCoche")));
+				} else if(resultSet.getObject("idFurgoneta") != null) {
+					alquiler.setVehiculo(obtenerFurgoneta(resultSet.getInt("idFurgoneta")));
+				} else if(resultSet.getObject("idMoto") != null) {
+					alquiler.setVehiculo(obtenerMoto(resultSet.getInt("idMoto")));
+				}
+				
+				alquiler.setFechaInicio(stringAFecha(resultSet.getString("fechaInicio")));
+				alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaFinal")));
+				
+				return alquiler;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	public Coche obtenerCoche(int id) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+				+ "id, "
+				+ "matricula, "
+				+ "marca, "
+				+ "modelo, "
+				+ "precio, "
+				+ "tCombustible, "
+				+ "tCajaCambios, "
+				+ "numPlazas, "
+				+ "numPuertas"
+				+ "FROM coche WHERE id = ?")) {
+			pstatement.setInt(1, id);
+			
+			ResultSet resultSet = pstatement.executeQuery();
+			if (resultSet.next()) {
+				Coche coche = new Coche();
+				coche.setId(resultSet.getInt("id"));
+				coche.setMatricula(resultSet.getString("matricula"));
+				coche.setMarca(Marca.valueOf(resultSet.getString("marca")));
+				coche.setModelo(resultSet.getString("modelo"));
+				coche.setPrecio(resultSet.getFloat("precio"));
+				coche.settCombustible(TipoCombustible.valueOf(resultSet.getString("tCombustible")));
+				coche.settCajaCambios(TipoCajaCambios.valueOf(resultSet.getString("tCajaCambios")));
+				coche.setNumPlazas(resultSet.getInt("numPlazas"));
+				coche.setNumPuertas(resultSet.getInt("numPuertas"));
+				
+				return coche;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Furgoneta obtenerFurgoneta(int id) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+				+ "id, "
+				+ "matricula, "
+				+ "marca, "
+				+ "modelo, "
+				+ "precio, "
+				+ "tCombustible, "
+				+ "tCajaCambios, "
+				+ "numPlazas, "
+				+ "cargaMax, "
+				+ "capacidadCarga"
+				+ "FROM furgoneta WHERE id = ?")) {
+			pstatement.setInt(1, id);
+			
+			ResultSet resultSet = pstatement.executeQuery();
+			if (resultSet.next()) {
+				Furgoneta furgoneta = new Furgoneta();
+				furgoneta.setId(resultSet.getInt("id"));
+				furgoneta.setMatricula(resultSet.getString("matricula"));
+				furgoneta.setMarca(Marca.valueOf(resultSet.getString("marca")));
+				furgoneta.setModelo(resultSet.getString("modelo"));
+				furgoneta.setPrecio(resultSet.getFloat("precio"));
+				furgoneta.settCombustible(TipoCombustible.valueOf(resultSet.getString("tCombustible")));
+				furgoneta.settCajaCambios(TipoCajaCambios.valueOf(resultSet.getString("tCajaCambios")));
+				furgoneta.setNumPlazas(resultSet.getInt("numPlazas"));
+				furgoneta.setCargaMax(resultSet.getInt("cargaMax"));
+				furgoneta.setCapacidadCarga(resultSet.getInt("capacidadCarga"));
+				
+				return furgoneta;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Moto obtenerMoto(int id) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+				+ "id, "
+				+ "matricula, "
+				+ "marca, "
+				+ "modelo, "
+				+ "precio, "
+				+ "tCombustible, "
+				+ "tCajaCambios, "
+				+ "numPlazas, "
+				+ "baul, "
+				+ "cilindrada"
+				+ "FROM moto WHERE id = ?")) {
+			pstatement.setInt(1, id);
+			
+			ResultSet resultSet = pstatement.executeQuery();
+			if (resultSet.next()) {
+				Moto moto = new Moto();
+				moto.setId(resultSet.getInt("id"));
+				moto.setMatricula(resultSet.getString("matricula"));
+				moto.setMarca(Marca.valueOf(resultSet.getString("marca")));
+				moto.setModelo(resultSet.getString("modelo"));
+				moto.setPrecio(resultSet.getFloat("precio"));
+				moto.settCombustible(TipoCombustible.valueOf(resultSet.getString("tCombustible")));
+				moto.settCajaCambios(TipoCajaCambios.valueOf(resultSet.getString("tCajaCambios")));
+				moto.setNumPlazas(resultSet.getInt("numPlazas"));
+				moto.setBaul(resultSet.getBoolean("baul"));
+				moto.setCilindrada(resultSet.getInt("cilindrada"));
+				
+				return moto;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Factura obtenerFactura(int id) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+				+ "id, "
+				+ "idAlquiler, "
+				+ "importeTotal, "
+				+ "fechaFactura"
+				+ "FROM factura WHERE id = ?")) {
+			pstatement.setInt(1, id);
+			
+			ResultSet resultSet = pstatement.executeQuery();
+			if (resultSet.next()) {
+				Factura factura = new Factura();
+				factura.setId(resultSet.getInt("id"));
+				factura.setAlquiler(obtenerAlquiler(resultSet.getInt("idAlquiler")));
+				factura.setImporteTotal(resultSet.getFloat("importeTotal"));
+				factura.setFechaFactura(stringAFecha(resultSet.getString("fechaFactura")));
+				
+				return factura;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }
