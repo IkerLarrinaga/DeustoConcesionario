@@ -24,6 +24,10 @@ import domain.Moto;
 import domain.TipoCajaCambios;
 import domain.TipoCombustible;
 
+//FUENTE-EXTERNA
+//https://github.com/erikcoruna/Rebote
+//Se ha adaptado el proyecto para el uso de las funciones de nuestras base de datos en el proyecto
+
 public class DataBaseManager {
 	
 	private Connection conexion = null;

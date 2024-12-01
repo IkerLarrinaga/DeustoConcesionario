@@ -20,6 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+//FUENTE-EXTERNA
+//https://github.com/erikcoruna/Rebote
+//Se ha adaptado el proyecto en relacion al uso del GridBagConstraints en el proyecto
+
 public class VentanaIncio extends JFrame {
 	
     private static final long serialVersionUID = 1L;
