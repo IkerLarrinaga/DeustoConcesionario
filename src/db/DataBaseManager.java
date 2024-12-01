@@ -895,6 +895,7 @@ public class DataBaseManager {
 		}
 	}
 	
+	//TODO: Corregir este metodo
 	public ArrayList<Alquiler> obtenerTodosAlquileresPorId(int id) {
 		ArrayList<Alquiler> lAlquileres = new ArrayList<>();
 		
@@ -979,6 +980,218 @@ public class DataBaseManager {
 		try (PreparedStatement pstatement = conexion.prepareStatement("DELETE FROM factura WHERE id = ?")) {
 			pstatement.setInt(1, factura.getId());
 			pstatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void actualizarCliente(Cliente cliente) {
+		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE cliente SET "
+				+ "nombre = ?, "
+				+ "primerApellido = ?, "
+				+ "segundoApellido = ?, "
+				+ "dni = ?, "
+				+ "fechaNacimiento = ?, "
+				+ "email = ?, "
+				+ "contrasena = ?, "
+				+ "licenciaConducir = ? "
+				+ "WHERE id = ?")) {
+			pstatement.setString(1, cliente.getNombre());
+			pstatement.setString(2, cliente.getPrimerApellido());
+			pstatement.setString(3, cliente.getSegundoApellido());
+			pstatement.setString(4, cliente.getDni());
+			pstatement.setString(5, fechaAString(cliente.getFechaNacimiento()));
+			pstatement.setString(6, cliente.getEmail());
+			pstatement.setString(7, cliente.getContrasenna());
+			pstatement.setString(8, cliente.getLicenciaConducir());
+			pstatement.setInt(9, cliente.getId());
+			
+			pstatement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void actualizarEmpleado(Empleado empleado) {
+		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE empleado SET "
+				+ "nombre = ?, "
+				+ "primerApellido = ?, "
+				+ "segundoApellido = ?, "
+				+ "dni = ?, "
+				+ "fechaNacimiento = ?, "
+				+ "email = ?, "
+				+ "contrasena = ?, "
+				+ "puesto = ?, "
+				+ "salario = ? "
+				+ "WHERE id = ?")) {
+			pstatement.setString(1, empleado.getNombre());
+			pstatement.setString(2, empleado.getPrimerApellido());
+			pstatement.setString(3, empleado.getSegundoApellido());
+			pstatement.setString(4, empleado.getDni());
+			pstatement.setString(5, fechaAString(empleado.getFechaNacimiento()));
+			pstatement.setString(6, empleado.getEmail());
+			pstatement.setString(7, empleado.getContrasenna());
+			pstatement.setString(8, empleado.getPuesto());
+			pstatement.setDouble(9, empleado.getSalario());
+			pstatement.setInt(10, empleado.getId());
+			
+			pstatement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void actualizarAlquiler(Alquiler alquiler) {
+		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE alquiler SET "
+				+ "idCliente = ?, "
+				+ "idCoche = ?, "
+				+ "idFurgoneta = ?, "
+				+ "idMoto = ?, "
+				+ "fechaInicio = ?, "
+				+ "fechaFinal = ? "
+				+ "WHERE id = ?")) {
+			try {
+				pstatement.setInt(1, alquiler.getCliente().getId());
+				if (alquiler.getVehiculo() instanceof Coche) {
+					pstatement.setInt(2, alquiler.getVehiculo().getId());
+					pstatement.setNull(3, Types.INTEGER);
+					pstatement.setNull(4, Types.INTEGER);
+				} else if (alquiler.getVehiculo() instanceof Furgoneta) {
+					pstatement.setInt(2, Types.INTEGER);
+					pstatement.setNull(3, alquiler.getVehiculo().getId());
+					pstatement.setNull(4, Types.INTEGER);
+				} else if (alquiler.getVehiculo() instanceof Moto) {
+					pstatement.setInt(2, Types.INTEGER);
+					pstatement.setNull(3, Types.INTEGER);
+					pstatement.setNull(4, alquiler.getVehiculo().getId());
+				}
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
+			
+			pstatement.setString(5, fechaAString(alquiler.getFechaInicio()));
+			pstatement.setString(6, fechaAString(alquiler.getFechaFin()));
+			pstatement.setInt(7, alquiler.getId());
+			
+			pstatement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void actualizarCoche(Coche coche) {
+		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE coche SET "
+				+ "matricula = ?, "
+				+ "marca = ?, "
+				+ "modelo = ?, "
+				+ "precio = ?, "
+				+ "tCombustible = ?, "
+				+ "tCajaCambios = ?, "
+				+ "numPlazas = ?, "
+				+ "numPuertas = ? "
+				+ "WHERE id = ?")) {
+			
+			pstatement.setString(1, coche.getMatricula());
+			pstatement.setString(2, coche.getMarca().toString());
+			pstatement.setString(3, coche.getModelo());
+			pstatement.setFloat(4, coche.getPrecio());
+			pstatement.setString(5, coche.gettCombustible().toString());
+			pstatement.setString(6, coche.gettCajaCambios().toString());
+			pstatement.setInt(7, coche.getNumPlazas());
+			pstatement.setInt(8, coche.getNumPlazas());
+			pstatement.setInt(9, coche.getId());
+			
+			pstatement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void actualizarFurgoneta(Furgoneta furgoneta) {
+		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE furgoneta SET "
+				+ "matricula = ?, "
+				+ "marca = ?, "
+				+ "modelo = ?, "
+				+ "precio = ?, "
+				+ "tCombustible = ?, "
+				+ "tCajaCambios = ?, "
+				+ "numPlazas = ?, "
+				+ "cargaMax = ?, "
+				+ "capacidadCarga = ? "
+				+ "WHERE id = ?")) {
+			
+			pstatement.setString(1, furgoneta.getMatricula());
+			pstatement.setString(2, furgoneta.getMarca().toString());
+			pstatement.setString(3, furgoneta.getModelo());
+			pstatement.setFloat(4, furgoneta.getPrecio());
+			pstatement.setString(5, furgoneta.gettCombustible().toString());
+			pstatement.setString(6, furgoneta.gettCajaCambios().toString());
+			pstatement.setInt(7, furgoneta.getNumPlazas());
+			pstatement.setFloat(8, furgoneta.getCargaMax());
+			pstatement.setInt(9, furgoneta.getCapacidadCarga());
+			pstatement.setInt(10, furgoneta.getId());
+			
+			pstatement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void actualizarMoto(Moto moto) {
+		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE moto SET "
+				+ "matricula = ?, "
+				+ "marca = ?, "
+				+ "modelo = ?, "
+				+ "precio = ?, "
+				+ "tCombustible = ?, "
+				+ "tCajaCambios = ?, "
+				+ "numPlazas = ?, "
+				+ "baul = ?, "
+				+ "cilindrada = ? "
+				+ "WHERE id = ?")) {
+			
+			pstatement.setString(1, moto.getMatricula());
+			pstatement.setString(2, moto.getMarca().toString());
+			pstatement.setString(3, moto.getModelo());
+			pstatement.setFloat(4, moto.getPrecio());
+			pstatement.setString(5, moto.gettCombustible().toString());
+			pstatement.setString(6, moto.gettCajaCambios().toString());
+			pstatement.setInt(7, moto.getNumPlazas());
+			pstatement.setBoolean(8, moto.isBaul());
+			pstatement.setInt(9, moto.getCilindrada());
+			pstatement.setInt(10, moto.getId());
+			
+			pstatement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void actualizarFactura(Factura factura) {
+		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE factura SET "
+				+ "idAlquiler = ?, "
+				+ "importeTotal = ?, "
+				+ "fechaFactura = ? "
+				+ "WHERE id = ?")) {
+			
+			try {
+				pstatement.setInt(1, factura.getAlquiler().getId());
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
+			
+			pstatement.setDouble(2, factura.getImporteTotal());
+			pstatement.setString(3, fechaAString(factura.getFechaFactura()));
+			pstatement.setInt(4, factura.getId());
+			
+			pstatement.executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
