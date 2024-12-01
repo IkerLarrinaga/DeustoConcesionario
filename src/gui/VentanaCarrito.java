@@ -3,9 +3,9 @@ package gui;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -37,8 +37,8 @@ public class VentanaCarrito extends JFrame {
         for (Alquiler alquiler : lAlquileres) {
             String marca = alquiler.getVehiculo().getMarca().toString();
             String matricula = alquiler.getVehiculo().getMatricula();
-            LocalDate fechaInicio = alquiler.getFechaInicio();
-            LocalDate fechaFin = alquiler.getFechaFin();
+            GregorianCalendar fechaInicio = alquiler.getFechaInicio();
+            GregorianCalendar fechaFin = alquiler.getFechaFin();
 
             Object[] data = {marca, matricula, fechaInicio, fechaFin};
             tablemodel.addRow(data);

@@ -17,11 +17,9 @@ public class Cliente extends Persona {
 	}
 
 	public Cliente(String nombre, String primerApellido, String segundoApellido, String dni,
-			GregorianCalendar fechaNacimiento, String email, String contrasenna, String licenciaConducir,
-			ArrayList<Alquiler> historialAlquileres) {
+			GregorianCalendar fechaNacimiento, String email, String contrasenna, String licenciaConducir) {
 		super(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
 		this.licenciaConducir = licenciaConducir;
-		this.historialAlquileres = historialAlquileres;
 	}
 
 	public Cliente(int id, String nombre, String primerApellido, String segundoApellido, String dni,
@@ -29,7 +27,6 @@ public class Cliente extends Persona {
 			ArrayList<Alquiler> historialAlquileres) {
 		super(id, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
 		this.licenciaConducir = licenciaConducir;
-		this.historialAlquileres = historialAlquileres;
 	}
 
 	public String getLicenciaConducir() {
