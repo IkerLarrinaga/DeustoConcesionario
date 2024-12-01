@@ -120,7 +120,7 @@ public class DataBaseManager {
 					+ "FOREIGN KEY(idCliente) REFERENCES cliente(id), "
 					+ "FOREIGN KEY(idCoche) REFERENCES coche(id),"
 					+ "FOREIGN KEY(idFurgoneta) REFERENCES furgoneta(id), "
-					+ "FOREIGN KEY(idMoto) REFERENCES coche(idMoto))");
+					+ "FOREIGN KEY(idMoto) REFERENCES moto(idMoto))");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -298,8 +298,8 @@ public class DataBaseManager {
 					pstatement.setNull(4, Types.INTEGER);
 				} else if(alquiler.getVehiculo() instanceof Moto) {
 					pstatement.setNull(2, Types.INTEGER);
-					pstatement.setInt(3, Types.INTEGER);
-					pstatement.setNull(4, alquiler.getVehiculo().getId());
+					pstatement.setNull(3, Types.INTEGER);
+					pstatement.setInt(4, alquiler.getVehiculo().getId());
 				}
 			} catch (NullPointerException e) {
 				e.printStackTrace();
@@ -445,7 +445,7 @@ public class DataBaseManager {
 			
 			pstatement.executeUpdate();
 			
-			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM moto");
+			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM factura");
 			if (resultSet.next()) {
 				int newId = resultSet.getInt("id");
 				factura.setId(newId);
@@ -481,7 +481,6 @@ public class DataBaseManager {
 				cliente.setEmail(resultSet.getString("email"));
 				cliente.setContrasenna(resultSet.getString("contrasena"));
 				cliente.setLicenciaConducir(resultSet.getString("licenciaConducir"));
-				cliente.setHistorialAlquileres(obtenerTodosAlquileresPorId(resultSet.getInt("id")));
 				
 				return cliente;
 			} else {
@@ -550,13 +549,19 @@ public class DataBaseManager {
 				alquiler.setId(resultSet.getInt("id"));
 				alquiler.setCliente(obtenerCliente(resultSet.getInt("idCliente")));
 				
-				if(resultSet.getObject("idCoche") != null) {
-					alquiler.setVehiculo(obtenerCoche(resultSet.getInt("idCoche")));
-				} else if(resultSet.getObject("idFurgoneta") != null) {
-					alquiler.setVehiculo(obtenerFurgoneta(resultSet.getInt("idFurgoneta")));
-				} else if(resultSet.getObject("idMoto") != null) {
-					alquiler.setVehiculo(obtenerMoto(resultSet.getInt("idMoto")));
-				}
+				//IAG Gemini
+				//Sugerido por Gemini para correcto funcionamiento
+				int idCoche = resultSet.getInt("idCoche");
+	            int idFurgoneta = resultSet.getInt("idFurgoneta");
+	            int idMoto = resultSet.getInt("idMoto");
+
+	            if (!resultSet.wasNull() && idCoche > 0) {
+	                alquiler.setVehiculo(obtenerCoche(idCoche));
+	            } else if (!resultSet.wasNull() && idFurgoneta > 0) {
+	                alquiler.setVehiculo(obtenerFurgoneta(idFurgoneta));
+	            } else if (!resultSet.wasNull() && idMoto > 0) {
+	                alquiler.setVehiculo(obtenerMoto(idMoto));
+	            }
 				
 				alquiler.setFechaInicio(stringAFecha(resultSet.getString("fechaInicio")));
 				alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaFinal")));
@@ -566,6 +571,9 @@ public class DataBaseManager {
 				return null;
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -581,7 +589,7 @@ public class DataBaseManager {
 				+ "tCombustible, "
 				+ "tCajaCambios, "
 				+ "numPlazas, "
-				+ "numPuertas"
+				+ "numPuertas "
 				+ "FROM coche WHERE id = ?")) {
 			pstatement.setInt(1, id);
 			
@@ -590,11 +598,21 @@ public class DataBaseManager {
 				Coche coche = new Coche();
 				coche.setId(resultSet.getInt("id"));
 				coche.setMatricula(resultSet.getString("matricula"));
-				coche.setMarca(Marca.valueOf(resultSet.getString("marca")));
+				//IAG Gemini
+				//Sugerido por Gemini para el correcto funcionamiento
+				try {
+					coche.setMarca(Marca.valueOf(resultSet.getString("marca")));
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				}
 				coche.setModelo(resultSet.getString("modelo"));
 				coche.setPrecio(resultSet.getFloat("precio"));
-				coche.settCombustible(TipoCombustible.valueOf(resultSet.getString("tCombustible")));
-				coche.settCajaCambios(TipoCajaCambios.valueOf(resultSet.getString("tCajaCambios")));
+				try {
+					coche.settCombustible(TipoCombustible.valueOf(resultSet.getString("tCombustible")));
+					coche.settCajaCambios(TipoCajaCambios.valueOf(resultSet.getString("tCajaCambios")));
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				}
 				coche.setNumPlazas(resultSet.getInt("numPlazas"));
 				coche.setNumPuertas(resultSet.getInt("numPuertas"));
 				
@@ -619,7 +637,7 @@ public class DataBaseManager {
 				+ "tCajaCambios, "
 				+ "numPlazas, "
 				+ "cargaMax, "
-				+ "capacidadCarga"
+				+ "capacidadCarga "
 				+ "FROM furgoneta WHERE id = ?")) {
 			pstatement.setInt(1, id);
 			
@@ -658,7 +676,7 @@ public class DataBaseManager {
 				+ "tCajaCambios, "
 				+ "numPlazas, "
 				+ "baul, "
-				+ "cilindrada"
+				+ "cilindrada "
 				+ "FROM moto WHERE id = ?")) {
 			pstatement.setInt(1, id);
 			
@@ -691,7 +709,7 @@ public class DataBaseManager {
 				+ "id, "
 				+ "idAlquiler, "
 				+ "importeTotal, "
-				+ "fechaFactura"
+				+ "fechaFactura "
 				+ "FROM factura WHERE id = ?")) {
 			pstatement.setInt(1, id);
 			
@@ -803,7 +821,7 @@ public class DataBaseManager {
 				+ "tCombustible, "
 				+ "tCajaCambios, "
 				+ "numPlazas, "
-				+ "numPuertas"
+				+ "numPuertas "
 				+ "FROM coche");
 			
 			while(resultSet.next()) {
@@ -831,7 +849,7 @@ public class DataBaseManager {
 				+ "tCajaCambios, "
 				+ "numPlazas, "
 				+ "cargaMax, "
-				+ "capacidadCarga"
+				+ "capacidadCarga "
 				+ "FROM furgoneta");
 			
 			while(resultSet.next()) {
@@ -859,7 +877,8 @@ public class DataBaseManager {
 					+ "tCajaCambios, "
 					+ "numPlazas, "
 					+ "baul, "
-					+ "cilindrada");
+					+ "cilindrada "
+					+ "FROM moto");
 			
 			while (resultSet.next()) {
 				lMotos.add(obtenerMoto(resultSet.getInt("id")));
@@ -880,7 +899,7 @@ public class DataBaseManager {
 				+ "id, "
 				+ "idAlquiler, "
 				+ "importeTotal, "
-				+ "fechaFactura"
+				+ "fechaFactura "
 				+ "FROM factura");
 			
 			while(resultSet.next()) {
@@ -893,33 +912,6 @@ public class DataBaseManager {
 			e.printStackTrace();
 			return null;
 		}
-	}
-	
-	//TODO: Corregir este metodo
-	public ArrayList<Alquiler> obtenerTodosAlquileresPorId(int id) {
-		ArrayList<Alquiler> lAlquileres = new ArrayList<>();
-		
-		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
-				+ "id, "
-				+ "idCliente, "
-				+ "idCoche, "
-				+ "idFurgoneta, "
-				+ "idMoto, "
-				+ "fechaInicio, "
-				+ "fechaFinal "
-				+ "FROM alquiler WHERE id = ?")) {
-			pstatement.setInt(1, id);
-			
-			ResultSet resultSet = pstatement.executeQuery();
-			while (resultSet.next()) {
-				lAlquileres.add(obtenerAlquiler(resultSet.getInt("id")));
-			}
-			
-			return lAlquileres;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}	
 	}
 
 	public void eliminarCliente(Cliente cliente) {
@@ -1195,5 +1187,39 @@ public class DataBaseManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public List<Alquiler> obtenerAlquileresPorCliente(Cliente cliente) {
+		List<Alquiler> lAlquileres = new ArrayList<>();
+		
+		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+				+ "id, "
+				+ "idCliente, "
+				+ "idCoche, "
+				+ "idFurgoneta, "
+				+ "idMoto, "
+				+ "fechaInicio, "
+				+ "fechaFinal "
+				+ "FROM alquiler WHERE idCliente = ?")) {
+			pstatement.setInt(1, cliente.getId());
+			
+			ResultSet resultSet = pstatement.executeQuery();
+			if (resultSet.next()) {
+				Alquiler alquiler = new Alquiler();
+				alquiler.setId(resultSet.getInt("id"));
+				alquiler.setCliente(obtenerCliente(resultSet.getInt("idCliente")));
+				alquiler.setVehiculo(obtenerCoche(resultSet.getInt("idCoche")));
+				alquiler.setVehiculo(obtenerFurgoneta(resultSet.getInt("idFurgoneta")));
+				alquiler.setVehiculo(obtenerMoto(resultSet.getInt("idMoto")));
+				alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaInicio")));
+				alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaFin")));
+				lAlquileres.add(alquiler);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 	
+		
+		return lAlquileres;
 	}
 }
