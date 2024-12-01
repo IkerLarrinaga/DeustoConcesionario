@@ -454,8 +454,7 @@ public class DataBaseManager {
 			e.printStackTrace();
 		}
 	}
-	
-	//TODO: Falta por implementar el metodo de devolver la lista de historiales
+
 	public Cliente obtenerCliente(int id) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
 				+ "id, "
@@ -482,7 +481,7 @@ public class DataBaseManager {
 				cliente.setEmail(resultSet.getString("email"));
 				cliente.setContrasenna(resultSet.getString("contrasena"));
 				cliente.setLicenciaConducir(resultSet.getString("licenciaConducir"));
-				cliente.setHistorialAlquileres(null);
+				cliente.setHistorialAlquileres(obtenerTodosAlquileresPorId(resultSet.getInt("id")));
 				
 				return cliente;
 			} else {
@@ -896,8 +895,8 @@ public class DataBaseManager {
 		}
 	}
 	
-	public List<Alquiler> obtenerTodosAlquileresPorId(int id) {
-		List<Alquiler> lAlquileres = new ArrayList<>();
+	public ArrayList<Alquiler> obtenerTodosAlquileresPorId(int id) {
+		ArrayList<Alquiler> lAlquileres = new ArrayList<>();
 		
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
 				+ "id, "
@@ -920,5 +919,68 @@ public class DataBaseManager {
 			e.printStackTrace();
 			return null;
 		}	
+	}
+
+	public void eliminarCliente(Cliente cliente) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("DELETE FROM cliente WHERE id = ?")) {
+			pstatement.setInt(1, cliente.getId());
+			pstatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void eliminarEmpleado(Empleado empleado) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("DELETE FROM empleado WHERE id = ?")) {
+			pstatement.setInt(1, empleado.getId());
+			pstatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void eliminarAlquiler(Alquiler alquiler) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("DELETE FROM alquiler WHERE id = ?")) {
+			pstatement.setInt(1, alquiler.getId());
+			pstatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void eliminarCoche(Coche coche) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("DELETE FROM coche WHERE id = ?")) {
+			pstatement.setInt(1, coche.getId());
+			pstatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void eliminarFurgoneta(Furgoneta furgoneta) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("DELETE FROM furgoneta WHERE id = ?")) {
+			pstatement.setInt(1, furgoneta.getId());
+			pstatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void eliminarMoto(Moto moto) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("DELETE FROM moto WHERE id = ?")) {
+			pstatement.setInt(1, moto.getId());
+			pstatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void eliminarFactura(Factura factura) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("DELETE FROM factura WHERE id = ?")) {
+			pstatement.setInt(1, factura.getId());
+			pstatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
