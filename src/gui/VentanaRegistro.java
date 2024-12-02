@@ -38,6 +38,10 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import db.DataBaseManager;
+import domain.Cliente;
+import domain.Empleado;
+
 public class VentanaRegistro extends JFrame {
     private static final long serialVersionUID = 1L;
 
@@ -227,34 +231,50 @@ public class VentanaRegistro extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (!fieldNombre.getText().isEmpty() && !fieldPrimerApellido.getText().isEmpty() && !fieldSegundoApellido.getText().isEmpty() && !fieldDni.getText().isEmpty()
                         && !fieldEmail.getText().isEmpty() && !String.valueOf(fieldContrasenna.getPassword()).isEmpty() && !(fieldFechaNacimiento == null) && (cliente.isSelected() || trabajador.isSelected())) {
-
-                    String nombre = fieldNombre.getText();
-                    String primerApellido = fieldPrimerApellido.getText();
-                    String segundoApellido = fieldSegundoApellido.getText();
-                    String dni = fieldDni.getText();
-                    String email = fieldEmail.getText();
-                    String contrasenna = String.valueOf(fieldContrasenna.getPassword());
-                    LocalDate fechaNacimiento = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(fieldFechaNacimiento.getDate()), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-                    String id = null;
-                    if (cliente.isSelected()) {
-                        id = "1";
-                    } else if (trabajador.isSelected()) {
-                        id = "2";
-                    }
-
-                    String datos = id + ";" + nombre + ";" + primerApellido + ";" + segundoApellido + ";" + dni + ";" + email + ";" + contrasenna + ";" + fechaNacimiento;
-
-                    try (BufferedWriter writer = new BufferedWriter(new FileWriter("resource/data/registro.txt", true))) {
-                        writer.write(datos);
-                        writer.newLine();
-                        JOptionPane.showMessageDialog(null, "Se ha registrado correctamente.", "Confirmacion", JOptionPane.INFORMATION_MESSAGE);
-                        new VentanaIncio();
-                        dispose();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                        JOptionPane.showMessageDialog(null, "Error al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
+                	DataBaseManager dbManager = new DataBaseManager();
+                	try {
+                		dbManager.conexion("resource/db/concesionario.bd");
+                    	
+                    	int existe = 0;
+                    	for (Empleado empleado : dbManager.obtenerTodosEmpleados()) {
+                    		if(empleado.getEmail().equals(fieldEmail.getText())) {
+                    			existe = 1;
+                    		}
+                    	}
+                    	
+                    	for (Cliente cliente : dbManager.obtenerTodosClientes()) {
+                    		if(cliente.getEmail().equals(fieldEmail.getText())) {
+                    			existe = 1;
+                    		}
+                    	}
+                    	
+                    	if (existe == 0) {
+                    		String nombre = fieldNombre.getText();
+                            String primerApellido = fieldPrimerApellido.getText();
+                            String segundoApellido = fieldSegundoApellido.getText();
+                            String dni = fieldDni.getText();
+                            String email = fieldEmail.getText();
+                            String contrasenna = String.valueOf(fieldContrasenna.getPassword());
+                            LocalDate fechaNacimiento = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(fieldFechaNacimiento.getDate()), DateTimeFormatter.ofPattern("yyyy-MM-dd"));      
+                            if (cliente.isSelected()) {
+                            	Cliente cliente = new Cliente(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna, null);
+                            	dbManager.almacenarCliente(cliente);
+                            	dispose();
+                            	new VentanaLogIn();
+                            } else if (trabajador.isSelected()) {
+                            	Empleado empleado = new Empleado(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna, null, 0);
+                            	dbManager.almacenarEmpleado(empleado);
+                            	dispose();
+                            	new VentanaLogIn();
+                            }
+                    	} else {
+                    		JOptionPane.showMessageDialog(null, "El usuario ya está registrado", "Error", JOptionPane.ERROR_MESSAGE);
+                    	}
+                    	dbManager.desconexion();
+                	} catch (Exception ex) {
+                		JOptionPane.showMessageDialog(null, "Error al abrir la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+                		ex.printStackTrace();
+                	}
                 } else {
                     JOptionPane.showMessageDialog(null, "Todos los campos deben estar rellenados.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
