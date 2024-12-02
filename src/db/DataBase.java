@@ -15,11 +15,11 @@ import domain.TipoCombustible;
 
 public class DataBase {
 	
-	public static void cargarDatosPrueba() {
+	public void cargarDatosPrueba() {
 		DataBaseManager dbManager = new DataBaseManager();
 		
 		try {
-			dbManager.conexion("resources/db/rebote.db");
+			dbManager.conexion("resource/db/concesionario.bd");
 			
 			dbManager.eliminarTabla("cliente");
 			dbManager.eliminarTabla("empleado");
@@ -29,7 +29,7 @@ public class DataBase {
 			dbManager.eliminarTabla("alquiler");
 			dbManager.eliminarTabla("factura");
 			
-			dbManager.conexion("resources/db/rebote.db");
+			dbManager.conexion("resource/db/concesionario.bd");
 			
 			Empleado empleado1 = new Empleado("Alberto", "García", "Ruiz", "12345678A", LocalDate.of(1983, 7, 12), "alberto.garcia@gmail.com", "alberto123", "ventas", 1450);
 			Empleado empleado2 = new Empleado("María", "Fernández", "Lopez", "87654321B", LocalDate.of(1990, 1, 25), "maria.fernandez@gmail.com", "maria456", "marketing", 1600);
