@@ -39,7 +39,7 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         String[] columnNames = {"Nombre de Usuario", "Matrícula", "Marca", "Fecha de Inicio", "Fecha Fin", "Días Restantes"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
 
-        for (Alquiler alquiler : lAlquileres) {
+       for (Alquiler alquiler : lAlquileres) {
             String nombreUsuario = alquiler.getCliente().getNombre() + " " + alquiler.getCliente().getPrimerApellido() + " " + alquiler.getCliente().getSegundoApellido();
             String matricula = alquiler.getVehiculo().getMatricula();
             String marca = alquiler.getVehiculo().getMarca().toString();
@@ -64,6 +64,7 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
             String linea;
+            Marca marca;
             while ((linea = br.readLine()) != null) {
                 System.out.println("Leyendo línea: " + linea);
                 String[] datos = linea.split(";");
@@ -74,7 +75,7 @@ public class VentanaBienvenidaEmpleado extends JFrame {
                         cliente.setPrimerApellido(datos[1]);
                         cliente.setSegundoApellido(datos[2]);
 
-                        Marca marca = Marca.valueOf(datos[3].toUpperCase());
+                        marca = Marca.valueOf(datos[3].toUpperCase());
                         Vehiculo vehiculo = crearVehiculo(datos[4], marca, datos[5], datos[6]);
                         
                         //Cambios momentaneos
@@ -100,14 +101,19 @@ public class VentanaBienvenidaEmpleado extends JFrame {
     }
 
     private Vehiculo crearVehiculo(String tipoVehiculo, Marca marca, String modelo, String año) {
+        Vehiculo vehiculo;
         if (tipoVehiculo.equals("Coche")) {
-            return new Coche();
+            vehiculo = new Coche();
         } else if (tipoVehiculo.equals("Furgoneta")) {
-            return new Furgoneta();
+            vehiculo = new Furgoneta();
         } else {
-            return new Moto();
+            vehiculo = new Moto();
         }
+        vehiculo.setMarca(marca);
+        vehiculo.setModelo(modelo);
+        return vehiculo;
     }
+
     
     private long calcularDiasRestantes(GregorianCalendar fechaFin) {
         GregorianCalendar hoy = new GregorianCalendar();

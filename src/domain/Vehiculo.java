@@ -62,7 +62,7 @@ public abstract class Vehiculo {
 	}
 
 	public Marca getMarca() {
-		return marca;
+		return this.marca;
 	}
 
 	public void setMarca(Marca marca) {
