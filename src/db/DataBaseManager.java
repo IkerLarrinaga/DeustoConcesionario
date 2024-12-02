@@ -9,8 +9,10 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import domain.Alquiler;
@@ -31,22 +33,22 @@ import domain.TipoCombustible;
 public class DataBaseManager {
 	
 	private Connection conexion = null;
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
-	public GregorianCalendar stringAFecha(String str) {
-		GregorianCalendar fecha = new GregorianCalendar();
-		
-		try {
-			fecha.setTime(dateFormat.parse(str));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return fecha;
+	public LocalDate stringAFecha(String str) {
+	    LocalDate fecha = null;
+	    try {
+	        fecha = LocalDate.parse(str, dateFormat);
+	    } catch (DateTimeParseException e) {
+	        e.printStackTrace();
+	    }
+	    return fecha;
 	}
 	
-	public String fechaAString(GregorianCalendar fecha) {
-		return dateFormat.format(fecha.getTime());
+	public String fechaAString(LocalDate fecha) {
+	    return dateFormat.format(fecha);
 	}
+
 	
 	public void conexion(String dbPath) {
 		try {

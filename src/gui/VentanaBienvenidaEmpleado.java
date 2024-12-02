@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -43,8 +42,8 @@ public class VentanaBienvenidaEmpleado extends JFrame {
             String nombreUsuario = alquiler.getCliente().getNombre() + " " + alquiler.getCliente().getPrimerApellido() + " " + alquiler.getCliente().getSegundoApellido();
             String matricula = alquiler.getVehiculo().getMatricula();
             String marca = alquiler.getVehiculo().getMarca().toString();
-            GregorianCalendar fechaInicio = alquiler.getFechaInicio();
-            GregorianCalendar fechaFin = alquiler.getFechaFin();
+            LocalDate fechaInicio = alquiler.getFechaInicio();
+            LocalDate fechaFin = alquiler.getFechaFin();
 
             long diasRestantes = calcularDiasRestantes(fechaFin);
 
@@ -79,9 +78,8 @@ public class VentanaBienvenidaEmpleado extends JFrame {
                         Vehiculo vehiculo = crearVehiculo(datos[4], marca, datos[5], datos[6]);
                         
                         //Cambios momentaneos
-                        GregorianCalendar fechaInicio = GregorianCalendar.from(LocalDate.parse(datos[5], formatter).atStartOfDay(java.time.ZoneId.systemDefault()));
-                        GregorianCalendar fechaFin = GregorianCalendar.from(LocalDate.parse(datos[6], formatter).atStartOfDay(java.time.ZoneId.systemDefault()));
-
+                        LocalDate fechaInicio = LocalDate.parse(datos[5], formatter);
+                        LocalDate fechaFin = LocalDate.parse(datos[6], formatter);
 
                         Alquiler alquiler = new Alquiler(cliente, vehiculo, fechaInicio, fechaFin);
                         alquileres.add(alquiler);
@@ -115,10 +113,8 @@ public class VentanaBienvenidaEmpleado extends JFrame {
     }
 
     
-    private long calcularDiasRestantes(GregorianCalendar fechaFin) {
-        GregorianCalendar hoy = new GregorianCalendar();
-        long milisegundosPorDia = 24 * 60 * 60 * 1000;
-        long diferenciaMilisegundos = fechaFin.getTimeInMillis() - hoy.getTimeInMillis();
-        return diferenciaMilisegundos / milisegundosPorDia;
+    private long calcularDiasRestantes(LocalDate fechaFin) {
+    	LocalDate hoy = LocalDate.now();
+        return java.time.temporal.ChronoUnit.DAYS.between(hoy, fechaFin);
     }
 }

@@ -3,10 +3,9 @@ package gui;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,27 +17,27 @@ import domain.Marca;
 import domain.Vehiculo;
 
 public class VentanaCarrito extends JFrame {
-    
+
     private static final long serialVersionUID = 1L;
 
     public VentanaCarrito() {
         ArrayList<Alquiler> lAlquileres = alquileresUsuario("resource/data/registro.txt");
-        
+
         setTitle("Ventana Carrito");
         setSize(500, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         String[] columnas = {"Marca", "Matricula", "Fecha Inicio", "Fecha Fin"};
         DefaultTableModel tablemodel = new DefaultTableModel(columnas, 0);
-        
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        
+
         for (Alquiler alquiler : lAlquileres) {
             String marca = alquiler.getVehiculo().getMarca().toString();
             String matricula = alquiler.getVehiculo().getMatricula();
-            GregorianCalendar fechaInicio = alquiler.getFechaInicio();
-            GregorianCalendar fechaFin = alquiler.getFechaFin();
+            LocalDate fechaInicio = alquiler.getFechaInicio();
+            LocalDate fechaFin = alquiler.getFechaFin();
 
             Object[] data = {marca, matricula, fechaInicio, fechaFin};
             tablemodel.addRow(data);
@@ -48,7 +47,7 @@ public class VentanaCarrito extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
 
         add(scrollPane);
-        
+
         setVisible(true);
     }
 
@@ -83,7 +82,11 @@ public class VentanaCarrito extends JFrame {
                         }
                     };
 
-                    
+                    LocalDate fechaInicio = LocalDate.parse(datos[5], formatter);
+                    LocalDate fechaFin = LocalDate.parse(datos[6], formatter);
+
+                    Alquiler alquiler = new Alquiler(cliente, vehiculo, fechaInicio, fechaFin);
+                    alquileres.add(alquiler);
                 }
             }
         } catch (IOException e) {

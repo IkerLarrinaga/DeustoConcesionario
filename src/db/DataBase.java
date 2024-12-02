@@ -1,5 +1,6 @@
 package db;
 
+import java.time.LocalDate;
 import java.util.GregorianCalendar;
 
 import domain.Cliente;
@@ -29,28 +30,28 @@ public class DataBase {
 			
 			dbManager.conexion("resources/db/rebote.db");
 			
-			Empleado empleado1 = new Empleado("Alberto", "García", "Ruiz", "12345678A", new GregorianCalendar(1983, 8-1, 12), "alberto.garcia@gmail.com", "alberto123", "ventas", 1450);
-			Empleado empleado2 = new Empleado("María", "Fernández", "Lopez", "87654321B", new GregorianCalendar(1990, 2-1, 25), "maria.fernandez@gmail.com", "maria456", "marketing", 1600);
-			Empleado empleado3 = new Empleado("Juan", "Martínez", "Sánchez", "23456789C", new GregorianCalendar(1975, 5-1, 30), "juan.martinez@gmail.com", "juan789", "recursos humanos", 1800);
-			Empleado empleado4 = new Empleado("Elena", "Gómez", "Hernández", "34567890D", new GregorianCalendar(1995, 10-1, 15), "elena.gomez@gmail.com", "elena101", "ventas", 2000);
-			Empleado empleado5 = new Empleado("Pablo", "Díaz", "Pérez", "45678901E", new GregorianCalendar(1988, 1-1, 20), "pablo.diaz@gmail.com", "pablo202", "marketing", 1550);
+			Empleado empleado1 = new Empleado("Alberto", "García", "Ruiz", "12345678A", LocalDate.of(1983, 7, 12), "alberto.garcia@gmail.com", "alberto123", "ventas", 1450);
+			Empleado empleado2 = new Empleado("María", "Fernández", "Lopez", "87654321B", LocalDate.of(1990, 1, 25), "maria.fernandez@gmail.com", "maria456", "marketing", 1600);
+			Empleado empleado3 = new Empleado("Juan", "Martínez", "Sánchez", "23456789C", LocalDate.of(1975, 5, 30), "juan.martinez@gmail.com", "juan789", "recursos humanos", 1800);
+			Empleado empleado4 = new Empleado("Elena", "Gómez", "Hernández", "34567890D", LocalDate.of(1995, 9, 15), "elena.gomez@gmail.com", "elena101", "ventas", 2000);
+			Empleado empleado5 = new Empleado("Pablo", "Díaz", "Pérez", "45678901E", LocalDate.of(2001, 4, 11), "pablo.diaz@gmail.com", "pablo202", "marketing", 1550);
 			
 			dbManager.almacenarEmpleado(empleado1);
 			dbManager.almacenarEmpleado(empleado2);
 			dbManager.almacenarEmpleado(empleado3);
 			dbManager.almacenarEmpleado(empleado4);
 			dbManager.almacenarEmpleado(empleado5);
-			
-			Cliente cliente1 = new Cliente("Paula", "Sánchez", "Rosa", "65983241H", new GregorianCalendar(1991, 4-1, 29), "paula.sanchez@gmail.com", "paula687", "15430698M");
-			Cliente cliente2 = new Cliente("Carlos", "Martín", "Gómez", "74589632J", new GregorianCalendar(1985, 11-1, 15), "carlos.martin@gmail.com", "carlos321", "32165487N");
-			Cliente cliente3 = new Cliente("Ana", "López", "Díaz", "85236974L", new GregorianCalendar(1993, 7-1, 10), "ana.lopez@gmail.com", "ana123", "98765432Q");
-			Cliente cliente4 = new Cliente("Luis", "Pérez", "Fernández", "96385274K", new GregorianCalendar(1988, 3-1, 22), "luis.perez@gmail.com", "luis456", "12345678Z");
-			Cliente cliente5 = new Cliente("Sofía", "Hernández", "Ruiz", "65478932M", new GregorianCalendar(1995, 9-1, 18), "sofia.hernandez@gmail.com", "sofia789", "87654321T");
-			Cliente cliente6 = new Cliente("Miguel", "Jiménez", "Torres", "15975384P", new GregorianCalendar(1982, 1-1, 5), "miguel.jimenez@gmail.com", "miguel852", "56473829X");
-			Cliente cliente7 = new Cliente("Laura", "García", "Castro", "25836974N", new GregorianCalendar(1990, 6-1, 12), "laura.garcia@gmail.com", "laura963", "98374562Y");
-			Cliente cliente8 = new Cliente("David", "Moreno", "Martínez", "75395146Q", new GregorianCalendar(1996, 8-1, 30), "david.moreno@gmail.com", "david741", "39284756W");
-			Cliente cliente9 = new Cliente("Lucía", "Rodríguez", "Serrano", "84629137R", new GregorianCalendar(1987, 2-1, 28), "lucia.rodriguez@gmail.com", "lucia159", "72584931U");
-			Cliente cliente10 = new Cliente("Javier", "Alonso", "Gutiérrez", "47586932S", new GregorianCalendar(1994, 10-1, 19), "javier.alonso@gmail.com", "javier753", "18462739V");
+				
+			Cliente cliente1 = new Cliente("Paula", "Sánchez", "Rosa", "65983241H", LocalDate.of(1991, 4, 29), "paula.sanchez@gmail.com", "paula687", "15430698M");
+			Cliente cliente2 = new Cliente("Carlos", "Martín", "Gómez", "74589632J", LocalDate.of(1985, 11, 15), "carlos.martin@gmail.com", "carlos321", "32165487N");
+			Cliente cliente3 = new Cliente("Ana", "López", "Díaz", "85236974L", LocalDate.of(1993, 7, 10), "ana.lopez@gmail.com", "ana123", "98765432Q");
+			Cliente cliente4 = new Cliente("Luis", "Pérez", "Fernández", "96385274K", LocalDate.of(1988, 3, 22), "luis.perez@gmail.com", "luis456", "12345678Z");
+			Cliente cliente5 = new Cliente("Sofía", "Hernández", "Ruiz", "65478932M", LocalDate.of(1995, 9, 18), "sofia.hernandez@gmail.com", "sofia789", "87654321T");
+			Cliente cliente6 = new Cliente("Miguel", "Jiménez", "Torres", "15975384P", LocalDate.of(1982, 1, 5), "miguel.jimenez@gmail.com", "miguel852", "56473829X");
+			Cliente cliente7 = new Cliente("Laura", "García", "Castro", "25836974N", LocalDate.of(1990, 6, 12), "laura.garcia@gmail.com", "laura963", "98374562Y");
+			Cliente cliente8 = new Cliente("David", "Moreno", "Martínez", "75395146Q", LocalDate.of(1996, 8, 30), "david.moreno@gmail.com", "david741", "39284756W");
+			Cliente cliente9 = new Cliente("Lucía", "Rodríguez", "Serrano", "84629137R", LocalDate.of(1987, 2, 28), "lucia.rodriguez@gmail.com", "lucia159", "72584931U");
+			Cliente cliente10 = new Cliente("Javier", "Alonso", "Gutiérrez", "47586932S", LocalDate.of(1994, 10, 19), "javier.alonso@gmail.com", "javier753", "18462739V");	
 			
 			dbManager.almacenarCliente(cliente1);
 			dbManager.almacenarCliente(cliente2);

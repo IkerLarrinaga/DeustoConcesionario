@@ -1,71 +1,72 @@
 package domain;
 
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 
 public class Factura {
     private int id = -1;
     private Alquiler alquiler;
     private double importeTotal;
-    private GregorianCalendar fechaFactura;
-    
-	public Factura() {
-		super();
-	}
+    private LocalDate fechaFactura;
 
-	public Factura(Alquiler alquiler, double importeTotal, GregorianCalendar fechaFactura) {
-		super();
-		this.alquiler = alquiler;
-		this.importeTotal = importeTotal;
-		this.fechaFactura = fechaFactura;
-	}
+    public Factura() {
+        super();
+    }
 
-	public Factura(int id, Alquiler alquiler, double importeTotal, GregorianCalendar fechaFactura) {
-		super();
-		this.alquiler = alquiler;
-		this.importeTotal = importeTotal;
-		this.fechaFactura = fechaFactura;
-	}
+    public Factura(Alquiler alquiler, double importeTotal, LocalDate fechaFactura) {
+        super();
+        this.alquiler = alquiler;
+        this.importeTotal = importeTotal;
+        this.fechaFactura = fechaFactura;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public Factura(int id, Alquiler alquiler, double importeTotal, LocalDate fechaFactura) {
+        super();
+        this.id = id;
+        this.alquiler = alquiler;
+        this.importeTotal = importeTotal;
+        this.fechaFactura = fechaFactura;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public Alquiler getAlquiler() {
-		return alquiler;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setAlquiler(Alquiler alquiler) {
-		this.alquiler = alquiler;
-	}
+    public Alquiler getAlquiler() {
+        return alquiler;
+    }
 
-	public double getImporteTotal() {
-		return importeTotal;
-	}
+    public void setAlquiler(Alquiler alquiler) {
+        this.alquiler = alquiler;
+    }
 
-	public void setImporteTotal(double importeTotal) {
-		this.importeTotal = importeTotal;
-	}
+    public double getImporteTotal() {
+        return importeTotal;
+    }
 
-	public GregorianCalendar getFechaFactura() {
-		return fechaFactura;
-	}
+    public void setImporteTotal(double importeTotal) {
+        this.importeTotal = importeTotal;
+    }
 
-	public void setFechaFactura(GregorianCalendar fechaFactura) {
-		this.fechaFactura = fechaFactura;
-	}
+    public LocalDate getFechaFactura() {
+        return fechaFactura;
+    }
 
-	@Override
-	public String toString() {
-		return "Factura [IDFactura=" + id + ", alquiler=" + alquiler + ", importeTotal=" + importeTotal
-				+ ", fechaFactura=" + fechaFactura + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
-	}
-	
-	public void generarFactura() {
+    public void setFechaFactura(LocalDate fechaFactura) {
+        this.fechaFactura = fechaFactura;
+    }
+
+    @Override
+    public String toString() {
+        return "Factura [IDFactura=" + id + ", alquiler=" + alquiler + ", importeTotal=" + importeTotal
+                + ", fechaFactura=" + fechaFactura + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+                + ", toString()=" + super.toString() + "]";
+    }
+
+    public void generarFactura() {
         System.out.println("Factura Generada:");
         System.out.println("ID: " + id);
         System.out.println("Cliente: " + alquiler.getCliente());

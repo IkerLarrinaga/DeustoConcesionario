@@ -1,33 +1,34 @@
 package domain;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 public class Cliente extends Persona {
 	private String licenciaConducir;
 	private ArrayList<Alquiler> historialAlquileres;
 
-	public Cliente() {
-		super();
-	}
+	 public Cliente() {
+	        super();
+	    }
 
-	public Cliente(String nombre, String primerApellido, String segundoApellido, String dni,
-			GregorianCalendar fechaNacimiento, String email, String contrasenna) {
-		super(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
-	}
+	    public Cliente(String nombre, String primerApellido, String segundoApellido, String dni,
+	                   LocalDate fechaNacimiento, String email, String contrasenna) {
+	        super(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
+	    }
 
-	public Cliente(String nombre, String primerApellido, String segundoApellido, String dni,
-			GregorianCalendar fechaNacimiento, String email, String contrasenna, String licenciaConducir) {
-		super(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
-		this.licenciaConducir = licenciaConducir;
-	}
+	    public Cliente(String nombre, String primerApellido, String segundoApellido, String dni,
+	                   LocalDate fechaNacimiento, String email, String contrasenna, String licenciaConducir) {
+	        super(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
+	        this.licenciaConducir = licenciaConducir;
+	    }
 
-	public Cliente(int id, String nombre, String primerApellido, String segundoApellido, String dni,
-			GregorianCalendar fechaNacimiento, String email, String contrasenna, String licenciaConducir,
-			ArrayList<Alquiler> historialAlquileres) {
-		super(id, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
-		this.licenciaConducir = licenciaConducir;
-	}
+	    public Cliente(int id, String nombre, String primerApellido, String segundoApellido, String dni,
+	                   LocalDate fechaNacimiento, String email, String contrasenna, String licenciaConducir,
+	                   ArrayList<Alquiler> historialAlquileres) {
+	        super(id, nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
+	        this.licenciaConducir = licenciaConducir;
+	        this.historialAlquileres = historialAlquileres;
+	    }
 
 	public String getLicenciaConducir() {
 		return licenciaConducir;
