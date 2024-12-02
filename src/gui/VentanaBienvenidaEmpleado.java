@@ -112,9 +112,9 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         return vehiculo;
     }
 
-    
+    //IAG: Copilot
     private long calcularDiasRestantes(LocalDate fechaFin) {
-    	LocalDate hoy = LocalDate.now();
-        return java.time.temporal.ChronoUnit.DAYS.between(hoy, fechaFin);
+        long diasRestantes = java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), fechaFin);
+        return diasRestantes < 0 ? 0 : diasRestantes;
     }
 }
