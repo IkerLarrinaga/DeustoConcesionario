@@ -15,7 +15,7 @@ import domain.TipoCombustible;
 
 public class DataBase {
 	
-	public static void cargarDatosPrueb() {
+	public static void cargarDatosPrueba() {
 		DataBaseManager dbManager = new DataBaseManager();
 		
 		try {
