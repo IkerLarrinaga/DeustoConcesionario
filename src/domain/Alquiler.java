@@ -6,7 +6,9 @@ import java.time.temporal.ChronoUnit;
 public class Alquiler {
     private int id = -1;
     private Cliente cliente;
-    private Vehiculo vehiculo;
+    private Vehiculo vehiculoCoche;
+    private Vehiculo vehiculoFurgoneta;
+    private Vehiculo vehiculoMoto;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
 
@@ -14,24 +16,29 @@ public class Alquiler {
         super();
     }
 
-    public Alquiler(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, LocalDate fechaFin) {
-        super();
-        this.cliente = cliente;
-        this.vehiculo = vehiculo;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-    }
+    public Alquiler(Cliente cliente, Vehiculo vehiculoCoche, Vehiculo vehiculoFurgoneta, Vehiculo vehiculoMoto,
+			LocalDate fechaInicio, LocalDate fechaFin) {
+		super();
+		this.cliente = cliente;
+		this.vehiculoCoche = vehiculoCoche;
+		this.vehiculoFurgoneta = vehiculoFurgoneta;
+		this.vehiculoMoto = vehiculoMoto;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+	}
 
-    public Alquiler(int id, Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, LocalDate fechaFin) {
-        super();
-        this.id = id;
-        this.cliente = cliente;
-        this.vehiculo = vehiculo;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-    }
+    public Alquiler(int id, Cliente cliente, Vehiculo vehiculoCoche, Vehiculo vehiculoFurgoneta, Vehiculo vehiculoMoto,
+			LocalDate fechaInicio, LocalDate fechaFin) {
+		super();
+		this.cliente = cliente;
+		this.vehiculoCoche = vehiculoCoche;
+		this.vehiculoFurgoneta = vehiculoFurgoneta;
+		this.vehiculoMoto = vehiculoMoto;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+	}
 
-    public int getId() {
+	public int getId() {
         return id;
     }
 
@@ -47,13 +54,29 @@ public class Alquiler {
         this.cliente = cliente;
     }
 
-    public Vehiculo getVehiculo() {
-        return vehiculo;
-    }
+    public Vehiculo getVehiculoCoche() {
+		return vehiculoCoche;
+	}
 
-    public void setVehiculo(Vehiculo vehiculo) {
-        this.vehiculo = vehiculo;
-    }
+	public void setVehiculoCoche(Vehiculo vehiculoCoche) {
+		this.vehiculoCoche = vehiculoCoche;
+	}
+
+	public Vehiculo getVehiculoFurgoneta() {
+		return vehiculoFurgoneta;
+	}
+
+	public void setVehiculoFurgoneta(Vehiculo vehiculoFurgoneta) {
+		this.vehiculoFurgoneta = vehiculoFurgoneta;
+	}
+
+	public Vehiculo getVehiculoMoto() {
+		return vehiculoMoto;
+	}
+
+	public void setVehiculoMoto(Vehiculo vehiculoMoto) {
+		this.vehiculoMoto = vehiculoMoto;
+	}
 
     public LocalDate getFechaInicio() {
         return fechaInicio;
@@ -72,11 +95,13 @@ public class Alquiler {
     }
 
     @Override
-    public String toString() {
-        return ("Alquiler [cliente=" + cliente + ", vehiculo=" + vehiculo + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]");
-    }
+	public String toString() {
+		return "Alquiler [id=" + id + ", cliente=" + cliente + ", vehiculoCoche=" + vehiculoCoche
+				+ ", vehiculoFurgoneta=" + vehiculoFurgoneta + ", vehiculoMoto=" + vehiculoMoto + ", fechaInicio="
+				+ fechaInicio + ", fechaFin=" + fechaFin + "]";
+	}
 
-    public void registrarAlquiler() {
+	public void registrarAlquiler() {
         cliente.getHistorialAlquileres().add(this);
     }
 

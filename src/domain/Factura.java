@@ -70,7 +70,9 @@ public class Factura {
         System.out.println("Factura Generada:");
         System.out.println("ID: " + id);
         System.out.println("Cliente: " + alquiler.getCliente());
-        System.out.println("Vehículo: " + alquiler.getVehiculo());
+        System.out.println("Vehículo: " + alquiler.getVehiculoCoche());
+        System.out.println("Vehículo: " + alquiler.getVehiculoFurgoneta());
+        System.out.println("Vehículo: " + alquiler.getVehiculoMoto());
         System.out.println("Importe Total: " + importeTotal + "€");
         System.out.println("Fecha: " + fechaFactura);
     }
@@ -78,7 +80,9 @@ public class Factura {
     public void mostrarFactura() {
         System.out.println("Factura ID: " + id);
         System.out.println("Cliente: " + alquiler.getCliente());
-        System.out.println("Vehículo: " + alquiler.getVehiculo());
+        System.out.println("Vehículo: " + alquiler.getVehiculoCoche());
+        System.out.println("Vehículo: " + alquiler.getVehiculoFurgoneta());
+        System.out.println("Vehículo: " + alquiler.getVehiculoMoto());
         System.out.println("Importe Total: " + importeTotal + "€");
         System.out.println("Fecha de Factura: " + fechaFactura);
     }

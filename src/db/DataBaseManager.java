@@ -290,20 +290,20 @@ public class DataBaseManager {
 				Statement statement = conexion.createStatement()) {
 			try {
 				pstatement.setInt(1, alquiler.getCliente().getId());
-				if(alquiler.getVehiculo() instanceof Coche) {
-					pstatement.setInt(2, alquiler.getVehiculo().getId());
+				if(alquiler.getVehiculoCoche() != null) {
+					pstatement.setInt(2, alquiler.getVehiculoCoche().getId());
 					//IAG ChatGPT
 					//Se ha pedido a ChatGPT como utilizar el setNull
 					pstatement.setNull(3, Types.INTEGER);
 					pstatement.setNull(4, Types.INTEGER);
-				} else if(alquiler.getVehiculo() instanceof Furgoneta) {
+				} else if(alquiler.getVehiculoFurgoneta() != null) {
 					pstatement.setNull(2, Types.INTEGER);
-					pstatement.setInt(3, alquiler.getVehiculo().getId());
+					pstatement.setInt(3, alquiler.getVehiculoFurgoneta().getId());
 					pstatement.setNull(4, Types.INTEGER);
-				} else if(alquiler.getVehiculo() instanceof Moto) {
+				} else if(alquiler.getVehiculoMoto() != null) {
 					pstatement.setNull(2, Types.INTEGER);
 					pstatement.setNull(3, Types.INTEGER);
-					pstatement.setInt(4, alquiler.getVehiculo().getId());
+					pstatement.setInt(4, alquiler.getVehiculoMoto().getId());
 				}
 			} catch (NullPointerException e) {
 				e.printStackTrace();
@@ -560,11 +560,11 @@ public class DataBaseManager {
 	            int idMoto = resultSet.getInt("idMoto");
 
 	            if (!resultSet.wasNull() && idCoche > 0) {
-	                alquiler.setVehiculo(obtenerCoche(idCoche));
+	                alquiler.setVehiculoCoche(obtenerCoche(idCoche));
 	            } else if (!resultSet.wasNull() && idFurgoneta > 0) {
-	                alquiler.setVehiculo(obtenerFurgoneta(idFurgoneta));
+	                alquiler.setVehiculoFurgoneta(obtenerFurgoneta(idFurgoneta));
 	            } else if (!resultSet.wasNull() && idMoto > 0) {
-	                alquiler.setVehiculo(obtenerMoto(idMoto));
+	                alquiler.setVehiculoMoto(obtenerMoto(idMoto));
 	            }
 				
 				alquiler.setFechaInicio(stringAFecha(resultSet.getString("fechaInicio")));
@@ -1050,18 +1050,18 @@ public class DataBaseManager {
 				+ "WHERE id = ?")) {
 			try {
 				pstatement.setInt(1, alquiler.getCliente().getId());
-				if (alquiler.getVehiculo() instanceof Coche) {
-					pstatement.setInt(2, alquiler.getVehiculo().getId());
+				if (alquiler.getVehiculoCoche() != null) {
+					pstatement.setInt(2, alquiler.getVehiculoCoche().getId());
 					pstatement.setNull(3, Types.INTEGER);
 					pstatement.setNull(4, Types.INTEGER);
-				} else if (alquiler.getVehiculo() instanceof Furgoneta) {
+				} else if (alquiler.getVehiculoFurgoneta() != null) {
 					pstatement.setInt(2, Types.INTEGER);
-					pstatement.setNull(3, alquiler.getVehiculo().getId());
+					pstatement.setNull(3, alquiler.getVehiculoFurgoneta().getId());
 					pstatement.setNull(4, Types.INTEGER);
-				} else if (alquiler.getVehiculo() instanceof Moto) {
+				} else if (alquiler.getVehiculoMoto() != null) {
 					pstatement.setInt(2, Types.INTEGER);
 					pstatement.setNull(3, Types.INTEGER);
-					pstatement.setNull(4, alquiler.getVehiculo().getId());
+					pstatement.setNull(4, alquiler.getVehiculoMoto().getId());
 				}
 			} catch (NullPointerException e) {
 				e.printStackTrace();
@@ -1212,9 +1212,9 @@ public class DataBaseManager {
 				Alquiler alquiler = new Alquiler();
 				alquiler.setId(resultSet.getInt("id"));
 				alquiler.setCliente(obtenerCliente(resultSet.getInt("idCliente")));
-				alquiler.setVehiculo(obtenerCoche(resultSet.getInt("idCoche")));
-				alquiler.setVehiculo(obtenerFurgoneta(resultSet.getInt("idFurgoneta")));
-				alquiler.setVehiculo(obtenerMoto(resultSet.getInt("idMoto")));
+				alquiler.setVehiculoCoche(obtenerCoche(resultSet.getInt("idCoche")));
+				alquiler.setVehiculoFurgoneta(obtenerFurgoneta(resultSet.getInt("idFurgoneta")));
+				alquiler.setVehiculoMoto(obtenerMoto(resultSet.getInt("idMoto")));
 				alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaInicio")));
 				alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaFin")));
 				lAlquileres.add(alquiler);
