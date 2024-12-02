@@ -88,8 +88,8 @@ public class Alquiler {
         return ChronoUnit.MONTHS.between(fechaInicio, fechaFin);
     }
 
-    public long calcularDias() {
-        return ChronoUnit.DAYS.between(fechaInicio, fechaFin);
+    public int calcularDias() {
+        return (int) ChronoUnit.DAYS.between(this.fechaInicio, this.fechaFin);
     }
 
     public void finalizarAlquiler() {
