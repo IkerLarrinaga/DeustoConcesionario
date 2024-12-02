@@ -285,7 +285,7 @@ public class DataBaseManager {
 				+ "idMoto, "
 				+ "fechaInicio, "
 				+ "fechaFinal)"
-				+ "VALUES (?, ?, ?, ?)");
+				+ "VALUES (?, ?, ?, ?, ?, ?)");
 				
 				Statement statement = conexion.createStatement()) {
 			try {
