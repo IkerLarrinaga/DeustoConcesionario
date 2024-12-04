@@ -122,14 +122,14 @@ public class VentanaCarrito extends JFrame {
                         public void devolver() {}
                         @Override
                         public String getTipo() {
-                            return null;
+                            return marca.toString();
                         }
                     };
 
                     LocalDate fechaInicio = LocalDate.parse(datos[5], formatter);
                     LocalDate fechaFin = LocalDate.parse(datos[6], formatter);
 
-                    Alquiler alquiler = new Alquiler(cliente, vehiculo, vehiculo, vehiculo, fechaInicio, fechaFin);
+                    Alquiler alquiler = new Alquiler(cliente, vehiculo, null, null, fechaInicio, fechaFin);
                     alquileres.add(alquiler);
                 }
             }
