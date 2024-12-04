@@ -22,7 +22,8 @@ public class VentanaCatalogo extends JFrame {
     
     public VentanaCatalogo() {    	
     	
-        this.listaVehiculos = Vehiculo.cargarVehiculosDesdeBD("resource/db/concesionario.db");
+    	this.listaVehiculos = Vehiculo.cargarVehiculos("resource/data/vehiculos.txt");
+//        this.listaVehiculos = Vehiculo.cargarVehiculosDesdeBD();
 
         setTitle("Catálogo");
         setSize(950, 500);
