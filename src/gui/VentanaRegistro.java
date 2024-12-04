@@ -226,52 +226,78 @@ public class VentanaRegistro extends JFrame {
         confirmar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!fieldNombre.getText().isEmpty() && !fieldPrimerApellido.getText().isEmpty() && !fieldSegundoApellido.getText().isEmpty() && !fieldDni.getText().isEmpty()
-                        && !fieldEmail.getText().isEmpty() && !String.valueOf(fieldContrasenna.getPassword()).isEmpty() && !(fieldFechaNacimiento == null) && (cliente.isSelected() || trabajador.isSelected())) {
-                	DataBaseManager dbManager = new DataBaseManager();
-                	dbManager.conexion("resource/db/concesionario.bd");
-                	
-                	int existe = 0;
-                	for (Empleado empleado : dbManager.obtenerTodosEmpleados()) {
-                		if(empleado.getEmail().equals(fieldEmail.getText())) {
-                			existe = 1;
-                		}
-                	}
-                	
-                	for (Cliente cliente : dbManager.obtenerTodosClientes()) {
-                		if(cliente.getEmail().equals(fieldEmail.getText())) {
-                			existe = 1;
-                		}
-                	}
-                	
-                	if (existe == 0) {
-                		String nombre = fieldNombre.getText();
+                if (!fieldNombre.getText().isEmpty() && !fieldPrimerApellido.getText().isEmpty() && 
+                    !fieldSegundoApellido.getText().isEmpty() && !fieldDni.getText().isEmpty() && 
+                    !fieldEmail.getText().isEmpty() && !String.valueOf(fieldContrasenna.getPassword()).isEmpty() && 
+                    fieldFechaNacimiento.getDate() != null && (cliente.isSelected() || trabajador.isSelected())) {
+                    
+                    DataBaseManager dbManager = new DataBaseManager();
+                    dbManager.conexion("resource/db/concesionario.bd");
+
+                    boolean correoDuplicado = false;
+                    boolean contrasenaDuplicada = false;
+                    
+                    // Comprobar duplicados en empleados
+                    for (Empleado empleado : dbManager.obtenerTodosEmpleados()) {
+                        if (empleado.getEmail().equals(fieldEmail.getText())) {
+                            correoDuplicado = true;
+                        }
+                        if (empleado.getContrasenna().equals(String.valueOf(fieldContrasenna.getPassword()))) {
+                            contrasenaDuplicada = true;
+                        }
+                    }
+                    
+                    // Comprobar duplicados en clientes
+                    for (Cliente cliente : dbManager.obtenerTodosClientes()) {
+                        if (cliente.getEmail().equals(fieldEmail.getText())) {
+                            correoDuplicado = true;
+                        }
+                        if (cliente.getContrasenna().equals(String.valueOf(fieldContrasenna.getPassword()))) {
+                            contrasenaDuplicada = true;
+                        }
+                    }
+
+                    if (correoDuplicado && contrasenaDuplicada) {
+                        JOptionPane.showMessageDialog(null, 
+                            "El correo y la contraseña ya están registrados.", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else if (correoDuplicado) {
+                        JOptionPane.showMessageDialog(null, 
+                            "El correo ya está registrado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else if (contrasenaDuplicada) {
+                        JOptionPane.showMessageDialog(null, 
+                            "La contraseña ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        // Registrar el usuario si no hay duplicados
+                        String nombre = fieldNombre.getText();
                         String primerApellido = fieldPrimerApellido.getText();
                         String segundoApellido = fieldSegundoApellido.getText();
                         String dni = fieldDni.getText();
                         String email = fieldEmail.getText();
                         String contrasenna = String.valueOf(fieldContrasenna.getPassword());
-                        LocalDate fechaNacimiento = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(fieldFechaNacimiento.getDate()), DateTimeFormatter.ofPattern("yyyy-MM-dd"));      
+                        LocalDate fechaNacimiento = LocalDate.parse(
+                                new SimpleDateFormat("yyyy-MM-dd").format(fieldFechaNacimiento.getDate()), 
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
                         if (cliente.isSelected()) {
-                        	Cliente cliente = new Cliente(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna, null);
-                        	dbManager.almacenarCliente(cliente);
-                        	dispose();
-                        	new VentanaLogIn();
+                            Cliente cliente = new Cliente(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna, null);
+                            dbManager.almacenarCliente(cliente);
+                            dispose();
+                            new VentanaLogIn();
                         } else if (trabajador.isSelected()) {
-                        	Empleado empleado = new Empleado(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna, null, 0);
-                        	dbManager.almacenarEmpleado(empleado);
-                        	dispose();
-                        	new VentanaLogIn();
+                            Empleado empleado = new Empleado(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna, null, 0);
+                            dbManager.almacenarEmpleado(empleado);
+                            dispose();
+                            new VentanaLogIn();
                         }
-                	} else {
-                		JOptionPane.showMessageDialog(null, "El usuario ya está registrado", "Error", JOptionPane.ERROR_MESSAGE);
-                	}
-                	dbManager.desconexion();
+                    }
+                    dbManager.desconexion();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Todos los campos deben estar rellenados.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, 
+                        "Todos los campos deben estar rellenados.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
+
 
         cancelar.addActionListener(new ActionListener() {
             @Override
