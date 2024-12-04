@@ -1097,7 +1097,7 @@ public class DataBaseManager {
 			pstatement.setString(5, coche.gettCombustible().toString());
 			pstatement.setString(6, coche.gettCajaCambios().toString());
 			pstatement.setInt(7, coche.getNumPlazas());
-			pstatement.setInt(8, coche.getNumPlazas());
+			pstatement.setInt(8, coche.getNumPuertas());
 			pstatement.setInt(9, coche.getId());
 			
 			pstatement.executeUpdate();

@@ -1,8 +1,10 @@
 package domain;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,8 +118,7 @@ public abstract class Vehiculo {
 				+ "]";
 	}
 	
-	//TODO CORREGIR ESTE METODO PARA QUE CARGUE LOS VEHICULOS CON LA NUEVA ACTUALIZACION, ES DECIR, REDUCIR LA INFORMACIÓN DEL FICHERO TXT
-	public static List<Vehiculo> cargarVehiculos(String archivo) {
+	/*public static List<Vehiculo> cargarVehiculos(String archivo) {
         List<Vehiculo> listaVehiculos = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;            
@@ -164,6 +165,80 @@ public abstract class Vehiculo {
         }
         return listaVehiculos;
     }
+    */
+
+	public static List<Vehiculo> cargarVehiculosDesdeBD(String urlBD) {
+	    List<Vehiculo> listaVehiculos = new ArrayList<>();
+
+	    try (Connection conexion = DriverManager.getConnection(urlBD)) {
+	        
+	        // Consultar coches
+	        String consultaCoches = "SELECT matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, numPuertas, FROM coche";
+	        try (PreparedStatement stmt = conexion.prepareStatement(consultaCoches);
+	             ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                String matricula = rs.getString("matricula");
+	                Marca marca = Marca.valueOf(rs.getString("marca").toUpperCase());
+	                String modelo = rs.getString("modelo");
+	                float precio = rs.getFloat("precio");
+	                TipoCombustible tipoComb = TipoCombustible.valueOf(rs.getString("tCombustible").toUpperCase());
+	                TipoCajaCambios tipoCajaCambios = TipoCajaCambios.valueOf(rs.getString("tCajaCambios").toUpperCase());
+	                int numPlazas = rs.getInt("numPlazas");
+	                int numPuertas = rs.getInt("numPuertas");
+
+	                Coche coche = new Coche(matricula, marca, modelo, precio, tipoComb, tipoCajaCambios, numPlazas, numPuertas);
+	                listaVehiculos.add(coche);
+	            }
+	        }
+
+	        // Consultar furgonetas
+	        String consultaFurgonetas = "SELECT matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, cargaMax, capacidadCarga FROM furgoneta";
+	        try (PreparedStatement stmt = conexion.prepareStatement(consultaFurgonetas);
+	             ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                String matricula = rs.getString("matricula");
+	                Marca marca = Marca.valueOf(rs.getString("marca").toUpperCase());
+	                String modelo = rs.getString("modelo");
+	                float precio = rs.getFloat("precio");
+	                TipoCombustible tipoComb = TipoCombustible.valueOf(rs.getString("tCombustible").toUpperCase());
+	                TipoCajaCambios tipoCajaCambios = TipoCajaCambios.valueOf(rs.getString("tCajaCambios").toUpperCase());
+	                int numPlazas = rs.getInt("numPlazas");
+	                float cargaMax = rs.getFloat("cargaMax");
+	                int capacidadCarga = rs.getInt("capacidadCSarga");
+
+	                Furgoneta furgoneta = new Furgoneta(matricula, marca, modelo, precio, tipoComb, tipoCajaCambios, numPlazas, cargaMax, capacidadCarga);
+	                listaVehiculos.add(furgoneta);
+	            }
+	        }
+
+	        // Consultar motos
+	        String consultaMotos = "SELECT matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, baul, cilindrada FROM moto";
+	        try (PreparedStatement stmt = conexion.prepareStatement(consultaMotos);
+	             ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                String matricula = rs.getString("matricula");
+	                Marca marca = Marca.valueOf(rs.getString("marca").toUpperCase());
+	                String modelo = rs.getString("modelo");
+	                float precio = rs.getFloat("precio");
+	                TipoCombustible tipoComb = TipoCombustible.valueOf(rs.getString("tCombustible").toUpperCase());
+	                TipoCajaCambios tipoCajaCambios = TipoCajaCambios.valueOf(rs.getString("tCajaCambios").toUpperCase());
+	                int numPlazas = rs.getInt("numPSlazas");
+	                boolean baul = rs.getBoolean("baul");
+	                int cilindrada = rs.getInt("cilindrada");
+
+	                Moto moto = new Moto(matricula, marca, modelo, precio, tipoComb, tipoCajaCambios, numPlazas, baul, cilindrada);
+	                listaVehiculos.add(moto);
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return listaVehiculos;
+	}
+
+
 	
 	public abstract String getTipo();
 	
