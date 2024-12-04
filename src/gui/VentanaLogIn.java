@@ -13,21 +13,20 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+
+import db.DataBaseManager;
+import domain.Cliente;
+import domain.Empleado;
 
 public class VentanaLogIn extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -160,24 +159,29 @@ public class VentanaLogIn extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String emailIntro = email.getText();
-				String contrasennaIntro = String.valueOf(contrasenna.getPassword());
-				
-				String id = verificacion(emailIntro, contrasennaIntro);
-				if(!id.equals("")) {
-					if (id.equals("1")) {
-						dispose();
-                        new VentanaCatalogo();
-                    } else if (id.equals("2")) { 
-                        new VentanaBienvenidaEmpleado();
-                    }
-                    dispose();
-				} else {
-					JOptionPane.showMessageDialog(null, "Se ha introducido el usuario y/o la contraseña incorrectamente.", "Error", JOptionPane.ERROR_MESSAGE);
-					email.setText("");
-                    contrasenna.setText("");
+				if(!email.getText().isEmpty() && !String.valueOf(contrasenna.getPassword()).isEmpty()) {
+					DataBaseManager dbManager = new DataBaseManager();
+					String emailIntroducido = email.getText();
+					String contrasennaIntroducida = String.valueOf(contrasenna.getPassword());
+					
+					dbManager.conexion("resource/db/concesionario.bd");
+					
+					for (Cliente cliente : dbManager.obtenerTodosClientes()) {
+						if (cliente.getEmail().equals(emailIntroducido) && String.valueOf(cliente.getContrasenna()).equals(contrasennaIntroducida)) {
+							dispose();
+							new VentanaCatalogo();
+						}
+					}
+					
+					for (Empleado empleado : dbManager.obtenerTodosEmpleados()) {
+						if (empleado.getEmail().equals(emailIntroducido) && String.valueOf(empleado.getContrasenna()).equals(contrasennaIntroducida)) {
+							dispose();
+							new VentanaCatalogo();
+						}
+					}
+					
+					dbManager.desconexion();
 				}
-				
 			}
 		});
 		
@@ -207,26 +211,6 @@ public class VentanaLogIn extends JFrame {
         contrasenna.addKeyListener(enterListener);
 	}
 	
-	private String verificacion(String emailIntro, String contrasennaIntro) {
-		 try (BufferedReader reader = new BufferedReader(new FileReader("resource/data/registro.txt"))) {
-	            String linea;
-	            while ((linea = reader.readLine()) != null) {
-	                String[] datos = linea.split(";");
-	                
-	                String id = datos[0];
-	                String email = datos[5];
-                    String contrasenna = datos[6];
-                    if (email.equals(emailIntro) && contrasenna.equals(contrasennaIntro)) {
-                        return id;
-                    }
-	            }
-	        } catch (IOException ex) {
-	            ex.printStackTrace();
-	            JOptionPane.showMessageDialog(null, "Error al leer los datos", "Error", JOptionPane.ERROR_MESSAGE);
-	        }
-		 return "";
-	}
-	
 	private void seleccionarBoton(int indice, JButton[] botones) {
         for (int i = 0; i < botones.length; i++) {
             if (i == indice) {
@@ -245,22 +229,28 @@ public class VentanaLogIn extends JFrame {
     private void obtenerAccionDependiendoBoton(int indice) {
         switch (indice) {
 		case 0: 
-			String emailIntro = email.getText();
-			String contrasennaIntro = String.valueOf(contrasenna.getPassword());
-			
-			String id = verificacion(emailIntro, contrasennaIntro);
-			if(!id.equals("")) {
-				if (id.equals("1")) {
-					dispose();
-                    new VentanaCatalogo();
-                } else if (id.equals("2")) { 
-                    new VentanaBienvenidaEmpleado();
-                }
-                dispose();
-			} else {
-				JOptionPane.showMessageDialog(null, "Se ha introducido el usuario y/o la contraseña incorrectamente.", "Error", JOptionPane.ERROR_MESSAGE);
-				email.setText("");
-                contrasenna.setText("");
+			if(!email.getText().isEmpty() && !String.valueOf(contrasenna.getPassword()).isEmpty()) {
+				DataBaseManager dbManager = new DataBaseManager();
+				String emailIntroducido = email.getText();
+				String contrasennaIntroducida = String.valueOf(contrasenna.getPassword());
+				
+				dbManager.conexion("resource/db/concesionario.bd");
+				
+				for (Cliente cliente : dbManager.obtenerTodosClientes()) {
+					if (cliente.getEmail().equals(emailIntroducido) && String.valueOf(cliente.getContrasenna()).equals(contrasennaIntroducida)) {
+						dispose();
+						new VentanaCatalogo();
+					}
+				}
+				
+				for (Empleado empleado : dbManager.obtenerTodosEmpleados()) {
+					if (empleado.getEmail().equals(emailIntroducido) && String.valueOf(empleado.getContrasenna()).equals(contrasennaIntroducida)) {
+						dispose();
+						new VentanaCatalogo();
+					}
+				}
+				
+				dbManager.desconexion();
 			}
 			
 			break;
