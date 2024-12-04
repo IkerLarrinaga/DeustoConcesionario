@@ -1,12 +1,18 @@
 package gui;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +25,7 @@ import domain.Vehiculo;
 public class VentanaCarrito extends JFrame {
 
 	private DefaultTableModel tableModel; 
-	
+	private JButton btnVolver;
     private static final long serialVersionUID = 1L;
 
     public VentanaCarrito() {
@@ -32,7 +38,13 @@ public class VentanaCarrito extends JFrame {
 
         String[] columnas = {"Modelo", "Matricula", "Fecha Inicio", "Fecha Fin"};
         tableModel = new DefaultTableModel(columnas, 0);
-
+        
+        JTable table = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(table);
+        add(scrollPane, BorderLayout.CENTER);
+        
+        table.getTableHeader().setReorderingAllowed(false);
+        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         for (Alquiler alquiler : lAlquileres) {
@@ -53,12 +65,22 @@ public class VentanaCarrito extends JFrame {
             LocalDate fechaFin = alquiler.getFechaFin();
 
             Object[] data = {modelo, matricula, fechaInicio, fechaFin};
-            tableModel.addRow(data);
+            tableModel.addRow(data);         
         }
-
-        JTable table = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(table);
-
+        
+        btnVolver = new JButton("Volver");
+        btnVolver.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	setVisible(false);
+                dispose();
+            	new VentanaCatalogo();                                        
+            }
+        });  
+        
+        JPanel panelBoton = new JPanel();
+        panelBoton.add(btnVolver);
+        add(panelBoton, BorderLayout.SOUTH);
         add(scrollPane);
 
         setVisible(true);
