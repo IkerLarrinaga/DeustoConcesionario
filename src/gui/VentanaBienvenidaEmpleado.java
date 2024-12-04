@@ -40,8 +40,20 @@ public class VentanaBienvenidaEmpleado extends JFrame {
 
        for (Alquiler alquiler : lAlquileres) {
             String nombreUsuario = alquiler.getCliente().getNombre() + " " + alquiler.getCliente().getPrimerApellido() + " " + alquiler.getCliente().getSegundoApellido();
-            String matricula = alquiler.getVehiculo().getMatricula();
-            String marca = alquiler.getVehiculo().getMarca().toString();
+            String matricula = null;
+            String marca = null;
+            
+            if(alquiler.getVehiculoCoche() != null) {
+            	matricula = alquiler.getVehiculoCoche().getMatricula();
+            	marca = alquiler.getVehiculoCoche().getMarca().toString();
+            } else if (alquiler.getVehiculoFurgoneta() != null) {
+            	matricula = alquiler.getVehiculoCoche().getMatricula();
+            	marca = alquiler.getVehiculoCoche().getMarca().toString();
+            } else if (alquiler.getVehiculoMoto() != null) {
+            	matricula = alquiler.getVehiculoCoche().getMatricula();
+            	marca = alquiler.getVehiculoCoche().getMarca().toString();
+            }          
+            
             LocalDate fechaInicio = alquiler.getFechaInicio();
             LocalDate fechaFin = alquiler.getFechaFin();
 
@@ -81,7 +93,7 @@ public class VentanaBienvenidaEmpleado extends JFrame {
                         LocalDate fechaInicio = LocalDate.parse(datos[5], formatter);
                         LocalDate fechaFin = LocalDate.parse(datos[6], formatter);
 
-                        Alquiler alquiler = new Alquiler(cliente, vehiculo, fechaInicio, fechaFin);
+                        Alquiler alquiler = new Alquiler(cliente, vehiculo, vehiculo, vehiculo, fechaInicio, fechaFin);
                         alquileres.add(alquiler);
                         System.out.println("Alquiler creado: " + alquiler);
                     } catch (DateTimeParseException e) {
