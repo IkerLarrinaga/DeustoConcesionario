@@ -18,6 +18,8 @@ import domain.Vehiculo;
 
 public class VentanaCarrito extends JFrame {
 
+	private DefaultTableModel tableModel; 
+	
     private static final long serialVersionUID = 1L;
 
     public VentanaCarrito() {
@@ -28,38 +30,47 @@ public class VentanaCarrito extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        String[] columnas = {"Marca", "Matricula", "Fecha Inicio", "Fecha Fin"};
-        DefaultTableModel tablemodel = new DefaultTableModel(columnas, 0);
+        String[] columnas = {"Modelo", "Matricula", "Fecha Inicio", "Fecha Fin"};
+        tableModel = new DefaultTableModel(columnas, 0);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         for (Alquiler alquiler : lAlquileres) {
         	String matricula = null;
-            String marca = null;
+            String modelo = null;
             
             if(alquiler.getVehiculoCoche() != null) {
             	matricula = alquiler.getVehiculoCoche().getMatricula();
-            	marca = alquiler.getVehiculoCoche().getMarca().toString();
+            	modelo = alquiler.getVehiculoCoche().getModelo().toString();
             } else if (alquiler.getVehiculoFurgoneta() != null) {
             	matricula = alquiler.getVehiculoCoche().getMatricula();
-            	marca = alquiler.getVehiculoCoche().getMarca().toString();
+            	modelo = alquiler.getVehiculoCoche().getModelo().toString();
             } else if (alquiler.getVehiculoMoto() != null) {
             	matricula = alquiler.getVehiculoCoche().getMatricula();
-            	marca = alquiler.getVehiculoCoche().getMarca().toString();
+            	modelo = alquiler.getVehiculoCoche().getModelo().toString();
             }   
             LocalDate fechaInicio = alquiler.getFechaInicio();
             LocalDate fechaFin = alquiler.getFechaFin();
 
-            Object[] data = {marca, matricula, fechaInicio, fechaFin};
-            tablemodel.addRow(data);
+            Object[] data = {modelo, matricula, fechaInicio, fechaFin};
+            tableModel.addRow(data);
         }
 
-        JTable table = new JTable(tablemodel);
+        JTable table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
 
         add(scrollPane);
 
         setVisible(true);
+    }
+    
+    public void agregarVehiculo(String modelo, String matricula, LocalDate fechaInicio, LocalDate fechaFin) {
+    	System.out.println("Agregando vehículo: " + modelo + ", " + matricula);
+        Object[] data = {modelo, matricula, fechaInicio.toString(), fechaFin.toString()};
+        tableModel.addRow(data);
+        
+        revalidate();
+        repaint();
     }
 
     private ArrayList<Alquiler> alquileresUsuario(String rutaArchivo) {

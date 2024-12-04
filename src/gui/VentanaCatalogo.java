@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,8 +19,9 @@ public class VentanaCatalogo extends JFrame {
     private static final long serialVersionUID = 1L;
     private List<Vehiculo> listaVehiculos;
     private JPanel panelCatalogo;
-
-    public VentanaCatalogo() {
+    
+    public VentanaCatalogo() {    	
+    	
         this.listaVehiculos = Vehiculo.cargarVehiculos("resource/data/vehiculos.txt");
 
         setTitle("Catálogo");
@@ -238,7 +240,11 @@ public class VentanaCatalogo extends JFrame {
         setVisible(true);
     }
 
-    private void cargarVehiculosEnCatalogo() {
+    private void cargarVehiculosEnCatalogo() {   	
+    	
+    	VentanaCarrito ventanaCarrito = new VentanaCarrito();
+    	ventanaCarrito.setVisible(false);
+    	
         for (Vehiculo vehiculo : listaVehiculos) {
             JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
             botonVehiculo.setPreferredSize(new Dimension(200, 100));
@@ -255,6 +261,13 @@ public class VentanaCatalogo extends JFrame {
             	        "Caja de Cambios: " + vehiculo.gettCajaCambios() + "\n" +
             	        "Número de plazas: " + vehiculo.getNumPlazas();
                 Object[] opciones = {"Comprar", "Alquilar", "Cerrar"};
+                
+                String modelo = vehiculo.getModelo();
+                String matricula = vehiculo.getMatricula();
+
+                LocalDate fechaInicio = LocalDate.now();
+                LocalDate fechaFin = fechaInicio.plusDays(7);
+                
                 int opcion = JOptionPane.showOptionDialog(
                     this, mensaje, "Información del Vehículo", JOptionPane.DEFAULT_OPTION, 
                     JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[2]           
@@ -263,6 +276,7 @@ public class VentanaCatalogo extends JFrame {
                     JOptionPane.showMessageDialog(this, "Vehículo COMPRADO");
                 } else if(opcion == 1) {
                 	JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
+                    ventanaCarrito.agregarVehiculo(modelo, matricula, fechaInicio, fechaFin);
                 } else {
                     JOptionPane.showMessageDialog(this, "Operación cancelada.");
                 }
