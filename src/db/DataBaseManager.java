@@ -21,8 +21,10 @@ import domain.Factura;
 import domain.Furgoneta;
 import domain.Marca;
 import domain.Moto;
+import domain.Persona;
 import domain.TipoCajaCambios;
 import domain.TipoCombustible;
+import domain.Vehiculo;
 
 //FUENTE-EXTERNA
 //https://github.com/erikcoruna/Rebote
@@ -54,8 +56,10 @@ public class DataBaseManager {
 			conexion = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
 			crearTablaAlquiler();
 			crearTablaFactura();
+			crearTablaPersona();
 			crearTablaCliente();
 			crearTablaEmpleado();
+			crearTablaVehiculo();
 			crearTablaCoche();
 			crearTablaFurgoneta();
 			crearTablaMoto();
@@ -74,9 +78,9 @@ public class DataBaseManager {
 		}
 	}
 	
-	public void crearTablaCliente() {
+	public void crearTablaPersona() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS cliente ("
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS persona ("
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "nombre VARCHAR, "
 					+ "primerApellido VARCHAR,"
@@ -84,8 +88,19 @@ public class DataBaseManager {
 					+ "dni VARCHAR, "
 					+ "fechaNacimiento TEXT, "
 					+ "email VARCHAR, "
-					+ "contrasena VARCHAR, "
-					+ "licenciaConducir VARCHAR)");
+					+ "contrasena VARCHAR)");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void crearTablaCliente() {
+		try (Statement statement = conexion.createStatement()) {
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS cliente ("
+					+ "id INTEGER PRIMARY KEY, "
+					+ "licenciaConducir VARCHAR, "
+					+ "FOREIGN KEY(id) REFERENCES persona(id))");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -95,16 +110,10 @@ public class DataBaseManager {
 	public void crearTablaEmpleado() {
 		try (Statement statement = conexion.createStatement()) {
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS empleado ("
-					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ "nombre VARCHAR, "
-					+ "primerApellido VARCHAR,"
-					+ "segundoApellido VARCHAR, "
-					+ "dni VARCHAR, "
-					+ "fechaNacimiento TEXT, "
-					+ "email VARCHAR, "
-					+ "contrasena VARCHAR, "
+					+ "id INTEGER PRIMARY KEY, "
 					+ "puesto VARCHAR, "
-					+ "salario REAL)");
+					+ "salario REAL, "
+					+ "FOREIGN KEY(id) REFERENCES persona(id))");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,15 +125,27 @@ public class DataBaseManager {
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS alquiler ("
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "idCliente INTEGER, "
-					+ "idCoche INTEGER, "
-					+ "idFurgoneta INTEGER, "
-					+ "idMoto INTEGER,"
+					+ "idVehiculo INTEGER, "
 					+ "fechaInicio TEXT, "
 					+ "fechaFinal TEXT, "
 					+ "FOREIGN KEY(idCliente) REFERENCES cliente(id), "
-					+ "FOREIGN KEY(idCoche) REFERENCES coche(id),"
-					+ "FOREIGN KEY(idFurgoneta) REFERENCES furgoneta(id), "
-					+ "FOREIGN KEY(idMoto) REFERENCES moto(idMoto))");
+					+ "FOREIGN KEY(idVehiculo) REFERENCES vehiculo(id))");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void crearTablaVehiculo() {
+		try (Statement statement = conexion.createStatement()) {
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS vehiculo ("
+					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ "matricula VARCHAR, "
+					+ "marca VARCHAR, "
+					+ "modelo VARCHAR, "
+					+ "precio REAL, "
+					+ "tCombustible VARCHAR,"
+					+ "tCajaCambios VARCHAR, "
+					+ "numPlazas INTEGER)");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -133,16 +154,9 @@ public class DataBaseManager {
 	public void crearTablaCoche() {
 		try (Statement statement = conexion.createStatement()) {
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS coche ("
-					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ "matricula VARCHAR, "
-					+ "marca VARCHAR, "
-					+ "modelo VARCHAR, "
-					+ "precio REAL, "
-					+ "tCombustible VARCHAR,"
-					+ "tCajaCambios VARCHAR, "
-					+ "numPlazas INTEGER, "
-					+ "numPuertas INTEGER)"
-		        );
+					+ "id INTEGER PRIMARY KEY, "
+					+ "numPuertas INTEGER, "
+					+ "FOREIGN KEY(id) REFERENCES vehiculo(id))");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -151,17 +165,10 @@ public class DataBaseManager {
 	public void crearTablaFurgoneta() {
 		try (Statement statement = conexion.createStatement()) {
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS furgoneta ("
-					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ "matricula VARCHAR, "
-					+ "marca VARCHAR, "
-					+ "modelo VARCHAR, "
-					+ "precio REAL, "
-					+ "tCombustible VARCHAR, "
-					+ "tCajaCambios VARCHAR, "
-					+ "numPlazas INTEGER, "
+					+ "id INTEGER PRIMARY KEY, "
 					+ "cargaMax REAL, "
-					+ "capacidadCarga INTEGER)"
-		        );
+					+ "capacidadCarga INTEGER, "
+					+ "FOREIGN KEY(id) REFERENCES vehiculo(id))");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -170,17 +177,10 @@ public class DataBaseManager {
 	public void crearTablaMoto() {
 		try (Statement statement = conexion.createStatement()) {
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS moto ("
-					+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ "matricula VARCHAR, "
-					+ "marca VARCHAR, "
-					+ "modelo VARCHAR, "
-					+ "precio REAL, "
-					+ "tCombustible VARCHAR,"
-					+ "tCajaCambios VARCHAR, "
-					+ "numPlazas INTEGER, "
+					+ "id INTEGER PRIMARY KEY,"
 					+ "baul BOOLEAN, "
-					+ "cilindrada INTEGER)"
-		        );
+					+ "cilindrada INTEGER, "
+					+ "FOREIGN KEY(id) REFERENCES vehiculo(id))");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -207,8 +207,8 @@ public class DataBaseManager {
 		}
 	}
 	
-	public void almacenarCliente(Cliente cliente) {
-		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO cliente ("
+	public void almacenarPersona(Persona persona) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO persona ("
 				+ "nombre, "
 				+ "primerApellido, "
 				+ "segundoApellido,"
@@ -217,25 +217,41 @@ public class DataBaseManager {
 				+ "email, "
 				+ "contrasena, "
 				+ "licenciaConducir) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?)");
 				
 				Statement statement = conexion.createStatement()) {
-			pstatement.setString(1, cliente.getNombre());
-			pstatement.setString(2, cliente.getPrimerApellido());
-			pstatement.setString(3, cliente.getSegundoApellido());
-			pstatement.setString(4, cliente.getDni());
-			pstatement.setString(5, fechaAString(cliente.getFechaNacimiento()));
-			pstatement.setString(6, cliente.getEmail());
-			pstatement.setString(7, cliente.getContrasenna());
-			pstatement.setString(8, cliente.getLicenciaConducir());
+			pstatement.setString(1, persona.getNombre());
+			pstatement.setString(2, persona.getPrimerApellido());
+			pstatement.setString(3, persona.getSegundoApellido());
+			pstatement.setString(4, persona.getDni());
+			pstatement.setString(5, fechaAString(persona.getFechaNacimiento()));
+			pstatement.setString(6, persona.getEmail());
+			pstatement.setString(7, persona.getContrasenna());
 			
 			pstatement.executeUpdate();
 			
-			ResultSet resulSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM cliente");
+			ResultSet resulSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM persona");
 			if (resulSet.next()) {
 				int newId = resulSet.getInt("id");
-				cliente.setId(newId);
+				persona.setId(newId);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void almacenarCliente(Cliente cliente) {
+		almacenarPersona(cliente);
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO cliente ("
+				+ "id, "
+				+ "licenciaConducir) "
+				+ "VALUES (?, ?)");
+				
+			) {
+			pstatement.setInt(1, cliente.getId());
+			pstatement.setString(2, cliente.getLicenciaConducir());
+			
+			pstatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -243,35 +259,16 @@ public class DataBaseManager {
 	
 	public void almacenarEmpleado(Empleado empleado) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO empleado ("
-				+ "nombre, "
-				+ "primerApellido, "
-				+ "segundoApellido, "
-				+ "dni, "
-				+ "fechaNacimiento, "
-				+ "email, "
-				+ "contrasena, "
+				+ "id, "
 				+ "puesto, "
 				+ "salario)"
-				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				
-				Statement statement = conexion.createStatement()) {
-			pstatement.setString(1, empleado.getNombre());
-			pstatement.setString(2, empleado.getPrimerApellido());
-			pstatement.setString(3, empleado.getSegundoApellido());
-			pstatement.setString(4, empleado.getDni());
-			pstatement.setString(5, fechaAString(empleado.getFechaNacimiento()));
-			pstatement.setString(6, empleado.getEmail());
-			pstatement.setString(7, empleado.getContrasenna());
-			pstatement.setString(8, empleado.getPuesto());
-			pstatement.setDouble(9, empleado.getSalario());
+				+ " VALUES (?, ?, ?)");
+			) {
+			pstatement.setInt(1, empleado.getId());
+			pstatement.setString(2, empleado.getPuesto());
+			pstatement.setDouble(3, empleado.getSalario());
 			
 			pstatement.executeUpdate();
-			
-			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM empleado");
-			if (resultSet.next()) {
-				int newId = resultSet.getInt("id");
-				empleado.setId(newId);
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -280,37 +277,21 @@ public class DataBaseManager {
 	public void almacenarAlquiler(Alquiler alquiler) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO alquiler ("
 				+ "idCliente, "
-				+ "idCoche, "
-				+ "idFurgoneta, "
-				+ "idMoto, "
+				+ "idVehiculo, "
 				+ "fechaInicio, "
 				+ "fechaFinal)"
-				+ "VALUES (?, ?, ?, ?, ?, ?)");
+				+ "VALUES (?, ?, ?, ?)");
 				
 				Statement statement = conexion.createStatement()) {
 			try {
-				pstatement.setInt(1, alquiler.getCliente().getId());
-				if(alquiler.getVehiculoCoche() != null) {
-					pstatement.setInt(2, alquiler.getVehiculoCoche().getId());
-					//IAG ChatGPT
-					//Se ha pedido a ChatGPT como utilizar el setNull
-					pstatement.setNull(3, Types.INTEGER);
-					pstatement.setNull(4, Types.INTEGER);
-				} else if(alquiler.getVehiculoFurgoneta() != null) {
-					pstatement.setNull(2, Types.INTEGER);
-					pstatement.setInt(3, alquiler.getVehiculoFurgoneta().getId());
-					pstatement.setNull(4, Types.INTEGER);
-				} else if(alquiler.getVehiculoMoto() != null) {
-					pstatement.setNull(2, Types.INTEGER);
-					pstatement.setNull(3, Types.INTEGER);
-					pstatement.setInt(4, alquiler.getVehiculoMoto().getId());
-				}
+				
 			} catch (NullPointerException e) {
-				e.printStackTrace();
+				pstatement.setInt(1, alquiler.getCliente().getId());
+				pstatement.setInt(2, alquiler.getVehiculo().getId());
 			}
 			
-			pstatement.setString(5, fechaAString(alquiler.getFechaInicio()));
-			pstatement.setString(6, fechaAString(alquiler.getFechaFin()));
+			pstatement.setString(3, fechaAString(alquiler.getFechaInicio()));
+			pstatement.setString(4, fechaAString(alquiler.getFechaFin()));
 			
 			pstatement.executeUpdate();
 			
@@ -324,107 +305,86 @@ public class DataBaseManager {
 		}
 	}
 	
-	public void almacenarCoche(Coche coche) {
-		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO coche ("
+	public void almacenarVehiculo(Vehiculo vehiculo) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO vehiculo ("
 				+ "matricula, "
 				+ "marca, "
 				+ "modelo, "
 				+ "precio, "
 				+ "tCombustible, "
 				+ "tCajaCambios, "
-				+ "numPlazas, "
-				+ "numPuertas) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+				+ "numPlazas) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?)");
 				
 				Statement statement = conexion.createStatement()) {
-			pstatement.setString(1, coche.getMatricula());
-			pstatement.setString(2, coche.getMarca().name());
-			pstatement.setString(3, coche.getModelo());
-			pstatement.setFloat(4, coche.getPrecio());
-			pstatement.setString(5, coche.gettCombustible().name());
-			pstatement.setString(6, coche.gettCajaCambios().name());
-			pstatement.setInt(7, coche.getNumPlazas());
-			pstatement.setInt(8, coche.getNumPuertas());
+			pstatement.setString(1, vehiculo.getMatricula());
+			pstatement.setString(2, vehiculo.getMarca().name());
+			pstatement.setString(3, vehiculo.getModelo());
+			pstatement.setFloat(4, vehiculo.getPrecio());
+			pstatement.setString(5, vehiculo.gettCombustible().name());
+			pstatement.setString(6, vehiculo.gettCajaCambios().name());
+			pstatement.setInt(7, vehiculo.getNumPlazas());
 			
 			pstatement.executeUpdate();
 			
-			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM coche");
+			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM vehiculo");
 			if (resultSet.next()) {
 				int newId = resultSet.getInt("id");
-				coche.setId(newId);
+				vehiculo.setId(newId);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void almacenarCoche(Coche coche) {
+		almacenarVehiculo(coche);
+		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO coche ("
+				+ "id, "
+				+ "numPuertas) "
+				+ "VALUES (?, ?)");
+			) {
+			pstatement.setInt(1, coche.getId());
+			pstatement.setInt(2, coche.getNumPuertas());
+			
+			pstatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void almacenarFurgoneta(Furgoneta furgoneta) {
+		almacenarVehiculo(furgoneta);
 		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO furgoneta ("
-				+ "matricula, "
-				+ "marca, "
-				+ "modelo, "
-				+ "precio, "
-				+ "tCombustible, "
-				+ "tCajaCambios, "
-				+ "numPlazas, "
+				+ "id, "
 				+ "cargaMax, "
 				+ "capacidadCarga)"
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				
-				Statement statement = conexion.createStatement()) {
-			pstatement.setString(1, furgoneta.getMatricula());
-			pstatement.setString(2, furgoneta.getMarca().name());
-			pstatement.setString(3, furgoneta.getModelo());
-			pstatement.setFloat(4, furgoneta.getPrecio());
-			pstatement.setString(5, furgoneta.gettCombustible().name());
-			pstatement.setString(6, furgoneta.gettCajaCambios().name());
-			pstatement.setInt(7, furgoneta.getNumPlazas());
-			pstatement.setDouble(8, furgoneta.getCargaMax());
-			pstatement.setInt(9, furgoneta.getCapacidadCarga());
+				+ "VALUES (?, ?, ?)");
+			) {
+			pstatement.setInt(1, furgoneta.getId());
+			pstatement.setDouble(2, furgoneta.getCargaMax());
+			pstatement.setInt(3, furgoneta.getCapacidadCarga());
 			
 			pstatement.executeUpdate();
-			
-			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM furgoneta");
-			if (resultSet.next()) {
-				int newId = resultSet.getInt("id");
-				furgoneta.setId(newId);
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void almacenarMoto(Moto moto) {
+		almacenarVehiculo(moto);
 		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO moto ("
-				+ "matricula, "
-				+ "marca, "
-				+ "modelo, "
-				+ "precio, "
-				+ "tCombustible, "
-				+ "tCajaCambios, "
-				+ "numPlazas, "
+				+ "id, "
 				+ "baul, "
 				+ "cilindrada)"
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				
-				Statement statement = conexion.createStatement()) {
-			pstatement.setString(1, moto.getMatricula());
-			pstatement.setString(2, moto.getMarca().name());
-			pstatement.setString(3, moto.getModelo());
-			pstatement.setFloat(4, moto.getPrecio());
-			pstatement.setString(5, moto.gettCombustible().name());
-			pstatement.setString(6, moto.gettCajaCambios().name());
-			pstatement.setInt(7, moto.getNumPlazas());
-			pstatement.setBoolean(8, moto.isBaul());
-			pstatement.setInt(9, moto.getCilindrada());
+				+ "VALUES (?, ?, ?)");
+			) {
+			pstatement.setInt(1, moto.getId());
+			pstatement.setBoolean(2, moto.isBaul());
+			pstatement.setInt(3, moto.getCilindrada());
 			
 			pstatement.executeUpdate();
-			
-			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM moto");
-			if (resultSet.next()) {
-				int newId = resultSet.getInt("id");
-				moto.setId(newId);
-			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
