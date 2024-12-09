@@ -7,6 +7,7 @@ public class Alquiler {
     private int id = -1;
     private Cliente cliente;
     private Vehiculo vehiculo;
+    private TipoVehiculo tipoVehiculo;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
 
@@ -14,19 +15,22 @@ public class Alquiler {
         super();
     }
 
-	public Alquiler(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, LocalDate fechaFin) {
+	public Alquiler(Cliente cliente, Vehiculo vehiculo, TipoVehiculo tipoVehiculo, LocalDate fechaInicio,
+			LocalDate fechaFin) {
 		super();
 		this.cliente = cliente;
 		this.vehiculo = vehiculo;
+		this.tipoVehiculo = tipoVehiculo;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 	}
 
-	public Alquiler(int id, Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, LocalDate fechaFin) {
+	public Alquiler(int id, Cliente cliente, Vehiculo vehiculo, TipoVehiculo tipoVehiculo, LocalDate fechaInicio,
+			LocalDate fechaFin) {
 		super();
-		this.id = id;
 		this.cliente = cliente;
 		this.vehiculo = vehiculo;
+		this.tipoVehiculo = tipoVehiculo;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 	}
@@ -51,6 +55,14 @@ public class Alquiler {
 		return vehiculo;
 	}
 
+	public TipoVehiculo getTipoVehiculo() {
+		return tipoVehiculo;
+	}
+
+	public void setTipoVehiculo(TipoVehiculo tipoVehiculo) {
+		this.tipoVehiculo = tipoVehiculo;
+	}
+
 	public void setVehiculo(Vehiculo vehiculo) {
 		this.vehiculo = vehiculo;
 	}
@@ -73,8 +85,8 @@ public class Alquiler {
 
 	@Override
 	public String toString() {
-		return "Alquiler [id=" + id + ", cliente=" + cliente + ", vehiculo=" + vehiculo + ", fechaInicio=" + fechaInicio
-				+ ", fechaFin=" + fechaFin + "]";
+		return "Alquiler [id=" + id + ", cliente=" + cliente + ", vehiculo=" + vehiculo + ", tipoVehiculo="
+				+ tipoVehiculo + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]";
 	}
 
 	public void registrarAlquiler() {

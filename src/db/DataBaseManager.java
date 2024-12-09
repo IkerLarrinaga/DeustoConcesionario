@@ -126,6 +126,7 @@ public class DataBaseManager {
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "idCliente INTEGER, "
 					+ "idVehiculo INTEGER, "
+					+ "tipoVehiculo TEXT, "
 					+ "fechaInicio TEXT, "
 					+ "fechaFinal TEXT, "
 					+ "FOREIGN KEY(idCliente) REFERENCES cliente(id), "
@@ -278,9 +279,10 @@ public class DataBaseManager {
 		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO alquiler ("
 				+ "idCliente, "
 				+ "idVehiculo, "
+				+ "tipoVehiculo, "
 				+ "fechaInicio, "
 				+ "fechaFinal)"
-				+ "VALUES (?, ?, ?, ?)");
+				+ "VALUES (?, ?, ?, ?, ?)");
 				
 				Statement statement = conexion.createStatement()) {
 			try {
@@ -290,8 +292,9 @@ public class DataBaseManager {
 				pstatement.setInt(2, alquiler.getVehiculo().getId());
 			}
 			
-			pstatement.setString(3, fechaAString(alquiler.getFechaInicio()));
-			pstatement.setString(4, fechaAString(alquiler.getFechaFin()));
+			pstatement.setString(3, alquiler.getTipoVehiculo().name());
+			pstatement.setString(4, fechaAString(alquiler.getFechaInicio()));
+			pstatement.setString(5, fechaAString(alquiler.getFechaFin()));
 			
 			pstatement.executeUpdate();
 			
@@ -421,16 +424,18 @@ public class DataBaseManager {
 
 	public Cliente obtenerCliente(int id) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
-				+ "id, "
-				+ "nombre, "
-				+ "primerApellido, "
-				+ "segundoApellido, "
-				+ "dni, "
-				+ "fechaNacimiento, "
-				+ "email, "
-				+ "contrasena, "
-				+ "licenciaConducir "
-				+ "FROM cliente WHERE id = ?")) {
+				+ "p.id, "
+				+ "p.nombre, "
+				+ "p.primerApellido, "
+				+ "p.segundoApellido, "
+				+ "p.dni, "
+				+ "p.fechaNacimiento, "
+				+ "p.email, "
+				+ "p.contrasena, "
+				+ "c.licenciaConducir "
+				+ "FROM persona p "
+				+ "JOIN cliente c ON p.id = c.id "
+				+ "WHERE p.id = ?")) {
 			pstatement.setInt(1, id);
 			
 			ResultSet resultSet = pstatement.executeQuery();
@@ -458,17 +463,19 @@ public class DataBaseManager {
 	
 	public Empleado obtenerEmpleado(int id) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
-				+ "id, "
-				+ "nombre, "
-				+ "primerApellido, "
-				+ "segundoApellido, "
-				+ "dni, "
-				+ "fechaNacimiento, "
-				+ "email, "
-				+ "contrasena, "
-				+ "puesto,"
-				+ "salario "
-				+ "FROM empleado WHERE id = ?")) {
+				+ "p.id, "
+				+ "p.nombre, "
+				+ "p.primerApellido, "
+				+ "p.segundoApellido, "
+				+ "p.dni, "
+				+ "p.fechaNacimiento, "
+				+ "p.email, "
+				+ "p.contrasena, "
+				+ "e.puesto,"
+				+ "e.salario "
+				+ "FROM persona p "
+				+ "JOIN empleado e ON p.id = e.id "
+				+ "WHERE p.id = ?")) {
 			pstatement.setInt(1, id);
 			
 			ResultSet resultSet = pstatement.executeQuery();
@@ -499,9 +506,8 @@ public class DataBaseManager {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
 				+ "id, "
 				+ "idCliente, "
-				+ "idCoche, "
+				+ "idVehiculo, "
 				+ "idFurgoneta, "
-				+ "idMoto, "
 				+ "fechaInicio, "
 				+ "fechaFinal "
 				+ "FROM alquiler WHERE id = ?")) {
@@ -545,16 +551,18 @@ public class DataBaseManager {
 	
 	public Coche obtenerCoche(int id) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
-				+ "id, "
-				+ "matricula, "
-				+ "marca, "
-				+ "modelo, "
-				+ "precio, "
-				+ "tCombustible, "
-				+ "tCajaCambios, "
-				+ "numPlazas, "
-				+ "numPuertas "
-				+ "FROM coche WHERE id = ?")) {
+				+ "v.id, "
+				+ "v.matricula, "
+				+ "v.marca, "
+				+ "v.modelo, "
+				+ "v.precio, "
+				+ "v.tCombustible, "
+				+ "v.tCajaCambios, "
+				+ "v.numPlazas, "
+				+ "c.numPuertas "
+				+ "FROM vehiculo v "
+				+ "JOIN coche c ON v.id = c.id "
+				+ "WHERE v.id = ?")) {
 			pstatement.setInt(1, id);
 			
 			ResultSet resultSet = pstatement.executeQuery();
@@ -566,7 +574,7 @@ public class DataBaseManager {
 				//Sugerido por Gemini para el correcto funcionamiento
 				try {
 					coche.setMarca(Marca.valueOf(resultSet.getString("marca")));
-				} catch (IllegalArgumentException e) {
+				} catch (IllegalArgumentException | NullPointerException e) {
 					e.printStackTrace();
 				}
 				coche.setModelo(resultSet.getString("modelo"));
@@ -574,7 +582,7 @@ public class DataBaseManager {
 				try {
 					coche.settCombustible(TipoCombustible.valueOf(resultSet.getString("tCombustible")));
 					coche.settCajaCambios(TipoCajaCambios.valueOf(resultSet.getString("tCajaCambios")));
-				} catch (IllegalArgumentException e) {
+				} catch (IllegalArgumentException | NullPointerException e) {
 					e.printStackTrace();
 				}
 				coche.setNumPlazas(resultSet.getInt("numPlazas"));
@@ -592,17 +600,19 @@ public class DataBaseManager {
 	
 	public Furgoneta obtenerFurgoneta(int id) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
-				+ "id, "
-				+ "matricula, "
-				+ "marca, "
-				+ "modelo, "
-				+ "precio, "
-				+ "tCombustible, "
-				+ "tCajaCambios, "
-				+ "numPlazas, "
-				+ "cargaMax, "
-				+ "capacidadCarga "
-				+ "FROM furgoneta WHERE id = ?")) {
+				+ "v.id, "
+				+ "v.matricula, "
+				+ "v.marca, "
+				+ "v.modelo, "
+				+ "v.precio, "
+				+ "v.tCombustible, "
+				+ "v.tCajaCambios, "
+				+ "v.numPlazas, "
+				+ "f.cargaMax, "
+				+ "f.capacidadCarga "
+				+ "FROM vehiculo v "
+				+ "JOIN furgoneta f ON v.id = f.id"
+				+ "WHERE v.id = ?")) {
 			pstatement.setInt(1, id);
 			
 			ResultSet resultSet = pstatement.executeQuery();
@@ -610,11 +620,19 @@ public class DataBaseManager {
 				Furgoneta furgoneta = new Furgoneta();
 				furgoneta.setId(resultSet.getInt("id"));
 				furgoneta.setMatricula(resultSet.getString("matricula"));
-				furgoneta.setMarca(Marca.valueOf(resultSet.getString("marca")));
+				try {
+					furgoneta.setMarca(Marca.valueOf(resultSet.getString("marca")));
+				} catch (IllegalArgumentException | NullPointerException e) {
+					e.printStackTrace();
+				}
 				furgoneta.setModelo(resultSet.getString("modelo"));
 				furgoneta.setPrecio(resultSet.getFloat("precio"));
-				furgoneta.settCombustible(TipoCombustible.valueOf(resultSet.getString("tCombustible")));
-				furgoneta.settCajaCambios(TipoCajaCambios.valueOf(resultSet.getString("tCajaCambios")));
+				try {
+					furgoneta.settCombustible(TipoCombustible.valueOf(resultSet.getString("tCombustible")));
+					furgoneta.settCajaCambios(TipoCajaCambios.valueOf(resultSet.getString("tCajaCambios")));
+				} catch (IllegalArgumentException | NullPointerException e) {
+					e.printStackTrace();
+				}
 				furgoneta.setNumPlazas(resultSet.getInt("numPlazas"));
 				furgoneta.setCargaMax(resultSet.getInt("cargaMax"));
 				furgoneta.setCapacidadCarga(resultSet.getInt("capacidadCarga"));
@@ -631,17 +649,19 @@ public class DataBaseManager {
 	
 	public Moto obtenerMoto(int id) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
-				+ "id, "
-				+ "matricula, "
-				+ "marca, "
-				+ "modelo, "
-				+ "precio, "
-				+ "tCombustible, "
-				+ "tCajaCambios, "
-				+ "numPlazas, "
-				+ "baul, "
-				+ "cilindrada "
-				+ "FROM moto WHERE id = ?")) {
+				+ "v.id, "
+				+ "v.matricula, "
+				+ "v.marca, "
+				+ "v.modelo, "
+				+ "v.precio, "
+				+ "v.tCombustible, "
+				+ "v.tCajaCambios, "
+				+ "v.numPlazas, "
+				+ "m.baul, "
+				+ "m.cilindrada "
+				+ "FROM vehiculo v "
+				+ "JOIN moto m ON v.id = m.id "
+				+ "WHERE v.id = ?")) {
 			pstatement.setInt(1, id);
 			
 			ResultSet resultSet = pstatement.executeQuery();
@@ -649,11 +669,19 @@ public class DataBaseManager {
 				Moto moto = new Moto();
 				moto.setId(resultSet.getInt("id"));
 				moto.setMatricula(resultSet.getString("matricula"));
-				moto.setMarca(Marca.valueOf(resultSet.getString("marca")));
+				try {
+					moto.setMarca(Marca.valueOf(resultSet.getString("marca")));
+				} catch (IllegalArgumentException | NullPointerException e) {
+					e.printStackTrace();
+				}
 				moto.setModelo(resultSet.getString("modelo"));
 				moto.setPrecio(resultSet.getFloat("precio"));
-				moto.settCombustible(TipoCombustible.valueOf(resultSet.getString("tCombustible")));
-				moto.settCajaCambios(TipoCajaCambios.valueOf(resultSet.getString("tCajaCambios")));
+				try {
+					moto.settCombustible(TipoCombustible.valueOf(resultSet.getString("tCombustible")));
+					moto.settCajaCambios(TipoCajaCambios.valueOf(resultSet.getString("tCajaCambios")));
+				} catch (IllegalArgumentException | NullPointerException e) {
+					e.printStackTrace();
+				}
 				moto.setNumPlazas(resultSet.getInt("numPlazas"));
 				moto.setBaul(resultSet.getBoolean("baul"));
 				moto.setCilindrada(resultSet.getInt("cilindrada"));
