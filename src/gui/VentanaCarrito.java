@@ -1,3 +1,4 @@
+
 package gui;
 
 import java.awt.BorderLayout;
@@ -21,11 +22,14 @@ import domain.Alquiler;
 import domain.Cliente;
 import domain.Marca;
 import domain.Vehiculo;
+import domain.Coche;
+import domain.Furgoneta;
+import domain.Moto;
 
 public class VentanaCarrito extends JFrame {
 
-	private DefaultTableModel tableModel; 
-	private JButton btnVolver;
+    private DefaultTableModel tableModel;
+    private JButton btnVolver;
     private static final long serialVersionUID = 1L;
 
     public VentanaCarrito() {
@@ -38,46 +42,50 @@ public class VentanaCarrito extends JFrame {
 
         String[] columnas = {"Modelo", "Matricula", "Fecha Inicio", "Fecha Fin"};
         tableModel = new DefaultTableModel(columnas, 0);
-        
+
         JTable table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
-        
+
         table.getTableHeader().setReorderingAllowed(false);
-        
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         for (Alquiler alquiler : lAlquileres) {
-        	String matricula = null;
+            String matricula = null;
             String modelo = null;
-            
-            if(alquiler.getVehiculoCoche() != null) {
-            	matricula = alquiler.getVehiculoCoche().getMatricula();
-            	modelo = alquiler.getVehiculoCoche().getModelo().toString();
-            } else if (alquiler.getVehiculoFurgoneta() != null) {
-            	matricula = alquiler.getVehiculoCoche().getMatricula();
-            	modelo = alquiler.getVehiculoCoche().getModelo().toString();
-            } else if (alquiler.getVehiculoMoto() != null) {
-            	matricula = alquiler.getVehiculoCoche().getMatricula();
-            	modelo = alquiler.getVehiculoCoche().getModelo().toString();
-            }   
+
+            if (alquiler.getVehiculo() != null) {
+                String tipoVehiculo = alquiler.getVehiculo().getTipo();
+                if ("Coche".equals(tipoVehiculo)) {
+                    matricula = alquiler.getVehiculoCoche().getMatricula();
+                    modelo = alquiler.getVehiculoCoche().getModelo().toString();
+                } else if ("Furgoneta".equals(tipoVehiculo)) {
+                    matricula = alquiler.getVehiculoFurgoneta().getMatricula();
+                    modelo = alquiler.getVehiculoFurgoneta().getModelo().toString();
+                } else if ("Moto".equals(tipoVehiculo)) {
+                    matricula = alquiler.getVehiculoMoto().getMatricula();
+                    modelo = alquiler.getVehiculoMoto().getModelo().toString();
+                }
+            }
+
             LocalDate fechaInicio = alquiler.getFechaInicio();
             LocalDate fechaFin = alquiler.getFechaFin();
 
             Object[] data = {modelo, matricula, fechaInicio, fechaFin};
-            tableModel.addRow(data);         
+            tableModel.addRow(data);
         }
-        
+
         btnVolver = new JButton("Volver");
         btnVolver.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	setVisible(false);
+                setVisible(false);
                 dispose();
-            	new VentanaCatalogo();                                        
+                new VentanaCatalogo();
             }
-        });  
-        
+        });
+
         JPanel panelBoton = new JPanel();
         panelBoton.add(btnVolver);
         add(panelBoton, BorderLayout.SOUTH);
@@ -85,12 +93,12 @@ public class VentanaCarrito extends JFrame {
 
         setVisible(true);
     }
-    
+
     public void agregarVehiculo(String modelo, String matricula, LocalDate fechaInicio, LocalDate fechaFin) {
-    	System.out.println("Agregando vehículo: " + modelo + ", " + matricula);
+        System.out.println("Agregando vehículo: " + modelo + ", " + matricula);
         Object[] data = {modelo, matricula, fechaInicio.toString(), fechaFin.toString()};
         tableModel.addRow(data);
-        
+
         revalidate();
         repaint();
     }
@@ -116,20 +124,21 @@ public class VentanaCarrito extends JFrame {
                         continue;
                     }
 
-                    Vehiculo vehiculo = new Vehiculo() {
-                        public void mostrarInformacion() {}
-                        public void alquilar() {}
-                        public void devolver() {}
-                        @Override
-                        public String getTipo() {
-                            return marca.toString();
-                        }
-                    };
+                    Vehiculo vehiculo;
+                    if ("Coche".equals(datos[2])) {
+                        vehiculo = new Coche();
+                    } else if ("Furgoneta".equals(datos[2])) {
+                        vehiculo = new Furgoneta();
+                    } else if ("Moto".equals(datos[2])) {
+                        vehiculo = new Moto();
+                    } else {
+                        System.err.println("Tipo de vehículo inválido encontrado: " + datos[2]);
+                        continue;
+                    }
 
                     LocalDate fechaInicio = LocalDate.parse(datos[5], formatter);
                     LocalDate fechaFin = LocalDate.parse(datos[6], formatter);
-
-                    Alquiler alquiler = new Alquiler(cliente, vehiculo, null, null, fechaInicio, fechaFin);
+                    Alquiler alquiler = new Alquiler(cliente, vehiculo, null, fechaInicio, fechaFin);
                     alquileres.add(alquiler);
                 }
             }

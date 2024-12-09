@@ -70,19 +70,47 @@ public class Factura {
         System.out.println("Factura Generada:");
         System.out.println("ID: " + id);
         System.out.println("Cliente: " + alquiler.getCliente());
-        System.out.println("Vehículo: " + alquiler.getVehiculoCoche());
-        System.out.println("Vehículo: " + alquiler.getVehiculoFurgoneta());
-        System.out.println("Vehículo: " + alquiler.getVehiculoMoto());
+
+        String tipoVehiculo = alquiler.getVehiculo().getTipo();
+        String matricula = "";
+        String modelo = "";
+
+        if ("Coche".equals(tipoVehiculo)) {
+            matricula = alquiler.getVehiculoCoche().getMatricula();
+            modelo = alquiler.getVehiculoCoche().getModelo().toString();
+        } else if ("Furgoneta".equals(tipoVehiculo)) {
+            matricula = alquiler.getVehiculoFurgoneta().getMatricula();
+            modelo = alquiler.getVehiculoFurgoneta().getModelo().toString();
+        } else if ("Moto".equals(tipoVehiculo)) {
+            matricula = alquiler.getVehiculoMoto().getMatricula();
+            modelo = alquiler.getVehiculoMoto().getModelo().toString();
+        }
+
+        System.out.println("Vehículo: " + modelo + " - " + matricula);
         System.out.println("Importe Total: " + importeTotal + "€");
         System.out.println("Fecha: " + fechaFactura);
     }
-
+    
     public void mostrarFactura() {
         System.out.println("Factura ID: " + id);
         System.out.println("Cliente: " + alquiler.getCliente());
-        System.out.println("Vehículo: " + alquiler.getVehiculoCoche());
-        System.out.println("Vehículo: " + alquiler.getVehiculoFurgoneta());
-        System.out.println("Vehículo: " + alquiler.getVehiculoMoto());
+
+        String tipoVehiculo = alquiler.getVehiculo().getTipo();
+        String matricula = "";
+        String modelo = "";
+
+        if ("Coche".equals(tipoVehiculo)) {
+            matricula = alquiler.getVehiculoCoche().getMatricula();
+            modelo = alquiler.getVehiculoCoche().getModelo().toString();
+        } else if ("Furgoneta".equals(tipoVehiculo)) {
+            matricula = alquiler.getVehiculoFurgoneta().getMatricula();
+            modelo = alquiler.getVehiculoFurgoneta().getModelo().toString();
+        } else if ("Moto".equals(tipoVehiculo)) {
+            matricula = alquiler.getVehiculoMoto().getMatricula();
+            modelo = alquiler.getVehiculoMoto().getModelo().toString();
+        }
+
+        System.out.println("Vehículo: " + modelo + " - " + matricula);
         System.out.println("Importe Total: " + importeTotal + "€");
         System.out.println("Fecha de Factura: " + fechaFactura);
     }

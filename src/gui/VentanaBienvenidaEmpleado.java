@@ -20,6 +20,7 @@ import domain.Coche;
 import domain.Furgoneta;
 import domain.Marca;
 import domain.Moto;
+import domain.TipoVehiculo;
 import domain.Vehiculo;
 
 public class VentanaBienvenidaEmpleado extends JFrame {
@@ -93,7 +94,7 @@ public class VentanaBienvenidaEmpleado extends JFrame {
                         LocalDate fechaInicio = LocalDate.parse(datos[5], formatter);
                         LocalDate fechaFin = LocalDate.parse(datos[6], formatter);
 
-                        Alquiler alquiler = new Alquiler(cliente, vehiculo, vehiculo, vehiculo, fechaInicio, fechaFin);
+                        Alquiler alquiler = new Alquiler(0, cliente, vehiculo, null, fechaInicio, fechaFin);
                         alquileres.add(alquiler);
                         System.out.println("Alquiler creado: " + alquiler);
                     } catch (DateTimeParseException e) {

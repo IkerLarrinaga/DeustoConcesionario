@@ -276,37 +276,32 @@ public class DataBaseManager {
 	}
 	
 	public void almacenarAlquiler(Alquiler alquiler) {
-		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO alquiler ("
-				+ "idCliente, "
-				+ "idVehiculo, "
-				+ "tipoVehiculo, "
-				+ "fechaInicio, "
-				+ "fechaFinal)"
-				+ "VALUES (?, ?, ?, ?, ?)");
-				
-				Statement statement = conexion.createStatement()) {
-			try {
-				
-			} catch (NullPointerException e) {
-				pstatement.setInt(1, alquiler.getCliente().getId());
-				pstatement.setInt(2, alquiler.getVehiculo().getId());
-			}
-			
-			pstatement.setString(3, alquiler.getTipoVehiculo().name());
-			pstatement.setString(4, fechaAString(alquiler.getFechaInicio()));
-			pstatement.setString(5, fechaAString(alquiler.getFechaFin()));
-			
-			pstatement.executeUpdate();
-			
-			ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM alquiler");
-			if (resultSet.next()) {
-				int newId = resultSet.getInt("id");
-				alquiler.setId(newId);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+        try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO alquiler ("
+                + "idCliente, "
+                + "idVehiculo, "
+                + "tipoVehiculo, "
+                + "fechaInicio, "
+                + "fechaFinal)"
+                + "VALUES (?, ?, ?, ?, ?)");
+
+             Statement statement = conexion.createStatement()) {
+            pstatement.setInt(1, alquiler.getCliente().getId());
+            pstatement.setInt(2, alquiler.getVehiculo().getId());
+            pstatement.setString(3, alquiler.getVehiculo().getTipo());
+            pstatement.setString(4, fechaAString(alquiler.getFechaInicio()));
+            pstatement.setString(5, fechaAString(alquiler.getFechaFin()));
+
+            pstatement.executeUpdate();
+
+            ResultSet resultSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM alquiler");
+            if (resultSet.next()) {
+                int newId = resultSet.getInt("id");
+                alquiler.setId(newId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	public void almacenarVehiculo(Vehiculo vehiculo) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO vehiculo ("
@@ -502,52 +497,44 @@ public class DataBaseManager {
 		}
 	}
 
-	public Alquiler obtenerAlquiler(int id) {
-		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
-				+ "id, "
-				+ "idCliente, "
-				+ "idVehiculo, "
-				+ "idFurgoneta, "
-				+ "fechaInicio, "
-				+ "fechaFinal "
-				+ "FROM alquiler WHERE id = ?")) {
-			pstatement.setInt(1, id);
-			
-			ResultSet resultSet = pstatement.executeQuery();
-			if (resultSet.next()) {
-				Alquiler alquiler = new Alquiler();
-				alquiler.setId(resultSet.getInt("id"));
-				alquiler.setCliente(obtenerCliente(resultSet.getInt("idCliente")));
-				
-				//IAG Gemini
-				//Sugerido por Gemini para correcto funcionamiento
-				int idCoche = resultSet.getInt("idCoche");
-	            int idFurgoneta = resultSet.getInt("idFurgoneta");
-	            int idMoto = resultSet.getInt("idMoto");
+	 public Alquiler obtenerAlquiler(int id) {
+	        try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+	                + "id, "
+	                + "idCliente, "
+	                + "idVehiculo, "
+	                + "tipoVehiculo, "
+	                + "fechaInicio, "
+	                + "fechaFinal "
+	                + "FROM alquiler WHERE id = ?")) {
+	            pstatement.setInt(1, id);
 
-	            if (!resultSet.wasNull() && idCoche > 0) {
-	                alquiler.setVehiculoCoche(obtenerCoche(idCoche));
-	            } else if (!resultSet.wasNull() && idFurgoneta > 0) {
-	                alquiler.setVehiculoFurgoneta(obtenerFurgoneta(idFurgoneta));
-	            } else if (!resultSet.wasNull() && idMoto > 0) {
-	                alquiler.setVehiculoMoto(obtenerMoto(idMoto));
+	            ResultSet resultSet = pstatement.executeQuery();
+	            if (resultSet.next()) {
+	                Alquiler alquiler = new Alquiler();
+	                alquiler.setId(resultSet.getInt("id"));
+	                alquiler.setCliente(obtenerCliente(resultSet.getInt("idCliente")));
+
+	                String tipoVehiculo = resultSet.getString("tipoVehiculo");
+	                if ("Coche".equals(tipoVehiculo)) {
+	                    alquiler.setVehiculoCoche(obtenerCoche(resultSet.getInt("idVehiculo")));
+	                } else if ("Furgoneta".equals(tipoVehiculo)) {
+	                    alquiler.setVehiculoFurgoneta(obtenerFurgoneta(resultSet.getInt("idVehiculo")));
+	                } else if ("Moto".equals(tipoVehiculo)) {
+	                    alquiler.setVehiculoMoto(obtenerMoto(resultSet.getInt("idVehiculo")));
+	                }
+
+	                alquiler.setFechaInicio(stringAFecha(resultSet.getString("fechaInicio")));
+	                alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaFinal")));
+
+	                return alquiler;
+	            } else {
+	                return null;
 	            }
-				
-				alquiler.setFechaInicio(stringAFecha(resultSet.getString("fechaInicio")));
-				alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaFinal")));
-				
-				return alquiler;
-			} else {
-				return null;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
 	
 	public Coche obtenerCoche(int id) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
@@ -1028,42 +1015,24 @@ public class DataBaseManager {
 	}
 	
 	public void actualizarAlquiler(Alquiler alquiler) {
-		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE alquiler SET "
-				+ "idCliente = ?, "
-				+ "idCoche = ?, "
-				+ "idFurgoneta = ?, "
-				+ "idMoto = ?, "
-				+ "fechaInicio = ?, "
-				+ "fechaFinal = ? "
-				+ "WHERE id = ?")) {
-			try {
-				pstatement.setInt(1, alquiler.getCliente().getId());
-				if (alquiler.getVehiculoCoche() != null) {
-					pstatement.setInt(2, alquiler.getVehiculoCoche().getId());
-					pstatement.setNull(3, Types.INTEGER);
-					pstatement.setNull(4, Types.INTEGER);
-				} else if (alquiler.getVehiculoFurgoneta() != null) {
-					pstatement.setInt(2, Types.INTEGER);
-					pstatement.setNull(3, alquiler.getVehiculoFurgoneta().getId());
-					pstatement.setNull(4, Types.INTEGER);
-				} else if (alquiler.getVehiculoMoto() != null) {
-					pstatement.setInt(2, Types.INTEGER);
-					pstatement.setNull(3, Types.INTEGER);
-					pstatement.setNull(4, alquiler.getVehiculoMoto().getId());
-				}
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-			}
-			
-			pstatement.setString(5, fechaAString(alquiler.getFechaInicio()));
-			pstatement.setString(6, fechaAString(alquiler.getFechaFin()));
-			pstatement.setInt(7, alquiler.getId());
-			
-			pstatement.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    try (PreparedStatement pstatement = conexion.prepareStatement("UPDATE alquiler SET "
+	            + "idCliente = ?, "
+	            + "idVehiculo = ?, "
+	            + "tipoVehiculo = ?, "
+	            + "fechaInicio = ?, "
+	            + "fechaFinal = ? "
+	            + "WHERE id = ?")) {
+	        pstatement.setInt(1, alquiler.getCliente().getId());
+	        pstatement.setInt(2, alquiler.getVehiculo().getId());
+	        pstatement.setString(3, alquiler.getVehiculo().getTipo());
+	        pstatement.setString(4, fechaAString(alquiler.getFechaInicio()));
+	        pstatement.setString(5, fechaAString(alquiler.getFechaFin()));
+	        pstatement.setInt(6, alquiler.getId());
+
+	        pstatement.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	public void actualizarCoche(Coche coche) {
@@ -1182,36 +1151,42 @@ public class DataBaseManager {
 	}
 	
 	public List<Alquiler> obtenerAlquileresPorCliente(Cliente cliente) {
-		List<Alquiler> lAlquileres = new ArrayList<>();
-		
-		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
-				+ "id, "
-				+ "idCliente, "
-				+ "idCoche, "
-				+ "idFurgoneta, "
-				+ "idMoto, "
-				+ "fechaInicio, "
-				+ "fechaFinal "
-				+ "FROM alquiler WHERE idCliente = ?")) {
-			pstatement.setInt(1, cliente.getId());
-			
-			ResultSet resultSet = pstatement.executeQuery();
-			if (resultSet.next()) {
-				Alquiler alquiler = new Alquiler();
-				alquiler.setId(resultSet.getInt("id"));
-				alquiler.setCliente(obtenerCliente(resultSet.getInt("idCliente")));
-				alquiler.setVehiculoCoche(obtenerCoche(resultSet.getInt("idCoche")));
-				alquiler.setVehiculoFurgoneta(obtenerFurgoneta(resultSet.getInt("idFurgoneta")));
-				alquiler.setVehiculoMoto(obtenerMoto(resultSet.getInt("idMoto")));
-				alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaInicio")));
-				alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaFin")));
-				lAlquileres.add(alquiler);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} 	
-		
-		return lAlquileres;
-	}
+        List<Alquiler> lAlquileres = new ArrayList<>();
+
+        try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+                + "id, "
+                + "idCliente, "
+                + "idVehiculo, "
+                + "tipoVehiculo, "
+                + "fechaInicio, "
+                + "fechaFinal "
+                + "FROM alquiler WHERE idCliente = ?")) {
+            pstatement.setInt(1, cliente.getId());
+
+            ResultSet resultSet = pstatement.executeQuery();
+            while (resultSet.next()) {
+                Alquiler alquiler = new Alquiler();
+                alquiler.setId(resultSet.getInt("id"));
+                alquiler.setCliente(obtenerCliente(resultSet.getInt("idCliente")));
+
+                String tipoVehiculo = resultSet.getString("tipoVehiculo");
+                if ("Coche".equals(tipoVehiculo)) {
+                    alquiler.setVehiculoCoche(obtenerCoche(resultSet.getInt("idVehiculo")));
+                } else if ("Furgoneta".equals(tipoVehiculo)) {
+                    alquiler.setVehiculoFurgoneta(obtenerFurgoneta(resultSet.getInt("idVehiculo")));
+                } else if ("Moto".equals(tipoVehiculo)) {
+                    alquiler.setVehiculoMoto(obtenerMoto(resultSet.getInt("idVehiculo")));
+                }
+
+                alquiler.setFechaInicio(stringAFecha(resultSet.getString("fechaInicio")));
+                alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaFinal")));
+                lAlquileres.add(alquiler);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lAlquileres;
+    }
 }

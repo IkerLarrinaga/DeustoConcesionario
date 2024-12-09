@@ -10,6 +10,9 @@ public class Alquiler {
     private TipoVehiculo tipoVehiculo;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private Coche vehiculoCoche;
+    private Furgoneta vehiculoFurgoneta;
+    private Moto vehiculoMoto;
 
     public Alquiler() {
         super();
@@ -108,6 +111,34 @@ public class Alquiler {
     public void finalizarAlquiler() {
         System.out.println("Alquiler finalizado para el cliente " + cliente);
     }
+    
+    public void setVehiculoCoche(Coche coche) {
+        this.vehiculoCoche = coche;
+        this.vehiculo = coche;
+    }
+
+    public void setVehiculoFurgoneta(Furgoneta furgoneta) {
+        this.vehiculoFurgoneta = furgoneta;
+        this.vehiculo = furgoneta;
+    }
+
+    public void setVehiculoMoto(Moto moto) {
+        this.vehiculoMoto = moto;
+        this.vehiculo = moto;
+    }
+
+    public Coche getVehiculoCoche() {
+        return vehiculoCoche;
+    }
+
+    public Furgoneta getVehiculoFurgoneta() {
+        return vehiculoFurgoneta;
+    }
+
+    public Moto getVehiculoMoto() {
+        return vehiculoMoto;
+    }
+
 }
     
     //TODO Hacer metodo que haga descuento si el numero de meses es mayor a X meses
