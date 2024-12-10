@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -39,6 +40,7 @@ public class VentanaCarrito extends JFrame {
         setSize(500, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setIconImage(new ImageIcon("resource/img/car-icon.png").getImage());
 
         String[] columnas = {"Modelo", "Matricula", "Fecha Inicio", "Fecha Fin"};
         tableModel = new DefaultTableModel(columnas, 0);

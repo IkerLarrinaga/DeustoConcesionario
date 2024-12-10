@@ -25,6 +25,8 @@ public class VentanaLogIn extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Iniciar Sesión");
+        setIconImage(new ImageIcon("resource/img/car-icon.png").getImage());
+
 
         // Configuración de la imagen superior
         ImageIcon foto = new ImageIcon("resource/img/DeustoConcesionarioInicio.png");
@@ -191,7 +193,7 @@ public class VentanaLogIn extends JFrame {
             boolean contrasennaCorrecta = false;
 
             for (Cliente cliente : dbManager.obtenerTodosClientes()) {
-                if (cliente.getEmail().equals(emailIntroducido)) {
+                if (cliente != null && cliente.getEmail().equals(emailIntroducido)) {
                     usuarioEncontrado = true;
                     if (String.valueOf(cliente.getContrasenna()).equals(contrasennaIntroducida)) {
                         contrasennaCorrecta = true;
@@ -203,7 +205,7 @@ public class VentanaLogIn extends JFrame {
             }
 
             for (Empleado empleado : dbManager.obtenerTodosEmpleados()) {
-                if (empleado.getEmail().equals(emailIntroducido)) {
+                if (empleado != null && empleado.getEmail().equals(emailIntroducido)) {
                     usuarioEncontrado = true;
                     if (String.valueOf(empleado.getContrasenna()).equals(contrasennaIntroducida)) {
                         contrasennaCorrecta = true;

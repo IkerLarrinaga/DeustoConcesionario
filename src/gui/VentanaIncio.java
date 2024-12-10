@@ -35,7 +35,8 @@ public class VentanaIncio extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Bienvenido");
-        
+        setIconImage(new ImageIcon("resource/img/car-icon.png").getImage());
+
         ImageIcon foto = new ImageIcon("resource/img/DeustoConcesionarioInicio.png");
         Image fotoEscala = foto.getImage().getScaledInstance(300, 200, Image.SCALE_SMOOTH);
         ImageIcon fotoFinal = new ImageIcon(fotoEscala); 

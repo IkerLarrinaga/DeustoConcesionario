@@ -80,15 +80,16 @@ public class DataBaseManager {
 	
 	public void crearTablaPersona() {
 		try (Statement statement = conexion.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS persona ("
-					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ "nombre VARCHAR, "
-					+ "primerApellido VARCHAR,"
-					+ "segundoApellido VARCHAR, "
-					+ "dni VARCHAR, "
-					+ "fechaNacimiento TEXT, "
-					+ "email VARCHAR, "
-					+ "contrasena VARCHAR)");
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS persona (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "nombre TEXT, " +
+                    "primerApellido TEXT, " +
+                    "segundoApellido TEXT, " +
+                    "dni TEXT, " +
+                    "fechaNacimiento TEXT, " +
+                    "email TEXT, " +
+                    "contrasenna TEXT, " +
+                    "licenciaConducir TEXT)");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

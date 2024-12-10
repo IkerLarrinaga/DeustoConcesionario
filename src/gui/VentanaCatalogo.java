@@ -29,6 +29,7 @@ public class VentanaCatalogo extends JFrame {
         setSize(950, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setIconImage(new ImageIcon("resource/img/car-icon.png").getImage());
 
         Color colorPersonalizado = new Color(92, 184, 255);
 

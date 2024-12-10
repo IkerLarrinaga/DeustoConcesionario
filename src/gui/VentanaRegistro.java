@@ -59,6 +59,7 @@ public class VentanaRegistro extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Registrarse");
+        setIconImage(new ImageIcon("resource/img/car-icon.png").getImage());
 
         ImageIcon foto = new ImageIcon("resource/img/DeustoConcesionarioInicio.png");
         Image fotoEscala = foto.getImage().getScaledInstance(300, 200, Image.SCALE_SMOOTH);
@@ -226,10 +227,10 @@ public class VentanaRegistro extends JFrame {
         confirmar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!fieldNombre.getText().isEmpty() && !fieldPrimerApellido.getText().isEmpty() && 
-                    !fieldSegundoApellido.getText().isEmpty() && !fieldDni.getText().isEmpty() && 
-                    !fieldEmail.getText().isEmpty() && !String.valueOf(fieldContrasenna.getPassword()).isEmpty() && 
-                    fieldFechaNacimiento.getDate() != null && (cliente.isSelected() || trabajador.isSelected())) {
+            	if (!fieldNombre.getText().isEmpty() && !fieldPrimerApellido.getText().isEmpty() && 
+                        !fieldSegundoApellido.getText().isEmpty() && !fieldDni.getText().isEmpty() && 
+                        !fieldEmail.getText().isEmpty() && !String.valueOf(fieldContrasenna.getPassword()).isEmpty() && 
+                        fieldFechaNacimiento.getDate() != null && (cliente.isSelected() || trabajador.isSelected())) {
                     
                     DataBaseManager dbManager = new DataBaseManager();
                     dbManager.conexion("resource/db/concesionario.bd");
@@ -239,6 +240,10 @@ public class VentanaRegistro extends JFrame {
                     
                     // Comprobar duplicados en empleados
                     for (Empleado empleado : dbManager.obtenerTodosEmpleados()) {
+                        if (empleado == null) {
+                            System.err.println("Null empleado detected in database results.");
+                            continue;
+                        }
                         if (empleado.getEmail().equals(fieldEmail.getText())) {
                             correoDuplicado = true;
                         }
@@ -249,6 +254,10 @@ public class VentanaRegistro extends JFrame {
                     
                     // Comprobar duplicados en clientes
                     for (Cliente cliente : dbManager.obtenerTodosClientes()) {
+                        if (cliente == null) {
+                            System.err.println("Null cliente detected in database results.");
+                            continue;
+                        }
                         if (cliente.getEmail().equals(fieldEmail.getText())) {
                             correoDuplicado = true;
                         }
