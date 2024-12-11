@@ -20,7 +20,7 @@ public class DataBase {
 		DataBaseManager dbManager = new DataBaseManager();
 		
 		try {
-			dbManager.conexion("resource/db/concesionario.bd");
+			dbManager.conexion("resource/db/concesionario.db");
 			
 			dbManager.eliminarTabla("cliente");
 			dbManager.eliminarTabla("empleado");
@@ -30,7 +30,7 @@ public class DataBase {
 			dbManager.eliminarTabla("alquiler");
 			dbManager.eliminarTabla("factura");
 			
-			dbManager.conexion("resource/db/concesionario.bd");
+			dbManager.conexion("resource/db/concesionario.db");
 			
 			Empleado empleado1 = new Empleado("Alberto", "García", "Ruiz", "12345678A", LocalDate.of(1983, 7, 12), "alberto.garcia@gmail.com", "alberto123", "ventas", 1450);
 			Empleado empleado2 = new Empleado("María", "Fernández", "Lopez", "87654321B", LocalDate.of(1990, 1, 25), "maria.fernandez@gmail.com", "maria456", "marketing", 1600);

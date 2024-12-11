@@ -187,7 +187,7 @@ public class VentanaLogIn extends JFrame {
             String emailIntroducido = email.getText();
             String contrasennaIntroducida = String.valueOf(contrasenna.getPassword());
 
-            dbManager.conexion("resource/db/concesionario.bd");
+            dbManager.conexion("resource/db/concesionario.db");
 
             boolean usuarioEncontrado = false;
             boolean contrasennaCorrecta = false;

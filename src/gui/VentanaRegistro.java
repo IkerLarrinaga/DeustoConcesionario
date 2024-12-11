@@ -233,7 +233,7 @@ public class VentanaRegistro extends JFrame {
                         fieldFechaNacimiento.getDate() != null && (cliente.isSelected() || trabajador.isSelected())) {
                     
                     DataBaseManager dbManager = new DataBaseManager();
-                    dbManager.conexion("resource/db/concesionario.bd");
+                    dbManager.conexion("resource/db/concesionario.db");
 
                     boolean correoDuplicado = false;
                     boolean contrasenaDuplicada = false;
@@ -338,7 +338,7 @@ public class VentanaRegistro extends JFrame {
             	if (!fieldNombre.getText().isEmpty() && !fieldPrimerApellido.getText().isEmpty() && !fieldSegundoApellido.getText().isEmpty() && !fieldDni.getText().isEmpty()
                         && !fieldEmail.getText().isEmpty() && !String.valueOf(fieldContrasenna.getPassword()).isEmpty() && !(fieldFechaNacimiento == null) && (cliente.isSelected() || trabajador.isSelected())) {
                 	DataBaseManager dbManager = new DataBaseManager();
-                	dbManager.conexion("resource/db/concesionario.bd");
+                	dbManager.conexion("resource/db/concesionario.db");
                 	
                 	int existe = 0;
                 	for (Empleado empleado : dbManager.obtenerTodosEmpleados()) {
