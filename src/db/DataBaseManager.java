@@ -417,6 +417,42 @@ public class DataBaseManager {
 		}
 	}
 
+	//TODO Continuar correccion desde aqui
+	public Persona obtenerPersona(int id) {
+		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+				+ "id, "
+				+ "nombre, "
+				+ "primerApellido, "
+				+ "segundoApellido, "
+				+ "dni, "
+				+ "fechaNacimiento, "
+				+ "email, "
+				+ "contrasena, "
+				+ "FROM persona WHERE id = ?")) {
+			pstatement.setInt(1, id);
+			
+			ResultSet resultSet = pstatement.executeQuery();
+			if (resultSet.next()) {
+				Persona persona = new Persona();
+				persona.setId(resultSet.getInt("id"));
+				persona.setNombre(resultSet.getString("nombre"));
+				persona.setPrimerApellido(resultSet.getString("primerApellido"));
+				persona.setSegundoApellido(resultSet.getString("segundoApellido"));
+				persona.setDni(resultSet.getString("dni"));
+				persona.setFechaNacimiento(stringAFecha(resultSet.getString("fechaNacimiento")));
+				persona.setEmail(resultSet.getString("email"));
+				persona.setContrasenna(resultSet.getString("contrasena"));
+				
+				return persona;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public Cliente obtenerCliente(int id) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
 				+ "p.id, "
@@ -704,6 +740,31 @@ public class DataBaseManager {
 			} else {
 				return null;
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Cliente> obtenerTodasPersonas() {
+		List<Cliente> lPersonas = new ArrayList<>();
+		try (Statement statement = conexion.createStatement()) {
+			ResultSet resultSet = statement.executeQuery("SELECT "
+					+ "id, "
+					+ "nombre, "
+					+ "primerApellido, "
+					+ "segundoApellido, "
+					+ "dni, "
+					+ "fechaNacimiento, "
+					+ "email, "
+					+ "contrasena "
+					+ "FROM persona");
+			
+			while(resultSet.next()) {
+				lPersonas.add(obtener(resultSet.getInt("id")));
+			}
+			
+			return lPersonas;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
