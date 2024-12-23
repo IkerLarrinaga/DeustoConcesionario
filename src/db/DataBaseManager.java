@@ -836,23 +836,26 @@ public class DataBaseManager {
 		}
 	}
 	
-	//TODO: Continuar desde aqui la correcion de la BD
-	public List<Cliente> obtenerTodasPersonas() {
-		List<Cliente> lPersonas = new ArrayList<>();
+	public List<Persona> obtenerTodasPersonas() {
+		List<Persona> lPersonas = new ArrayList<>();
 		try (Statement statement = conexion.createStatement()) {
-			ResultSet resultSet = statement.executeQuery("SELECT "
-					+ "id, "
-					+ "nombre, "
-					+ "primerApellido, "
-					+ "segundoApellido, "
-					+ "dni, "
-					+ "fechaNacimiento, "
-					+ "email, "
-					+ "contrasena "
-					+ "FROM persona");
+			ResultSet resultSet = statement.executeQuery("SELECT id FROM persona");
 			
 			while(resultSet.next()) {
-				lPersonas.add(obtener(resultSet.getInt("id")));
+				int id = resultSet.getInt("id");
+				
+				Cliente cliente = obtenerCliente(id);
+				if (cliente != null) {
+					lPersonas.add(cliente);
+					//IAG ChatGPT
+					//Sugerido por chatGPT para correcto funcionamiento
+	                continue;
+				}
+				
+				Empleado empleado = obtenerEmpleado(id);
+	            if (empleado != null) {
+	                lPersonas.add(empleado);
+	            }
 			}
 			
 			return lPersonas;
@@ -865,17 +868,7 @@ public class DataBaseManager {
 	public List<Cliente> obtenerTodosClientes() {
 		List<Cliente> lClientes = new ArrayList<>();
 		try (Statement statement = conexion.createStatement()) {
-			ResultSet resultSet = statement.executeQuery("SELECT "
-					+ "id, "
-					+ "nombre, "
-					+ "primerApellido, "
-					+ "segundoApellido, "
-					+ "dni, "
-					+ "fechaNacimiento, "
-					+ "email, "
-					+ "contrasena, "
-					+ "licenciaConducir "
-					+ "FROM cliente");
+			ResultSet resultSet = statement.executeQuery("SELECT id FROM cliente");
 			
 			while(resultSet.next()) {
 				lClientes.add(obtenerCliente(resultSet.getInt("id")));
@@ -891,18 +884,7 @@ public class DataBaseManager {
 	public List<Empleado> obtenerTodosEmpleados() {
 		List<Empleado> lEmpleados = new ArrayList<>();
 		try (Statement statement = conexion.createStatement()) {
-			ResultSet resultSet = statement.executeQuery("SELECT "
-				+ "id, "
-				+ "nombre, "
-				+ "primerApellido, "
-				+ "segundoApellido, "
-				+ "dni, "
-				+ "fechaNacimiento, "
-				+ "email, "
-				+ "contrasena, "
-				+ "puesto,"
-				+ "salario "
-				+ "FROM empleado");
+			ResultSet resultSet = statement.executeQuery("SELECT id FROM empleado");
 			
 			while(resultSet.next()) {
 				lEmpleados.add(obtenerEmpleado(resultSet.getInt("id")));
@@ -919,15 +901,7 @@ public class DataBaseManager {
 		List<Alquiler> lAlquileres = new ArrayList<>();
 		
 		try (Statement statement = conexion.createStatement()) {
-			ResultSet resultSet = statement.executeQuery("SELECT "
-				+ "id, "
-				+ "idCliente, "
-				+ "idCoche, "
-				+ "idFurgoneta, "
-				+ "idMoto, "
-				+ "fechaInicio, "
-				+ "fechaFinal "
-				+ "FROM alquiler");
+			ResultSet resultSet = statement.executeQuery("SELECT id FROM alquiler");
 			
 			while (resultSet.next()) {
 				lAlquileres.add(obtenerAlquiler(resultSet.getInt("id")));
@@ -940,20 +914,44 @@ public class DataBaseManager {
 		}	
 	}
 	
+	public List<Vehiculo> obtenerTodosVehiculo() {
+		List<Vehiculo> lVehiculo = new ArrayList<>();
+		try (Statement statement = conexion.createStatement()) {
+			ResultSet resultSet = statement.executeQuery("SELECT id FROM vehiculo");
+			
+			while(resultSet.next()) {
+				int id = resultSet.getInt("id");
+				
+				Coche coche = obtenerCoche(id);
+				if (coche != null) {
+					lVehiculo.add(coche);
+	                continue;
+				}
+				
+				Furgoneta furgoneta = obtenerFurgoneta(id);
+	            if (furgoneta != null) {
+	            	lVehiculo.add(furgoneta);
+	            	continue;
+	            }
+	            
+	            Moto moto = obtenerMoto(id);
+	            if (moto != null) {
+	            	lVehiculo.add(moto);
+	            }
+			}
+					
+			return lVehiculo;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public List<Coche> obtenerTodosCoches() {
 		List<Coche> lCoches = new ArrayList<>();
 		try (Statement statement = conexion.createStatement()) {
-			ResultSet resultSet = statement.executeQuery("SELECT "
-				+ "id, "
-				+ "matricula, "
-				+ "marca, "
-				+ "modelo, "
-				+ "precio, "
-				+ "tCombustible, "
-				+ "tCajaCambios, "
-				+ "numPlazas, "
-				+ "numPuertas "
-				+ "FROM coche");
+			ResultSet resultSet = statement.executeQuery("SELECT id FROM coche");
 			
 			while(resultSet.next()) {
 				lCoches.add(obtenerCoche(resultSet.getInt("id")));
@@ -970,18 +968,7 @@ public class DataBaseManager {
 	public List<Furgoneta> obtenerTodasFurgonetas() {
 		List<Furgoneta> lFurgonetas = new ArrayList<>();
 		try (Statement statement = conexion.createStatement()) {
-			ResultSet resultSet = statement.executeQuery("SELECT "
-				+ "id, "
-				+ "matricula, "
-				+ "marca, "
-				+ "modelo, "
-				+ "precio, "
-				+ "tCombustible, "
-				+ "tCajaCambios, "
-				+ "numPlazas, "
-				+ "cargaMax, "
-				+ "capacidadCarga "
-				+ "FROM furgoneta");
+			ResultSet resultSet = statement.executeQuery("SELECT id FROM furgoneta");
 			
 			while(resultSet.next()) {
 				lFurgonetas.add(obtenerFurgoneta(resultSet.getInt("id")));
@@ -998,18 +985,7 @@ public class DataBaseManager {
 	public List<Moto> obtenerTodasMotos() {
 		List<Moto> lMotos = new ArrayList<>();
 		try (Statement statement = conexion.createStatement()) {
-			ResultSet resultSet = statement.executeQuery("SELECT "
-					+ "id, "
-					+ "matricula, "
-					+ "marca, "
-					+ "modelo, "
-					+ "precio, "
-					+ "tCombustible, "
-					+ "tCajaCambios, "
-					+ "numPlazas, "
-					+ "baul, "
-					+ "cilindrada "
-					+ "FROM moto");
+			ResultSet resultSet = statement.executeQuery("SELECT id FROM moto");
 			
 			while (resultSet.next()) {
 				lMotos.add(obtenerMoto(resultSet.getInt("id")));
@@ -1026,12 +1002,7 @@ public class DataBaseManager {
 	public List<Factura> obtenerTodasFacturas() {
 		List<Factura> lFacturas = new ArrayList<>();
 		try (Statement statement = conexion.createStatement()) {
-			ResultSet resultSet = statement.executeQuery("SELECT "
-				+ "id, "
-				+ "idAlquiler, "
-				+ "importeTotal, "
-				+ "fechaFactura "
-				+ "FROM factura");
+			ResultSet resultSet = statement.executeQuery("SELECT id FROM factura");
 			
 			while(resultSet.next()) {
 				lFacturas.add(obtenerFactura(resultSet.getInt("id")));
