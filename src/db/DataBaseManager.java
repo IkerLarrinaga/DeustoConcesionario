@@ -87,7 +87,7 @@ public class DataBaseManager {
                     "dni TEXT, " +
                     "fechaNacimiento TEXT, " +
                     "email TEXT, " +
-                    "contrasenna TEXT, " +
+                    "contrasena TEXT, " +
                     "licenciaConducir TEXT)");
 			
 		} catch (SQLException e) {
@@ -417,23 +417,42 @@ public class DataBaseManager {
 		}
 	}
 
-	//TODO Continuar correccion desde aqui
 	public Persona obtenerPersona(int id) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
-				+ "id, "
-				+ "nombre, "
-				+ "primerApellido, "
-				+ "segundoApellido, "
-				+ "dni, "
-				+ "fechaNacimiento, "
-				+ "email, "
-				+ "contrasena, "
-				+ "FROM persona WHERE id = ?")) {
+				+ "p.id, "
+				+ "p.nombre, "
+				+ "p.primerApellido, "
+				+ "p.segundoApellido, "
+				+ "p.dni, "
+				+ "p.fechaNacimiento, "
+				+ "p.email, "
+				+ "p.contrasena, "
+				+ "c.licenciaConducir, "
+				+ "e.puesto, "
+				+ "e.salario "
+				+ "FROM persona p "
+				+ "JOIN cliente c ON p.id = c.id "
+				+ "JOIN empleado e ON p.id = e.id "
+				+ "WHERE id = ?")) {
 			pstatement.setInt(1, id);
 			
 			ResultSet resultSet = pstatement.executeQuery();
-			if (resultSet.next()) {
-				Persona persona = new Persona();
+			if (resultSet.next()) {				
+				Persona persona;
+				
+				if(resultSet.getObject("licenciaConducir") != null) {
+					Cliente cliente = new Cliente();
+					cliente.setLicenciaConducir(resultSet.getString("licenciaConducir"));
+					persona = cliente;
+				} else if (resultSet.getObject("puesto") != null) {
+					Empleado empleado = new Empleado();
+					empleado.setPuesto(resultSet.getString("puesto"));
+					empleado.setSalario(resultSet.getDouble("salario"));
+					persona = empleado;
+				} else {
+					return null;
+				}
+				
 				persona.setId(resultSet.getInt("id"));
 				persona.setNombre(resultSet.getString("nombre"));
 				persona.setPrimerApellido(resultSet.getString("primerApellido"));
@@ -572,6 +591,77 @@ public class DataBaseManager {
 	        }
 	    }
 	
+	 public Vehiculo obtenerVehiculo(int id) {
+			try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
+					+ "v.id, "
+					+ "v.matricula, "
+					+ "v.marca, "
+					+ "v.modelo, "
+					+ "v.precio, "
+					+ "v.tCombustible, "
+					+ "v.tCajaCambios, "
+					+ "v.numPlazas, "
+					+ "c.numPuertas "
+					+ "m.baul, "
+					+ "m.cilindrada, "
+					+ "f.cargaMax, "
+					+ "f.capacidadCarga "
+					+ "FROM vehiculo v "
+					+ "JOIN coche c ON v.id = c.id "
+					+ "JOIN moto m ON v.id = m.id "
+					+ "JOIN furgoneta f ON v.id = f.id"
+					+ "WHERE v.id = ?")) {
+				pstatement.setInt(1, id);
+				
+				ResultSet resultSet = pstatement.executeQuery();
+				if (resultSet.next()) {				
+					Vehiculo vehiculo;
+					
+					if (resultSet.getObject("numPuertas") != null) {
+						Coche coche = new Coche();
+		                coche.setNumPuertas(resultSet.getInt("numPuertas"));
+		                vehiculo = coche;
+					} else if (resultSet.getObject("baul") != null) {
+		                Moto moto = new Moto();
+		                moto.setBaul(resultSet.getBoolean("baul"));
+		                moto.setCilindrada(resultSet.getInt("cilindrada"));
+		                vehiculo = moto;
+					} else if (resultSet.getObject("cargaMax") != null) {
+		                Furgoneta furgoneta = new Furgoneta();
+		                furgoneta.setCargaMax(resultSet.getFloat("cargaMax"));
+		                furgoneta.setCapacidadCarga(resultSet.getInt("capacidadCarga"));
+		                vehiculo = furgoneta;
+					} else {
+						return null;
+					}
+					
+					vehiculo.setId(resultSet.getInt("id"));
+					vehiculo.setMatricula(resultSet.getString("matricula"));
+					try {
+						vehiculo.setMarca(Marca.valueOf(resultSet.getString("marca")));
+					} catch (IllegalArgumentException | NullPointerException e) {
+						e.printStackTrace();
+					}
+					vehiculo.setModelo(resultSet.getString("modelo"));
+					vehiculo.setPrecio(resultSet.getFloat("precio"));
+					try {
+						vehiculo.settCombustible(TipoCombustible.valueOf(resultSet.getString("tCombustible")));
+						vehiculo.settCajaCambios(TipoCajaCambios.valueOf(resultSet.getString("tCajaCambios")));
+					} catch (IllegalArgumentException | NullPointerException e) {
+						e.printStackTrace();
+					}
+					vehiculo.setNumPlazas(resultSet.getInt("numPlazas"));
+					
+					return vehiculo;
+				} else {
+					return null;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+		} 
+	 
 	public Coche obtenerCoche(int id) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("SELECT "
 				+ "v.id, "
@@ -746,6 +836,7 @@ public class DataBaseManager {
 		}
 	}
 	
+	//TODO: Continuar desde aqui la correcion de la BD
 	public List<Cliente> obtenerTodasPersonas() {
 		List<Cliente> lPersonas = new ArrayList<>();
 		try (Statement statement = conexion.createStatement()) {
