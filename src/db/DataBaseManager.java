@@ -1015,6 +1015,23 @@ public class DataBaseManager {
 			return null;
 		}
 	}
+	
+	public void eliminarPersona(Persona persona) {
+	    try {
+	        if (persona instanceof Cliente) {
+	            eliminarCliente((Cliente) persona);
+	        } else if (persona instanceof Empleado) {
+	            eliminarEmpleado((Empleado) persona);
+	        }
+	        
+	        try (PreparedStatement pstatement = conexion.prepareStatement("DELETE FROM persona WHERE id = ?")) {
+	            pstatement.setInt(1, persona.getId());
+	            pstatement.executeUpdate();
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 
 	public void eliminarCliente(Cliente cliente) {
 		try (PreparedStatement pstatement = conexion.prepareStatement("DELETE FROM cliente WHERE id = ?")) {
@@ -1041,6 +1058,25 @@ public class DataBaseManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void eliminarVehiculo(Vehiculo vehiculo) {
+	    try {
+	        if (vehiculo instanceof Coche) {
+	            eliminarCoche((Coche) vehiculo);
+	        } else if (vehiculo instanceof Furgoneta) {
+	            eliminarFurgoneta((Furgoneta) vehiculo);
+	        } else if (vehiculo instanceof Moto) {
+	            eliminarMoto((Moto) vehiculo);
+	        }
+
+	        try (PreparedStatement pstatement = conexion.prepareStatement("DELETE FROM vehiculo WHERE id = ?")) {
+	            pstatement.setInt(1, vehiculo.getId());
+	            pstatement.executeUpdate();
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	public void eliminarCoche(Coche coche) {
