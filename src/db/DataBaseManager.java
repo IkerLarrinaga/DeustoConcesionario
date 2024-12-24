@@ -570,14 +570,19 @@ public class DataBaseManager {
 	                alquiler.setCliente(obtenerCliente(resultSet.getInt("idCliente")));
 
 	                String tipoVehiculo = resultSet.getString("tipoVehiculo");
-	                if ("Coche".equals(tipoVehiculo)) {
-	                    alquiler.setVehiculoCoche(obtenerCoche(resultSet.getInt("idVehiculo")));
-	                } else if ("Furgoneta".equals(tipoVehiculo)) {
-	                    alquiler.setVehiculoFurgoneta(obtenerFurgoneta(resultSet.getInt("idVehiculo")));
-	                } else if ("Moto".equals(tipoVehiculo)) {
-	                    alquiler.setVehiculoMoto(obtenerMoto(resultSet.getInt("idVehiculo")));
+	                switch (tipoVehiculo) {
+	                case "Coche":
+	                	alquiler.setVehiculoCoche(obtenerCoche(resultSet.getInt("idVehiculo")));
+	                    break;
+	                case "Furgoneta":
+	                	alquiler.setVehiculoFurgoneta(obtenerFurgoneta(resultSet.getInt("idVehiculo")));
+	                    break;
+	                case "Moto":
+	                	alquiler.setVehiculoMoto(obtenerMoto(resultSet.getInt("idVehiculo")));
+	                    break;
+	                default:
+	                    throw new IllegalArgumentException("Tipo de vehículo desconocido: " + tipoVehiculo);
 	                }
-
 	                alquiler.setFechaInicio(stringAFecha(resultSet.getString("fechaInicio")));
 	                alquiler.setFechaFin(stringAFecha(resultSet.getString("fechaFinal")));
 
@@ -1114,63 +1119,65 @@ public class DataBaseManager {
 			e.printStackTrace();
 		}
 	}
+	
+	public void actualizarPersona(Persona persona) {
+	    try (PreparedStatement pstatement = conexion.prepareStatement("UPDATE persona SET "
+	            + "nombre = ?, "
+	            + "primerApellido = ?, "
+	            + "segundoApellido = ?, "
+	            + "dni = ?, "
+	            + "fechaNacimiento = ?, "
+	            + "email = ?, "
+	            + "contrasena = ? "
+	            + "WHERE id = ?")) {
+
+	        pstatement.setString(1, persona.getNombre());
+	        pstatement.setString(2, persona.getPrimerApellido());
+	        pstatement.setString(3, persona.getSegundoApellido());
+	        pstatement.setString(4, persona.getDni());
+	        pstatement.setString(5, fechaAString(persona.getFechaNacimiento()));
+	        pstatement.setString(6, persona.getEmail());
+	        pstatement.setString(7, persona.getContrasenna());
+	        pstatement.setInt(8, persona.getId());
+
+	        pstatement.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 
 	public void actualizarCliente(Cliente cliente) {
-		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE cliente SET "
-				+ "nombre = ?, "
-				+ "primerApellido = ?, "
-				+ "segundoApellido = ?, "
-				+ "dni = ?, "
-				+ "fechaNacimiento = ?, "
-				+ "email = ?, "
-				+ "contrasena = ?, "
-				+ "licenciaConducir = ? "
-				+ "WHERE id = ?")) {
-			pstatement.setString(1, cliente.getNombre());
-			pstatement.setString(2, cliente.getPrimerApellido());
-			pstatement.setString(3, cliente.getSegundoApellido());
-			pstatement.setString(4, cliente.getDni());
-			pstatement.setString(5, fechaAString(cliente.getFechaNacimiento()));
-			pstatement.setString(6, cliente.getEmail());
-			pstatement.setString(7, cliente.getContrasenna());
-			pstatement.setString(8, cliente.getLicenciaConducir());
-			pstatement.setInt(9, cliente.getId());
-			
-			pstatement.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    actualizarPersona(cliente);
+
+	    try (PreparedStatement pstatement = conexion.prepareStatement("UPDATE cliente SET "
+	            + "licenciaConducir = ? "
+	            + "WHERE id = ?")) {
+
+	        pstatement.setString(1, cliente.getLicenciaConducir());
+	        pstatement.setInt(2, cliente.getId());
+
+	        pstatement.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	public void actualizarEmpleado(Empleado empleado) {
-		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE empleado SET "
-				+ "nombre = ?, "
-				+ "primerApellido = ?, "
-				+ "segundoApellido = ?, "
-				+ "dni = ?, "
-				+ "fechaNacimiento = ?, "
-				+ "email = ?, "
-				+ "contrasena = ?, "
-				+ "puesto = ?, "
-				+ "salario = ? "
-				+ "WHERE id = ?")) {
-			pstatement.setString(1, empleado.getNombre());
-			pstatement.setString(2, empleado.getPrimerApellido());
-			pstatement.setString(3, empleado.getSegundoApellido());
-			pstatement.setString(4, empleado.getDni());
-			pstatement.setString(5, fechaAString(empleado.getFechaNacimiento()));
-			pstatement.setString(6, empleado.getEmail());
-			pstatement.setString(7, empleado.getContrasenna());
-			pstatement.setString(8, empleado.getPuesto());
-			pstatement.setDouble(9, empleado.getSalario());
-			pstatement.setInt(10, empleado.getId());
-			
-			pstatement.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    actualizarPersona(empleado);
+
+	    try (PreparedStatement pstatement = conexion.prepareStatement("UPDATE empleado SET "
+	            + "puesto = ?, "
+	            + "salario = ? "
+	            + "WHERE id = ?")) {
+
+	        pstatement.setString(1, empleado.getPuesto());
+	        pstatement.setDouble(2, empleado.getSalario());
+	        pstatement.setInt(3, empleado.getId());
+
+	        pstatement.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	public void actualizarAlquiler(Alquiler alquiler) {
@@ -1181,8 +1188,18 @@ public class DataBaseManager {
 	            + "fechaInicio = ?, "
 	            + "fechaFinal = ? "
 	            + "WHERE id = ?")) {
-	        pstatement.setInt(1, alquiler.getCliente().getId());
-	        pstatement.setInt(2, alquiler.getVehiculo().getId());
+	    	try {
+		        pstatement.setInt(1, alquiler.getCliente().getId());
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
+	    	
+	    	try {
+		        pstatement.setInt(2, alquiler.getVehiculo().getId());
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
+	    	
 	        pstatement.setString(3, alquiler.getVehiculo().getTipo());
 	        pstatement.setString(4, fechaAString(alquiler.getFechaInicio()));
 	        pstatement.setString(5, fechaAString(alquiler.getFechaFin()));
@@ -1193,96 +1210,83 @@ public class DataBaseManager {
 	        e.printStackTrace();
 	    }
 	}
+	
+	public void actualizarVehiculo(Vehiculo vehiculo) {
+	    try (PreparedStatement pstatement = conexion.prepareStatement("UPDATE vehiculo SET "
+	            + "matricula = ?, "
+	            + "marca = ?, "
+	            + "modelo = ?, "
+	            + "precio = ?, "
+	            + "tCombustible = ?, "
+	            + "tCajaCambios = ?, "
+	            + "numPlazas = ? "
+	            + "WHERE id = ?")) {
+
+	        pstatement.setString(1, vehiculo.getMatricula());
+	        pstatement.setString(2, vehiculo.getMarca().toString());
+	        pstatement.setString(3, vehiculo.getModelo());
+	        pstatement.setFloat(4, vehiculo.getPrecio());
+	        pstatement.setString(5, vehiculo.gettCombustible().toString());
+	        pstatement.setString(6, vehiculo.gettCajaCambios().toString());
+	        pstatement.setInt(7, vehiculo.getNumPlazas());
+	        pstatement.setInt(8, vehiculo.getId());
+
+	        pstatement.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 
 	public void actualizarCoche(Coche coche) {
-		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE coche SET "
-				+ "matricula = ?, "
-				+ "marca = ?, "
-				+ "modelo = ?, "
-				+ "precio = ?, "
-				+ "tCombustible = ?, "
-				+ "tCajaCambios = ?, "
-				+ "numPlazas = ?, "
-				+ "numPuertas = ? "
-				+ "WHERE id = ?")) {
-			
-			pstatement.setString(1, coche.getMatricula());
-			pstatement.setString(2, coche.getMarca().toString());
-			pstatement.setString(3, coche.getModelo());
-			pstatement.setFloat(4, coche.getPrecio());
-			pstatement.setString(5, coche.gettCombustible().toString());
-			pstatement.setString(6, coche.gettCajaCambios().toString());
-			pstatement.setInt(7, coche.getNumPlazas());
-			pstatement.setInt(8, coche.getNumPuertas());
-			pstatement.setInt(9, coche.getId());
-			
-			pstatement.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    actualizarVehiculo(coche);
+
+	    try (PreparedStatement pstatement = conexion.prepareStatement("UPDATE coche SET "
+	            + "numPuertas = ? "
+	            + "WHERE id = ?")) {
+
+	        pstatement.setInt(1, coche.getNumPuertas());
+	        pstatement.setInt(2, coche.getId());
+
+	        pstatement.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	public void actualizarFurgoneta(Furgoneta furgoneta) {
-		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE furgoneta SET "
-				+ "matricula = ?, "
-				+ "marca = ?, "
-				+ "modelo = ?, "
-				+ "precio = ?, "
-				+ "tCombustible = ?, "
-				+ "tCajaCambios = ?, "
-				+ "numPlazas = ?, "
-				+ "cargaMax = ?, "
-				+ "capacidadCarga = ? "
-				+ "WHERE id = ?")) {
-			
-			pstatement.setString(1, furgoneta.getMatricula());
-			pstatement.setString(2, furgoneta.getMarca().toString());
-			pstatement.setString(3, furgoneta.getModelo());
-			pstatement.setFloat(4, furgoneta.getPrecio());
-			pstatement.setString(5, furgoneta.gettCombustible().toString());
-			pstatement.setString(6, furgoneta.gettCajaCambios().toString());
-			pstatement.setInt(7, furgoneta.getNumPlazas());
-			pstatement.setFloat(8, furgoneta.getCargaMax());
-			pstatement.setInt(9, furgoneta.getCapacidadCarga());
-			pstatement.setInt(10, furgoneta.getId());
-			
-			pstatement.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    actualizarVehiculo(furgoneta);
+
+	    try (PreparedStatement pstatement = conexion.prepareStatement("UPDATE furgoneta SET "
+	            + "cargaMax = ?, "
+	            + "capacidadCarga = ? "
+	            + "WHERE id = ?")) {
+
+	        pstatement.setFloat(1, furgoneta.getCargaMax());
+	        pstatement.setInt(2, furgoneta.getCapacidadCarga());
+	        pstatement.setInt(3, furgoneta.getId());
+
+	        pstatement.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	public void actualizarMoto(Moto moto) {
-		try(PreparedStatement pstatement = conexion.prepareStatement("UPDATE moto SET "
-				+ "matricula = ?, "
-				+ "marca = ?, "
-				+ "modelo = ?, "
-				+ "precio = ?, "
-				+ "tCombustible = ?, "
-				+ "tCajaCambios = ?, "
-				+ "numPlazas = ?, "
-				+ "baul = ?, "
-				+ "cilindrada = ? "
-				+ "WHERE id = ?")) {
-			
-			pstatement.setString(1, moto.getMatricula());
-			pstatement.setString(2, moto.getMarca().toString());
-			pstatement.setString(3, moto.getModelo());
-			pstatement.setFloat(4, moto.getPrecio());
-			pstatement.setString(5, moto.gettCombustible().toString());
-			pstatement.setString(6, moto.gettCajaCambios().toString());
-			pstatement.setInt(7, moto.getNumPlazas());
-			pstatement.setBoolean(8, moto.isBaul());
-			pstatement.setInt(9, moto.getCilindrada());
-			pstatement.setInt(10, moto.getId());
-			
-			pstatement.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    actualizarVehiculo(moto);
+
+	    try (PreparedStatement pstatement = conexion.prepareStatement("UPDATE moto SET "
+	            + "baul = ?, "
+	            + "cilindrada = ? "
+	            + "WHERE id = ?")) {
+
+	        pstatement.setBoolean(1, moto.isBaul());
+	        pstatement.setInt(2, moto.getCilindrada());
+	        pstatement.setInt(3, moto.getId());
+
+	        pstatement.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	public void actualizarFactura(Factura factura) {
@@ -1328,13 +1332,19 @@ public class DataBaseManager {
                 alquiler.setId(resultSet.getInt("id"));
                 alquiler.setCliente(obtenerCliente(resultSet.getInt("idCliente")));
 
-                String tipoVehiculo = resultSet.getString("tipoVehiculo");
-                if ("Coche".equals(tipoVehiculo)) {
-                    alquiler.setVehiculoCoche(obtenerCoche(resultSet.getInt("idVehiculo")));
-                } else if ("Furgoneta".equals(tipoVehiculo)) {
-                    alquiler.setVehiculoFurgoneta(obtenerFurgoneta(resultSet.getInt("idVehiculo")));
-                } else if ("Moto".equals(tipoVehiculo)) {
-                    alquiler.setVehiculoMoto(obtenerMoto(resultSet.getInt("idVehiculo")));
+                String tipoVehiculo = resultSet.getString("tipoVehiculo");                
+                switch (tipoVehiculo) {
+                case "Coche":
+                	alquiler.setVehiculoCoche(obtenerCoche(resultSet.getInt("idVehiculo")));
+                    break;
+                case "Furgoneta":
+                	alquiler.setVehiculoFurgoneta(obtenerFurgoneta(resultSet.getInt("idVehiculo")));
+                    break;
+                case "Moto":
+                	alquiler.setVehiculoMoto(obtenerMoto(resultSet.getInt("idVehiculo")));
+                    break;
+                default:
+                    throw new IllegalArgumentException("Tipo de vehículo desconocido: " + tipoVehiculo);
                 }
 
                 alquiler.setFechaInicio(stringAFecha(resultSet.getString("fechaInicio")));
