@@ -298,7 +298,7 @@ public class VentanaRegistro extends JFrame {
                     boolean correoDuplicado = false;
                     boolean contrasenaDuplicada = false;
                     
-                    for (Persona persona : dbManager.obtenerTod()) {
+                    for (Persona persona : dbManager.obtenerTodasPersonas()) {
                         if (persona == null) {
                             System.err.println("Null empleado detected in database results.");
                             continue;
