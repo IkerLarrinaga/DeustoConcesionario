@@ -104,7 +104,7 @@ public class VentanaCatalogo extends JFrame {
         JComboBox<String> comboModelo = new JComboBox<>(new String[]{"Todos", "Sedan", "SUV", "Hatchback", "Coupe"});
         comboModelo.setMaximumSize(comboModelo.getPreferredSize());
 
-        JSlider sliderPrecio = new JSlider(JSlider.HORIZONTAL, 0, 100000, 50000);
+        JSlider sliderPrecio = new JSlider(JSlider.HORIZONTAL, 0, 50000, 25000);
         sliderPrecio.setMajorTickSpacing(10000);
         sliderPrecio.setMinorTickSpacing(10000);
         sliderPrecio.setPaintTicks(true);
@@ -238,7 +238,7 @@ public class VentanaCatalogo extends JFrame {
                 actualizarCatalogoConFiltros(tipoSeleccionado, marcaSeleccionada, modeloSeleccionado, precioMaximo, esAutomatico, tipoCombustible);
             }
         });
-
+        
         setVisible(true);
     }
 
@@ -303,22 +303,22 @@ public class VentanaCatalogo extends JFrame {
             }
         } else if (vehiculo.getTipo().equals("MOTO")) {
             if (vehiculo.getPrecio() > 0) {
-                if (vehiculo.getPrecio() < 15000) {
+                if (vehiculo.getPrecio() < 5000) {
                     icon = new ImageIcon("resource/img/motoGamaBaja.png");
-                } else if (vehiculo.getPrecio() <= 30000) {
-                    icon = new ImageIcon("resource/img/motoGamaBaja.png");
+                } else if (vehiculo.getPrecio() <= 10000) {
+                    icon = new ImageIcon("resource/img/motoGamaEstandar.png");
                 } else {
-                    icon = new ImageIcon("resource/img/motoGamaBaja.png");
+                    icon = new ImageIcon("resource/img/motoGamaAlta.png");
                 }
             }
         } else if (vehiculo.getTipo().equals("FURGONETA")) {
             if (vehiculo.getPrecio() > 0) {
-                if (vehiculo.getPrecio() < 15000) {
+                if (vehiculo.getPrecio() < 20000) {
                     icon = new ImageIcon("resource/img/furgonetaGamaBaja.png");
                 } else if (vehiculo.getPrecio() <= 30000) {
-                    icon = new ImageIcon("resource/img/furgonetaGamaBaja.png");
+                    icon = new ImageIcon("resource/img/furgonetaGamaEstandar.png");
                 } else {
-                    icon = new ImageIcon("resource/img/furgonetaGamaBaja.png");
+                    icon = new ImageIcon("resource/img/furgonetaGamaAlta.png");
                 }
             }
         }
@@ -342,14 +342,17 @@ public class VentanaCatalogo extends JFrame {
     	    String tipoCombustible
     	) {
     	    panelCatalogo.removeAll();
-    	    
+
     	    for (Vehiculo vehiculo : listaVehiculos) {
     	        boolean coincideTipo = tipoSeleccionado.equals("Todos") || vehiculo.getTipo().equalsIgnoreCase(tipoSeleccionado);
-    	        boolean coincideMarca = marcaSeleccionada.equals("Todas") || vehiculo.getMarca() == Marca.valueOf(marcaSeleccionada.toUpperCase());
+    	        boolean coincideMarca = marcaSeleccionada.equals("Todas") || 
+    	            (validarMarca(marcaSeleccionada) && vehiculo.getMarca() == Marca.valueOf(marcaSeleccionada.toUpperCase()));
     	        boolean coincideModelo = modeloSeleccionado.equals("Todos") || vehiculo.getModelo().equalsIgnoreCase(modeloSeleccionado);
     	        boolean coincidePrecio = vehiculo.getPrecio() <= precioMaximo;
-    	        boolean coincideTransmision = !esAutomatico || vehiculo.gettCajaCambios() == TipoCajaCambios.valueOf("AUTOMATICO");
-    	        boolean coincideCombustible = tipoCombustible.equals("Todos") || vehiculo.gettCombustible() == TipoCombustible.valueOf(tipoCombustible);
+    	        boolean coincideTransmision = !esAutomatico || 
+    	            (vehiculo.gettCajaCambios() != null && vehiculo.gettCajaCambios() == TipoCajaCambios.AUTOMATICO);
+    	        boolean coincideCombustible = tipoCombustible.equals("Todos") || 
+    	        	(validarCombustible(tipoCombustible) && vehiculo.gettCombustible() == TipoCombustible.valueOf(tipoCombustible.toUpperCase()));
 
     	        if (coincideTipo && coincideMarca && coincideModelo && coincidePrecio && coincideTransmision && coincideCombustible) {
     	            JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
@@ -372,15 +375,36 @@ public class VentanaCatalogo extends JFrame {
     	                );
     	                if (opcion == 0) {
     	                    JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
-    	                } else if (opcion == 1) {
+    	                } else {
     	                    JOptionPane.showMessageDialog(this, "Operación cancelada.");
     	                }
     	            });
     	            panelCatalogo.add(botonVehiculo);
     	        }
     	    }
+
     	    panelCatalogo.revalidate();
     	    panelCatalogo.repaint();
     	}
+
+    	// Métodos auxiliares
+    	private boolean validarMarca(String marca) {
+    	    try {
+    	        Marca.valueOf(marca.toUpperCase());
+    	        return true;
+    	    } catch (IllegalArgumentException e) {
+    	        return false;
+    	    }
+    	}
+
+    	private boolean validarCombustible(String combustible) {
+    	    try {
+    	        TipoCombustible.valueOf(combustible);
+    	        return true;
+    	    } catch (IllegalArgumentException e) {
+    	        return false;
+    	    }
+    	}
+
 
 }

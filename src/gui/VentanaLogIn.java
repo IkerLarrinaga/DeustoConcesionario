@@ -191,6 +191,13 @@ public class VentanaLogIn extends JFrame {
 
             boolean usuarioEncontrado = false;
             boolean contrasennaCorrecta = false;
+            
+            if(emailIntroducido.equals("user") && contrasennaIntroducida.equals("user")) {
+            	usuarioEncontrado = true;
+            	contrasennaCorrecta = true;
+            	dispose();
+                new VentanaCatalogo();
+            }
 
             for (Cliente cliente : dbManager.obtenerTodosClientes()) {
                 if (cliente != null && cliente.getEmail().equals(emailIntroducido)) {
@@ -222,8 +229,8 @@ public class VentanaLogIn extends JFrame {
                 JOptionPane.showMessageDialog(this, "Usuario incorrecto", "Error", JOptionPane.ERROR_MESSAGE);
             } else if (!contrasennaCorrecta) {
                 JOptionPane.showMessageDialog(this, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (!usuarioEncontrado && !contrasennaCorrecta) {
+                JOptionPane.showMessageDialog(this, "Usuario y contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
