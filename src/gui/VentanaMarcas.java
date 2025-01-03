@@ -25,9 +25,9 @@ public class VentanaMarcas extends JFrame {
         add(panelOpcion, BorderLayout.WEST);
 
         JPanel panelImagenes = new JPanel();
-        panelImagenes.setLayout(new GridLayout(0, 4, 10, 10));
-        panelImagenes.setPreferredSize(new Dimension(500, 1250));
-        add(panelImagenes, BorderLayout.CENTER);
+        panelImagenes.setLayout(new GridLayout(0, 3, 10, 10));
+        JScrollPane scrollPanel = new JScrollPane(panelImagenes);
+        add(scrollPanel, BorderLayout.CENTER);
 
         ActionListener listener = new ActionListener() {
             @Override
@@ -61,20 +61,19 @@ public class VentanaMarcas extends JFrame {
 	}
 	
 	private void agregarImagenMarca(JPanel panelImagenes, Marca marca) {
-	    String rutaImagen = "resource/img/" + marca.name() + ".jpg";
+	    String rutaImagen = "resource/img/" + marca.name() + ".png";
 	    File archivo = new File(rutaImagen);
 
 	    ImageIcon icono;
 	    if (archivo.exists()) {
-	        System.out.println("Imagen encontrada: " + rutaImagen);
 	        icono = new ImageIcon(new ImageIcon(rutaImagen).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
 	    } else {
-	        System.out.println("Imagen no encontrada: " + rutaImagen);
 	        icono = new ImageIcon(new ImageIcon("car-icon.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
 	    }
 
 	    JPanel panelMarca = new JPanel();
 	    panelMarca.setLayout(new BorderLayout());
+	    panelMarca.setPreferredSize(new Dimension(100, 100));
 
 	    JLabel imagenLabel = new JLabel(icono);
 	    panelMarca.add(imagenLabel, BorderLayout.CENTER);
@@ -84,6 +83,7 @@ public class VentanaMarcas extends JFrame {
 
 	    panelImagenes.add(panelMarca);
 	}
+
 
 	
 	 public static void main(String[] args) {
