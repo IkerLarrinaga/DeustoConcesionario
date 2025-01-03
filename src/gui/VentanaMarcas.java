@@ -263,8 +263,4 @@ public class VentanaMarcas extends JFrame {
 
 		panelImagenes.add(panelMarca);
 	}
-
-	public static void main(String[] args) {
-		new VentanaMarcas();
-	}
 }
