@@ -25,7 +25,6 @@ public class VentanaLogIn extends JFrame {
         setTitle("Iniciar Sesión");
         setIconImage(new ImageIcon("resource/img/car-icon.png").getImage());
 
-
         ImageIcon foto = new ImageIcon("resource/img/DeustoConcesionarioInicio.png");
         Image fotoEscala = foto.getImage().getScaledInstance(300, 200, Image.SCALE_SMOOTH);
         ImageIcon fotoFinal = new ImageIcon(fotoEscala); 
@@ -176,7 +175,7 @@ public class VentanaLogIn extends JFrame {
             	usuarioEncontrado = true;
             	contrasennaCorrecta = true;
             	dispose();
-                new VentanaCatalogo();
+                new VentanaMarcas();
             }
 
             for (Cliente cliente : dbManager.obtenerTodosClientes()) {
@@ -185,12 +184,13 @@ public class VentanaLogIn extends JFrame {
                     if (String.valueOf(cliente.getContrasenna()).equals(contrasennaIntroducida)) {
                         contrasennaCorrecta = true;
                         dispose();
-                        new VentanaCatalogo();
+                        new VentanaMarcas();
                         return;
                     }
                 }
             }
-
+            
+            //TODO Corregir este metodo porque no tiene sentido que el Empleado vaya a VentanaCatalogo
             for (Empleado empleado : dbManager.obtenerTodosEmpleados()) {
                 if (empleado != null && empleado.getEmail().equals(emailIntroducido)) {
                     usuarioEncontrado = true;

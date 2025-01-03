@@ -31,6 +31,40 @@ public class VentanaMarcas extends JFrame {
 		setTitle("Marcas");
 		setIconImage(new ImageIcon("resource/img/car-icon.png").getImage());
 		setLayout(new BorderLayout());
+		
+		JProgressBar barra = new JProgressBar(0, 100);
+        barra.setValue(0);
+        barra.setString("Cargando catálogo, por favor espere...");
+        barra.setStringPainted(true);
+
+        JOptionPane pane = new JOptionPane(barra, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
+        JDialog dialog = pane.createDialog(null, "Cargando");
+
+        Thread hilo = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int contador = 0;
+                try {
+                    while (contador <= 100) {
+                        barra.setValue(contador);
+                        Thread.sleep(10);
+                        contador++;
+                    }
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.setVisible(false);
+                            dialog.dispose();
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        hilo.start();
+        dialog.setVisible(true);
 
 		JPanel panelSuperior = new JPanel();
 		panelSuperior.setLayout(new BorderLayout());
@@ -63,6 +97,21 @@ public class VentanaMarcas extends JFrame {
 	    });
 		
 		panelSuperior.add(buscador, BorderLayout.CENTER);
+		
+		 JButton botonCerrarSesion = new JButton("Cerrar Sesión");
+	        botonCerrarSesion.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                new VentanaIncio();
+	                dispose();  
+	            }
+	        });
+		
+		JPanel panelCerrarSesion = new JPanel();
+        panelCerrarSesion.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        panelCerrarSesion.add(botonCerrarSesion);
+        panelSuperior.add(panelCerrarSesion, BorderLayout.EAST);
+
 
 		String[] opciones = { "Todas", "Vehiculo", "Moto", "Furgoneta" };
 		JComboBox<String> comboBox = new JComboBox<>(opciones);
@@ -101,11 +150,30 @@ public class VentanaMarcas extends JFrame {
 				actualizarPanelImagenes((String) comboBox.getSelectedItem(), buscador.getText());
 			}
 		});
+		
+		configurarBoton(botonCerrarSesion, new Color(255, 80, 80), new Color(255, 10, 30));
 
 		listener.actionPerformed(null);
 
 		setVisible(true);
 	}
+	
+	private void configurarBoton(JButton boton, Color colorAntes, Color colorDespues) {
+        boton.setBackground(colorAntes);
+        boton.setForeground(Color.WHITE);
+        boton.setFocusable(false);
+        boton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                boton.setBackground(colorDespues);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                boton.setBackground(colorAntes);
+            }
+        });
+    }
 
 	private void actualizarPanelImagenes(String seleccion, String textoBusqueda) {
 		panelImagenes.removeAll();
