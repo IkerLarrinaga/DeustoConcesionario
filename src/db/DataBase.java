@@ -22,8 +22,10 @@ public class DataBase {
 		try {
 			dbManager.conexion("resource/db/concesionario.db");
 			
+			dbManager.eliminarTabla("persona");
 			dbManager.eliminarTabla("cliente");
 			dbManager.eliminarTabla("empleado");
+			dbManager.eliminarTabla("vehiculo");
 			dbManager.eliminarTabla("coche");
 			dbManager.eliminarTabla("furgoneta");
 			dbManager.eliminarTabla("moto");

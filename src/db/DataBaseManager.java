@@ -216,11 +216,9 @@ public class DataBaseManager {
 				+ "dni, "
 				+ "fechaNacimiento, "
 				+ "email, "
-				+ "contrasena, "
-				+ "licenciaConducir) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?)");
-				
-				Statement statement = conexion.createStatement()) {
+				+ "contrasena) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?)", 
+				 Statement.RETURN_GENERATED_KEYS)) {
 			pstatement.setString(1, persona.getNombre());
 			pstatement.setString(2, persona.getPrimerApellido());
 			pstatement.setString(3, persona.getSegundoApellido());
@@ -231,11 +229,11 @@ public class DataBaseManager {
 			
 			pstatement.executeUpdate();
 			
-			ResultSet resulSet = statement.executeQuery("SELECT last_insert_rowid() AS id FROM persona");
-			if (resulSet.next()) {
-				int newId = resulSet.getInt("id");
-				persona.setId(newId);
-			}
+			ResultSet resultSet = pstatement.getGeneratedKeys();
+	        if (resultSet.next()) {
+	            int newId = resultSet.getInt(1);
+	            persona.setId(newId);
+	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -259,11 +257,12 @@ public class DataBaseManager {
 	}
 	
 	public void almacenarEmpleado(Empleado empleado) {
+		almacenarPersona(empleado);
 		try (PreparedStatement pstatement = conexion.prepareStatement("INSERT INTO empleado ("
 				+ "id, "
 				+ "puesto, "
-				+ "salario)"
-				+ " VALUES (?, ?, ?)");
+				+ "salario) "
+				+ "VALUES (?, ?, ?)");
 			) {
 			pstatement.setInt(1, empleado.getId());
 			pstatement.setString(2, empleado.getPuesto());
