@@ -728,7 +728,7 @@ public class DataBaseManager {
 				+ "f.cargaMax, "
 				+ "f.capacidadCarga "
 				+ "FROM vehiculo v "
-				+ "JOIN furgoneta f ON v.id = f.id"
+				+ "JOIN furgoneta f ON v.id = f.id "
 				+ "WHERE v.id = ?")) {
 			pstatement.setInt(1, id);
 			

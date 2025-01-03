@@ -11,7 +11,6 @@ import domain.Empleado;
 public class VentanaLogIn extends JFrame {
     private static final long serialVersionUID = 1L;
 
-    // Componentes de la interfaz
     public JTextField email = new JTextField();
     public JPasswordField contrasenna = new JPasswordField();
     public JButton confirmar = new JButton("Confirmar");
@@ -20,7 +19,6 @@ public class VentanaLogIn extends JFrame {
     private JButton[] lBotones = new JButton[2];
 
     public VentanaLogIn() {
-        // Configuración de la ventana
         setSize(500, 580);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,7 +26,6 @@ public class VentanaLogIn extends JFrame {
         setIconImage(new ImageIcon("resource/img/car-icon.png").getImage());
 
 
-        // Configuración de la imagen superior
         ImageIcon foto = new ImageIcon("resource/img/DeustoConcesionarioInicio.png");
         Image fotoEscala = foto.getImage().getScaledInstance(300, 200, Image.SCALE_SMOOTH);
         ImageIcon fotoFinal = new ImageIcon(fotoEscala); 
@@ -43,7 +40,6 @@ public class VentanaLogIn extends JFrame {
         panelImagen.add(fondo, BorderLayout.CENTER);
         add(panelImagen, BorderLayout.NORTH);
 
-        // Configuración del formulario
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -73,7 +69,6 @@ public class VentanaLogIn extends JFrame {
             panel.add(new Label(" "), gbc);
         }
 
-        // Configuración de botones
         configurarBoton(confirmar, new Color(40, 150, 255), new Color(20, 100, 220));
         configurarBoton(cancelar, new Color(255, 80, 80), new Color(255, 10, 30));
 
@@ -85,14 +80,12 @@ public class VentanaLogIn extends JFrame {
 
         SwingUtilities.invokeLater(() -> requestFocusInWindow());
 
-        // Listeners de los botones
         confirmar.addActionListener(e -> autenticarUsuario());
         cancelar.addActionListener(e -> {
             new VentanaIncio();
             dispose();
         });
 
-        // Listener de teclas para confirmar con ENTER
         KeyAdapter enterListener = new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -104,7 +97,6 @@ public class VentanaLogIn extends JFrame {
         email.addKeyListener(enterListener);
         contrasenna.addKeyListener(enterListener);
 
-        // Navegación con teclas
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -123,9 +115,6 @@ public class VentanaLogIn extends JFrame {
         setVisible(true);
     }
 
-    /**
-     * Configura un botón con colores personalizados para hover y normal.
-     */
     private void configurarBoton(JButton boton, Color colorAntes, Color colorDespues) {
         boton.setBackground(colorAntes);
         boton.setForeground(Color.WHITE);
@@ -143,9 +132,6 @@ public class VentanaLogIn extends JFrame {
         });
     }
 
-    /**
-     * Selecciona visualmente un botón usando la navegación con teclas.
-     */
     private void seleccionarBoton(int indice, JButton[] botones) {
         for (int i = 0; i < botones.length; i++) {
             if (i == indice) {
@@ -161,9 +147,6 @@ public class VentanaLogIn extends JFrame {
         }
     }
 
-    /**
-     * Ejecuta la acción correspondiente según el botón seleccionado.
-     */
     private void obtenerAccionDependiendoBoton(int indice) {
         switch (indice) {
             case 0:
@@ -178,9 +161,6 @@ public class VentanaLogIn extends JFrame {
         }
     }
 
-    /**
-     * Autentica al usuario verificando su correo y contraseña.
-     */
     private void autenticarUsuario() {
         if (!email.getText().isEmpty() && !String.valueOf(contrasenna.getPassword()).isEmpty()) {
             DataBaseManager dbManager = new DataBaseManager();
