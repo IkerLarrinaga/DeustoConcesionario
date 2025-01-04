@@ -22,7 +22,7 @@ public class VentanaCatalogo extends JFrame {
     
     public VentanaCatalogo() {    	
     	
-    	this.listaVehiculos = Vehiculo.cargarVehiculos("resource/data/vehiculos.txt");
+    	//this.listaVehiculos = Vehiculo.cargarVehiculos("resource/data/vehiculos.txt");
 //        this.listaVehiculos = Vehiculo.cargarVehiculosDesdeBD();
 
         setTitle("Catálogo");
