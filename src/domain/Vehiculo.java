@@ -149,7 +149,6 @@ public abstract class Vehiculo {
                 
                 if (datos[0].equals("Coche")) {
                 	int numPuertas = Integer.parseInt(datos[12]);
-                	String tipoTraccion = datos[13];
                 	vehiculo = new Coche(matricula, marca, modelo, precio, tipoComb, tipoCajCam, numPlazas, false, numPuertas);
                 	
                 } else if(datos[0].equals("Furgoneta")) {

@@ -170,13 +170,6 @@ public class VentanaLogIn extends JFrame {
 
             boolean usuarioEncontrado = false;
             boolean contrasennaCorrecta = false;
-            
-            if(emailIntroducido.equals("user") && contrasennaIntroducida.equals("user")) {
-            	usuarioEncontrado = true;
-            	contrasennaCorrecta = true;
-            	dispose();
-                new VentanaMarcas();
-            }
 
             for (Cliente cliente : dbManager.obtenerTodosClientes()) {
                 if (cliente != null && cliente.getEmail().equals(emailIntroducido)) {
@@ -190,14 +183,13 @@ public class VentanaLogIn extends JFrame {
                 }
             }
             
-            //TODO Corregir este metodo porque no tiene sentido que el Empleado vaya a VentanaCatalogo
             for (Empleado empleado : dbManager.obtenerTodosEmpleados()) {
                 if (empleado != null && empleado.getEmail().equals(emailIntroducido)) {
                     usuarioEncontrado = true;
                     if (String.valueOf(empleado.getContrasenna()).equals(contrasennaIntroducida)) {
                         contrasennaCorrecta = true;
                         dispose();
-                        new VentanaCatalogo();
+                        new VentanaBienvenidaEmpleado();
                         return;
                     }
                 }

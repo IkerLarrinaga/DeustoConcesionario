@@ -11,7 +11,7 @@ public class Main extends JFrame {
     public static void main(String[] args) {    	
     	new VentanaIncio();
 
-//    	DataBase db = new DataBase();
-//    	db.cargarDatosPrueba();    	
+    	DataBase db = new DataBase();
+    	db.cargarDatosPrueba();    	
     }
 }

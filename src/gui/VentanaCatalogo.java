@@ -2,12 +2,14 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import db.DataBaseManager;
 import domain.TipoCajaCambios;
 import domain.TipoCombustible;
 import domain.Vehiculo;
@@ -17,12 +19,24 @@ public class VentanaCatalogo extends JFrame {
     private static final long serialVersionUID = 1L;
     private List<Vehiculo> listaVehiculos;
     private JPanel panelCatalogo;
+    private DataBaseManager dbManager = new DataBaseManager();
 
-    public VentanaCatalogo() {
-        this.listaVehiculos = Vehiculo.cargarVehiculos("resource/data/vehiculos.txt");
+    public VentanaCatalogo(String marcaSeleccionada) {
+    	
+    	dbManager.conexion("resource/db/concesionario.db");
+
+        if (marcaSeleccionada != null && !marcaSeleccionada.isEmpty()) {
+            List<Vehiculo> listaFiltrada = new ArrayList<>();
+            for (Vehiculo vehiculo : dbManager.obtenerTodosVehiculo()) {
+                if (vehiculo.getMarca().equals(marcaSeleccionada)) {
+                    listaFiltrada.add(vehiculo);
+                }
+            }
+            listaVehiculos = listaFiltrada;
+        }
 
         setTitle("Catálogo");
-        setSize(950, 500);
+        setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(new ImageIcon("resource/img/car-icon.png").getImage());
@@ -146,12 +160,12 @@ public class VentanaCatalogo extends JFrame {
                 actualizarCatalogoConFiltros(tipoSeleccionado, modeloSeleccionado, precioMaximo, esAutomatico, tipoCombustible);
             }
         });
-        
+
         comboModelo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 actualizarCatalogoConFiltros(comboTipo.getSelectedItem().toString(), comboModelo.getSelectedItem().toString(), sliderPrecio.getValue(),
-                                              checkAutomatico.isSelected(), comboCombustible.getSelectedItem().toString());
+                        checkAutomatico.isSelected(), comboCombustible.getSelectedItem().toString());
             }
         });
 
@@ -160,10 +174,10 @@ public class VentanaCatalogo extends JFrame {
             public void stateChanged(ChangeEvent e) {
                 labelPrecioValor.setText("Valor máximo: " + sliderPrecio.getValue());
                 actualizarCatalogoConFiltros(comboTipo.getSelectedItem().toString(),
-                                              comboModelo.getSelectedItem().toString(),
-                                              sliderPrecio.getValue(),
-                                              checkAutomatico.isSelected(),
-                                              comboCombustible.getSelectedItem().toString());
+                        comboModelo.getSelectedItem().toString(),
+                        sliderPrecio.getValue(),
+                        checkAutomatico.isSelected(),
+                        comboCombustible.getSelectedItem().toString());
             }
         });
 
@@ -171,10 +185,10 @@ public class VentanaCatalogo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 actualizarCatalogoConFiltros(comboTipo.getSelectedItem().toString(),
-                                              comboModelo.getSelectedItem().toString(),
-                                              sliderPrecio.getValue(),
-                                              checkAutomatico.isSelected(),
-                                              comboCombustible.getSelectedItem().toString());
+                        comboModelo.getSelectedItem().toString(),
+                        sliderPrecio.getValue(),
+                        checkAutomatico.isSelected(),
+                        comboCombustible.getSelectedItem().toString());
             }
         });
 
@@ -182,14 +196,15 @@ public class VentanaCatalogo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 actualizarCatalogoConFiltros(comboTipo.getSelectedItem().toString(),
-                                              comboModelo.getSelectedItem().toString(),
-                                              sliderPrecio.getValue(),
-                                              checkAutomatico.isSelected(),
-                                              comboCombustible.getSelectedItem().toString());
+                        comboModelo.getSelectedItem().toString(),
+                        sliderPrecio.getValue(),
+                        checkAutomatico.isSelected(),
+                        comboCombustible.getSelectedItem().toString());
             }
         });
-
+        
         setVisible(true);
+        dbManager.desconexion();
     }
 
     private void cargarVehiculosEnCatalogo() {
@@ -280,10 +295,15 @@ public class VentanaCatalogo extends JFrame {
     }
 
     private boolean validarCombustible(String tipoCombustible) {
-        return tipoCombustible != null && !tipoCombustible.trim().isEmpty();
+        try {
+            TipoCombustible.valueOf(tipoCombustible.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
     
     public static void main(String[] args) {
-    	new VentanaCatalogo();
+    	new VentanaCatalogo(null);
     }
 }
