@@ -28,7 +28,7 @@ public class VentanaCatalogo extends JFrame {
         if (marcaSeleccionada != null && !marcaSeleccionada.isEmpty()) {
             List<Vehiculo> listaFiltrada = new ArrayList<>();
             for (Vehiculo vehiculo : dbManager.obtenerTodosVehiculo()) {
-                if (vehiculo.getMarca().equals(marcaSeleccionada)) {
+                if (vehiculo.getMarca().name().equalsIgnoreCase(marcaSeleccionada)) {
                     listaFiltrada.add(vehiculo);
                 }
             }
@@ -212,9 +212,6 @@ public class VentanaCatalogo extends JFrame {
             JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
             botonVehiculo.setPreferredSize(new Dimension(200, 100));
 
-            ImageIcon iconoVehiculo = getIconoPorTipo(vehiculo);
-            botonVehiculo.setIcon(iconoVehiculo);
-
             botonVehiculo.addActionListener(e -> {
                 String mensaje = "Marca: " + vehiculo.getMarca() + "\n" + "Modelo: " + vehiculo.getModelo() + "\n"
                         + "Precio: " + vehiculo.getPrecio() + "\n" + "Tipo: " + vehiculo.getTipo() + "\n"
@@ -236,25 +233,6 @@ public class VentanaCatalogo extends JFrame {
         }
     }
 
-    private ImageIcon getIconoPorTipo(Vehiculo vehiculo) {
-        ImageIcon icon = null;
-        if (vehiculo.getTipo().equals("COCHE")) {
-            if (vehiculo.getPrecio() < 15000) {
-                icon = new ImageIcon("resource/img/cocheGamaBaja.png");
-            } else if (vehiculo.getPrecio() <= 30000) {
-                icon = new ImageIcon("resource/img/cocheGamaEstandar.png");
-            } else {
-                icon = new ImageIcon("resource/img/cocheGamaAlta.png");
-            }
-        }
-        if (icon != null) {
-            Image img = icon.getImage();
-            Image nuevaImagen = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-            icon = new ImageIcon(nuevaImagen);
-        }
-        return icon;
-    }
-
     private void actualizarCatalogoConFiltros(String tipoSeleccionado, String modeloSeleccionado, int precioMaximo, boolean esAutomatico, String tipoCombustible) {
         panelCatalogo.removeAll();
         for (Vehiculo vehiculo : listaVehiculos) {
@@ -267,8 +245,6 @@ public class VentanaCatalogo extends JFrame {
             if (coincideTipo && coincideModelo && coincidePrecio && coincideTransmision && coincideCombustible) {
                 JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
                 botonVehiculo.setPreferredSize(new Dimension(200, 100));
-                ImageIcon iconoVehiculo = getIconoPorTipo(vehiculo);
-                botonVehiculo.setIcon(iconoVehiculo);
 
                 botonVehiculo.addActionListener(e -> {
                     String mensaje = "Marca: " + vehiculo.getMarca() + "\n" + "Modelo: " + vehiculo.getModelo() + "\n"
