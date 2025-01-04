@@ -222,27 +222,23 @@ public class VentanaCatalogo extends JFrame {
 
     private void cargarVehiculosEnCatalogo() {
         for (Vehiculo vehiculo : listaVehiculos) {
-            // Crear el texto para el botón con formato HTML para colores
             String textoBoton = vehiculo.getMarca() + " " + vehiculo.getModelo() + "<br>"
                                + "Matrícula: " + vehiculo.getMatricula() + "<br>"
                                + (vehiculo.isAlquilado() ? "<html><font color='red'>Alquilado</font></html>" 
                                                           : "<html><font color='green'>No alquilado</font></html>");
             
-            // Crear el botón con el texto y tamaño ajustado
             JButton botonVehiculo = new JButton("<html><body style='width:150px'>" + textoBoton + "</body></html>");
-            botonVehiculo.setPreferredSize(new Dimension(180, 150)); // Tamaño ajustado para el botón
-            botonVehiculo.setMaximumSize(new Dimension(180, 150)); // Limitar tamaño máximo del botón
+            botonVehiculo.setPreferredSize(new Dimension(180, 150));
+            botonVehiculo.setMaximumSize(new Dimension(180, 150));
 
-            // Cambiar el color del botón según el estado
             if (vehiculo.isAlquilado()) {
-                botonVehiculo.setEnabled(false); // Deshabilitar el botón si está alquilado
-                botonVehiculo.setBackground(Color.GRAY); // Color gris para botones deshabilitados
+                botonVehiculo.setEnabled(false);
+                botonVehiculo.setBackground(Color.GRAY);
             } else {
-                botonVehiculo.setEnabled(true); // Habilitar el botón si no está alquilado
-                botonVehiculo.setBackground(Color.WHITE); // Color blanco para botones habilitados
+                botonVehiculo.setEnabled(true);
+                botonVehiculo.setBackground(Color.WHITE);
             }
 
-            // Acción al hacer clic en el botón
             botonVehiculo.addActionListener(e -> {
                 String mensaje = "Marca: " + vehiculo.getMarca() + "\n" + "Modelo: " + vehiculo.getModelo() + "\n"
                         + "Precio: " + vehiculo.getPrecio() + "\n" + "Tipo: " + vehiculo.getTipo() + "\n"
@@ -251,35 +247,28 @@ public class VentanaCatalogo extends JFrame {
                 Object[] opciones = { "Alquilar", "Cerrar" };
 
                 int opcion = JOptionPane.showOptionDialog(this, mensaje, "Información del Vehículo",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[2]);
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
                 if (opcion == 0) {
                     JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
                 }
             });
 
-            // Añadir el botón al panel del catálogo
             panelCatalogo.add(botonVehiculo);
         }
     }
 
     private void actualizarCatalogoConFiltros(String tipoSeleccionado, String modeloSeleccionado, int precioMaximo, boolean esAutomatico, String tipoCombustible) {
-        panelCatalogo.removeAll(); // Limpiar el catálogo actual
+        panelCatalogo.removeAll();
 
-        // Filtrar la lista de vehículos según los filtros seleccionados
         List<Vehiculo> listaFiltrada = new ArrayList<>();
         for (Vehiculo vehiculo : dbManager.obtenerTodosVehiculo()) {
-            // Filtrar por tipo de vehículo (Coche, Moto, Furgoneta)
             if (tipoSeleccionado.equals("Todos") || (tipoSeleccionado.equals("Coche") && vehiculo instanceof Coche) ||
                 (tipoSeleccionado.equals("Moto") && vehiculo instanceof Moto) ||
                 (tipoSeleccionado.equals("Furgoneta") && vehiculo instanceof Furgoneta)) {
                 
-                // Filtrar por modelo
                 if (modeloSeleccionado.equals("Todos") || vehiculo.getModelo().equalsIgnoreCase(modeloSeleccionado)) {
-                    // Filtrar por precio
                     if (vehiculo.getPrecio() <= precioMaximo) {
-                        // Filtrar por tipo de combustible
                         if (tipoCombustible.equals("Todos") || vehiculo.gettCombustible().name().equalsIgnoreCase(tipoCombustible)) {
-                            // Filtrar si es automático
                             if (!esAutomatico || vehiculo.gettCajaCambios().equals(TipoCajaCambios.AUTOMATICO)) {
                                 listaFiltrada.add(vehiculo);
                             }
@@ -291,7 +280,6 @@ public class VentanaCatalogo extends JFrame {
 
         listaVehiculos = listaFiltrada;
 
-        // Volver a cargar los vehículos filtrados
         cargarVehiculosEnCatalogo();
 
         panelCatalogo.revalidate();
