@@ -45,14 +45,12 @@ public class VentanaCatalogo extends JFrame {
 
         Color colorPersonalizado = new Color(92, 184, 255);
 
-        JButton botonCarrito = new JButton("Ver Carrito");
         JButton botonCerrarSesion = new JButton("Cerrar Sesión");
         JButton botonAtras = new JButton("Atrás");
         JPanel panelBotones = new JPanel();
         panelBotones.setBorder(new EmptyBorder(10, 10, 10, 10));
         panelBotones.setBackground(colorPersonalizado);
         panelBotones.setLayout(new GridLayout(0, 3, 10, 10));
-        panelBotones.add(botonCarrito);
         panelBotones.add(botonCerrarSesion);
         panelBotones.add(botonAtras);
 
@@ -137,14 +135,6 @@ public class VentanaCatalogo extends JFrame {
         getContentPane().add(panelBotones, BorderLayout.SOUTH);
 
         cargarVehiculosEnCatalogo();
-
-        botonCarrito.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new VentanaCarrito();
-            }
-        });
 
         botonCerrarSesion.addActionListener(new ActionListener() {
             @Override
