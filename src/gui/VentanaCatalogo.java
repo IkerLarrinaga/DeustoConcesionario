@@ -21,7 +21,7 @@ public class VentanaCatalogo extends JFrame {
     private JPanel panelCatalogo;
     private DataBaseManager dbManager = new DataBaseManager();
 
-    public VentanaCatalogo(String marcaSeleccionada) {
+    public VentanaCatalogo(String marcaSeleccionada, String seleccion) {
     	
     	dbManager.conexion("resource/db/concesionario.db");
 

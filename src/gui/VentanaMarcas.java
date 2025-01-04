@@ -204,7 +204,7 @@ public class VentanaMarcas extends JFrame {
 			if (marca != null && !marcasAnnadidas.contains(marca)
 					&& marca.name().toLowerCase().contains(textoBusqueda.toLowerCase())) {
 				marcasAnnadidas.add(marca);
-				agregarImagenMarca(panelImagenes, marca, textoBusqueda);
+				agregarImagenMarca(panelImagenes, marca, textoBusqueda, seleccion);
 			}
 		}
 
@@ -213,7 +213,7 @@ public class VentanaMarcas extends JFrame {
 		dbManager.desconexion();
 	}
 
-	private void agregarImagenMarca(JPanel panelImagenes, Marca marca, String textoBusqueda) {
+	private void agregarImagenMarca(JPanel panelImagenes, Marca marca, String textoBusqueda, String seleccion) {
 		String nombreMarca = marca.name();
 		String rutaImagen = "resource/img/" + nombreMarca + ".png";
 		File archivo = new File(rutaImagen);
@@ -266,7 +266,7 @@ public class VentanaMarcas extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new VentanaCatalogo(nombreMarca);
+				new VentanaCatalogo(nombreMarca, seleccion);
 			}
 		});
 		panelMarca.add(botonSeleccionar);
