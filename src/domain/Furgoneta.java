@@ -9,20 +9,20 @@ public class Furgoneta extends Vehiculo {
     }
 
 	public Furgoneta(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas) {
-		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean alquilado) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, alquilado);
 	}
 
 	public Furgoneta(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas, float cargaMax, int capacidadCarga) {
-		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean alquilado, float cargaMax, int capacidadCarga) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, alquilado);
 		this.cargaMax = cargaMax;
 		this.capacidadCarga = capacidadCarga;
 	}
 
 	public Furgoneta(int id, String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas, float cargaMax, int capacidadCarga) {
-		super(id, matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean alquilado, float cargaMax, int capacidadCarga) {
+		super(id, matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, alquilado);
 		this.cargaMax = cargaMax;
 		this.capacidadCarga = capacidadCarga;
 	}
@@ -43,12 +43,12 @@ public class Furgoneta extends Vehiculo {
         this.capacidadCarga = capacidadCarga;
     }
 
-    @Override
+	@Override
 	public String toString() {
-		return "Furgoneta [cargaMax=" + cargaMax + ", capacidadCarga=" + capacidadCarga + ", getMatricula()="
-				+ getMatricula() + ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()="
-				+ getPrecio() + ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios()
-				+ ", getNumPlazas()=" + getNumPlazas() + "]";
+		return "Furgoneta [cargaMax=" + cargaMax + ", capacidadCarga=" + capacidadCarga + ", getId()=" + getId()
+				+ ", getMatricula()=" + getMatricula() + ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo()
+				+ ", getPrecio()=" + getPrecio() + ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()="
+				+ gettCajaCambios() + ", getNumPlazas()=" + getNumPlazas() + ", isAlquilado()=" + isAlquilado() + "]";
 	}
 
 	@Override

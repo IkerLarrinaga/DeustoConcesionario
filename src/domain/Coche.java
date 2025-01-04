@@ -8,19 +8,19 @@ public class Coche extends Vehiculo{
 	}
 
 	public Coche(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas) {
-		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean alquilado) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, alquilado);
 	}
 
 	public Coche(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas, int numPuertas) {
-		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean alquilado, int numPuertas) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, alquilado);
 		this.numPuertas = numPuertas;
 	}
 
 	public Coche(int id, String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas, int numPuertas) {
-		super(id, matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean alquilado, int numPuertas) {
+		super(id, matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, alquilado);
 		this.numPuertas = numPuertas;
 	}
 
@@ -34,10 +34,10 @@ public class Coche extends Vehiculo{
 
 	@Override
 	public String toString() {
-		return "Coche [numPuertas=" + numPuertas + ", getMatricula()=" + getMatricula() + ", getMarca()=" + getMarca()
-				+ ", getModelo()=" + getModelo() + ", getPrecio()=" + getPrecio() + ", gettCombustible()="
-				+ gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios() + ", getNumPlazas()=" + getNumPlazas()
-				+ "]";
+		return "Coche [numPuertas=" + numPuertas + ", getId()=" + getId() + ", getMatricula()=" + getMatricula()
+				+ ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()=" + getPrecio()
+				+ ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios()
+				+ ", getNumPlazas()=" + getNumPlazas() + ", isAlquilado()=" + isAlquilado() + "]";
 	}
 
 	public void mostrarInformacion() {

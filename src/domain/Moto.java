@@ -8,22 +8,22 @@ public class Moto extends Vehiculo{
 	public Moto() {
 		super();
 	}
-	
-	public Moto(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas) {
-		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
-	}
 
 	public Moto(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas, boolean baul, int cilindrada) {
-		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean alquilado) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, alquilado);
+	}
+	
+	public Moto(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean alquilado, boolean baul, int cilindrada) {
+		super(matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, alquilado);
 		this.baul = baul;
 		this.cilindrada = cilindrada;
 	}
-	
+
 	public Moto(int id, String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas, boolean baul, int cilindrada) {
-		super(id, matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas);
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean alquilado, boolean baul, int cilindrada) {
+		super(id, matricula, marca, modelo, precio, tCombustible, tCajaCambios, numPlazas, alquilado);
 		this.baul = baul;
 		this.cilindrada = cilindrada;
 	}
@@ -66,10 +66,10 @@ public class Moto extends Vehiculo{
 
 	@Override
 	public String toString() {
-		return "Moto [baul=" + baul + ", cilindrada=" + cilindrada + ", getMatricula()=" + getMatricula()
-				+ ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()=" + getPrecio()
-				+ ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios()
-				+ ", getNumPlazas()=" + getNumPlazas() + "]";
+		return "Moto [baul=" + baul + ", cilindrada=" + cilindrada + ", getId()=" + getId() + ", getMatricula()="
+				+ getMatricula() + ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()="
+				+ getPrecio() + ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios()
+				+ ", getNumPlazas()=" + getNumPlazas() + ", isAlquilado()=" + isAlquilado() + "]";
 	}
 
 	@Override

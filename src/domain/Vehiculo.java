@@ -16,13 +16,14 @@ public abstract class Vehiculo {
 	private TipoCombustible tCombustible;
 	private TipoCajaCambios tCajaCambios;
 	private int numPlazas;
+	private boolean alquilado = false;
 	
 	public Vehiculo() {
 		
 	}
 
 	public Vehiculo(String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas) {
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean alquilado) {
 		super();
 		this.matricula = matricula;
 		this.marca = marca;
@@ -31,20 +32,23 @@ public abstract class Vehiculo {
 		this.tCombustible = tCombustible;
 		this.tCajaCambios = tCajaCambios;
 		this.numPlazas = numPlazas;
-	}
-
-	public Vehiculo(int id, String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
-			TipoCajaCambios tCajaCambios, int numPlazas) {
-		super();
-		this.matricula = matricula;
-		this.marca = marca;
-		this.modelo = modelo;
-		this.precio = precio;
-		this.tCombustible = tCombustible;
-		this.tCajaCambios = tCajaCambios;
-		this.numPlazas = numPlazas;
+		this.alquilado = alquilado;
 	}
 	
+	public Vehiculo(int id, String matricula, Marca marca, String modelo, float precio, TipoCombustible tCombustible,
+			TipoCajaCambios tCajaCambios, int numPlazas, boolean alquilado) {
+		super();
+		this.id = id;
+		this.matricula = matricula;
+		this.marca = marca;
+		this.modelo = modelo;
+		this.precio = precio;
+		this.tCombustible = tCombustible;
+		this.tCajaCambios = tCajaCambios;
+		this.numPlazas = numPlazas;
+		this.alquilado = alquilado;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -108,61 +112,69 @@ public abstract class Vehiculo {
 	public void setNumPlazas(int numPlazas) {
 		this.numPlazas = numPlazas;
 	}
+
+	public boolean isAlquilado() {
+		return alquilado;
+	}
+
+	public void setAlquilado(boolean alquilado) {
+		this.alquilado = alquilado;
+	}
 	
 	@Override
 	public String toString() {
-		return "Vehiculo [matricula=" + matricula + ", marca=" + marca + ", modelo=" + modelo + ", precio=" + precio
-				+ ", tCombustible=" + tCombustible + ", tCajaCambios=" + tCajaCambios + ", numPlazas=" + numPlazas
-				+ "]";
+		return "Vehiculo [id=" + id + ", matricula=" + matricula + ", marca=" + marca + ", modelo=" + modelo
+				+ ", precio=" + precio + ", tCombustible=" + tCombustible + ", tCajaCambios=" + tCajaCambios
+				+ ", numPlazas=" + numPlazas + ", alquilado=" + alquilado + "]";
 	}
-	
-	public static List<Vehiculo> cargarVehiculos(String archivo) {
-        List<Vehiculo> listaVehiculos = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-            String linea;            
-            while ((linea = br.readLine()) != null) { 
-                String[] datos = linea.split(";");
-                String matricula = datos[1];
-            	Marca marca = Marca.valueOf(datos[3].toUpperCase());	
-                String modelo = datos[4];
-                float precio = Float.parseFloat(datos[5]);
-                String tCombustible = datos[7];
-                String tCajaCambios = datos[8];
-                int numPlazas = Integer.parseInt(datos[10]);
-                
-                TipoCombustible tipoComb = TipoCombustible.valueOf(tCombustible.toUpperCase());
-                TipoCajaCambios tipoCajCam = TipoCajaCambios.valueOf(tCajaCambios.toUpperCase());
-                
-                Vehiculo vehiculo = null;
-                
-                if (datos[0].equals("Coche")) {
-                	int numPuertas = Integer.parseInt(datos[12]);
-                	String tipoTraccion = datos[13];
-                	vehiculo = new Coche(matricula, marca, modelo, precio, tipoComb, tipoCajCam, numPlazas, numPuertas);
-                	
-                } else if(datos[0].equals("Furgoneta")) {
-                	float cargaMax = Float.parseFloat(datos[12]);
-                	int capacidadCarga = Integer.parseInt(datos[14]);
-                	
-                	vehiculo = new Furgoneta(matricula, marca, modelo, precio, tipoComb, tipoCajCam, numPlazas, cargaMax, capacidadCarga);
-                	
-                } else {
-                	boolean baul = Boolean.parseBoolean(datos[12]);
-                	int cilindrada = Integer.parseInt(datos[13]);
-                	
-                	vehiculo = new Moto(matricula, marca, modelo, precio, tipoComb, tipoCajCam, numPlazas, baul, cilindrada);
-                	
-                }
 
-                if (vehiculo != null) {
-                        listaVehiculos.add(vehiculo);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return listaVehiculos;
-    }
+//	public static List<Vehiculo> cargarVehiculos(String archivo) {
+//        List<Vehiculo> listaVehiculos = new ArrayList<>();
+//        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+//            String linea;            
+//            while ((linea = br.readLine()) != null) { 
+//                String[] datos = linea.split(";");
+//                String matricula = datos[1];
+//            	Marca marca = Marca.valueOf(datos[3].toUpperCase());	
+//                String modelo = datos[4];
+//                float precio = Float.parseFloat(datos[5]);
+//                String tCombustible = datos[7];
+//                String tCajaCambios = datos[8];
+//                int numPlazas = Integer.parseInt(datos[10]);
+//                
+//                TipoCombustible tipoComb = TipoCombustible.valueOf(tCombustible.toUpperCase());
+//                TipoCajaCambios tipoCajCam = TipoCajaCambios.valueOf(tCajaCambios.toUpperCase());
+//                
+//                Vehiculo vehiculo = null;
+//                
+//                if (datos[0].equals("Coche")) {
+//                	int numPuertas = Integer.parseInt(datos[12]);
+//                	String tipoTraccion = datos[13];
+//                	vehiculo = new Coche(matricula, marca, modelo, precio, tipoComb, tipoCajCam, numPlazas, numPuertas);
+//                	
+//                } else if(datos[0].equals("Furgoneta")) {
+//                	float cargaMax = Float.parseFloat(datos[12]);
+//                	int capacidadCarga = Integer.parseInt(datos[14]);
+//                	
+//                	vehiculo = new Furgoneta(matricula, marca, modelo, precio, tipoComb, tipoCajCam, numPlazas, cargaMax, capacidadCarga);
+//                	
+//                } else {
+//                	boolean baul = Boolean.parseBoolean(datos[12]);
+//                	int cilindrada = Integer.parseInt(datos[13]);
+//                	
+//                	vehiculo = new Moto(matricula, marca, modelo, precio, tipoComb, tipoCajCam, numPlazas, baul, cilindrada);
+//                	
+//                }
+//
+//                if (vehiculo != null) {
+//                        listaVehiculos.add(vehiculo);
+//                }
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return listaVehiculos;
+//    }
     
 
 //	public static List<Vehiculo> cargarVehiculosDesdeBD() {
