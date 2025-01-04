@@ -146,7 +146,8 @@ public class DataBaseManager {
 					+ "precio REAL, "
 					+ "tCombustible VARCHAR,"
 					+ "tCajaCambios VARCHAR, "
-					+ "numPlazas INTEGER)");
+					+ "numPlazas INTEGER,"
+					+ "alquilado INTEGER)");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -310,8 +311,9 @@ public class DataBaseManager {
 				+ "precio, "
 				+ "tCombustible, "
 				+ "tCajaCambios, "
-				+ "numPlazas) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?)");
+				+ "numPlazas, "
+				+ "alquilado) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 				
 				Statement statement = conexion.createStatement()) {
 			pstatement.setString(1, vehiculo.getMatricula());
@@ -321,6 +323,7 @@ public class DataBaseManager {
 			pstatement.setString(5, vehiculo.gettCombustible().name());
 			pstatement.setString(6, vehiculo.gettCajaCambios().name());
 			pstatement.setInt(7, vehiculo.getNumPlazas());
+			pstatement.setBoolean(8, vehiculo.isAlquilado());
 			
 			pstatement.executeUpdate();
 			
@@ -605,6 +608,7 @@ public class DataBaseManager {
 					+ "v.tCombustible, "
 					+ "v.tCajaCambios, "
 					+ "v.numPlazas, "
+					+ "v.alquilado, "
 					+ "c.numPuertas "
 					+ "m.baul, "
 					+ "m.cilindrada, "
@@ -655,6 +659,7 @@ public class DataBaseManager {
 						e.printStackTrace();
 					}
 					vehiculo.setNumPlazas(resultSet.getInt("numPlazas"));
+					vehiculo.setAlquilado(resultSet.getBoolean("alquilado"));
 					
 					return vehiculo;
 				} else {
@@ -676,6 +681,7 @@ public class DataBaseManager {
 				+ "v.tCombustible, "
 				+ "v.tCajaCambios, "
 				+ "v.numPlazas, "
+				+ "v.alquilado, "
 				+ "c.numPuertas "
 				+ "FROM vehiculo v "
 				+ "JOIN coche c ON v.id = c.id "
@@ -703,6 +709,7 @@ public class DataBaseManager {
 					e.printStackTrace();
 				}
 				coche.setNumPlazas(resultSet.getInt("numPlazas"));
+				coche.setAlquilado(resultSet.getBoolean("alquilado"));
 				coche.setNumPuertas(resultSet.getInt("numPuertas"));
 				
 				return coche;
@@ -725,6 +732,7 @@ public class DataBaseManager {
 				+ "v.tCombustible, "
 				+ "v.tCajaCambios, "
 				+ "v.numPlazas, "
+				+ "v.alquilado, "
 				+ "f.cargaMax, "
 				+ "f.capacidadCarga "
 				+ "FROM vehiculo v "
@@ -751,6 +759,7 @@ public class DataBaseManager {
 					e.printStackTrace();
 				}
 				furgoneta.setNumPlazas(resultSet.getInt("numPlazas"));
+				furgoneta.setAlquilado(resultSet.getBoolean("alquilado"));
 				furgoneta.setCargaMax(resultSet.getInt("cargaMax"));
 				furgoneta.setCapacidadCarga(resultSet.getInt("capacidadCarga"));
 				
@@ -774,6 +783,7 @@ public class DataBaseManager {
 				+ "v.tCombustible, "
 				+ "v.tCajaCambios, "
 				+ "v.numPlazas, "
+				+ "v.alquilado, "
 				+ "m.baul, "
 				+ "m.cilindrada "
 				+ "FROM vehiculo v "
@@ -800,6 +810,7 @@ public class DataBaseManager {
 					e.printStackTrace();
 				}
 				moto.setNumPlazas(resultSet.getInt("numPlazas"));
+				moto.setAlquilado(resultSet.getBoolean("alquilado"));
 				moto.setBaul(resultSet.getBoolean("baul"));
 				moto.setCilindrada(resultSet.getInt("cilindrada"));
 				
@@ -1218,7 +1229,8 @@ public class DataBaseManager {
 	            + "precio = ?, "
 	            + "tCombustible = ?, "
 	            + "tCajaCambios = ?, "
-	            + "numPlazas = ? "
+	            + "numPlazas = ?, "
+	            + "alquilado = ? "
 	            + "WHERE id = ?")) {
 
 	        pstatement.setString(1, vehiculo.getMatricula());
@@ -1228,7 +1240,8 @@ public class DataBaseManager {
 	        pstatement.setString(5, vehiculo.gettCombustible().toString());
 	        pstatement.setString(6, vehiculo.gettCajaCambios().toString());
 	        pstatement.setInt(7, vehiculo.getNumPlazas());
-	        pstatement.setInt(8, vehiculo.getId());
+	        pstatement.setBoolean(8, vehiculo.isAlquilado());
+	        pstatement.setInt(9, vehiculo.getId());
 
 	        pstatement.executeUpdate();
 	    } catch (SQLException e) {
