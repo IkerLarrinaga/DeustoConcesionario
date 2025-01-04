@@ -10,8 +10,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import db.DataBaseManager;
+import domain.Coche;
+import domain.Furgoneta;
+import domain.Moto;
 import domain.TipoCajaCambios;
-import domain.TipoCombustible;
 import domain.Vehiculo;
 
 public class VentanaCatalogo extends JFrame {
@@ -49,6 +51,7 @@ public class VentanaCatalogo extends JFrame {
         JPanel panelBotones = new JPanel();
         panelBotones.setBorder(new EmptyBorder(10, 10, 10, 10));
         panelBotones.setBackground(colorPersonalizado);
+        panelBotones.setLayout(new GridLayout(0, 3, 10, 10));
         panelBotones.add(botonCarrito);
         panelBotones.add(botonCerrarSesion);
         panelBotones.add(botonAtras);
@@ -219,74 +222,79 @@ public class VentanaCatalogo extends JFrame {
 
     private void cargarVehiculosEnCatalogo() {
         for (Vehiculo vehiculo : listaVehiculos) {
-            JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
-            botonVehiculo.setPreferredSize(new Dimension(200, 100));
+            // Crear el texto para el botón con formato HTML para colores
+            String textoBoton = vehiculo.getMarca() + " " + vehiculo.getModelo() + "<br>"
+                               + "Matrícula: " + vehiculo.getMatricula() + "<br>"
+                               + (vehiculo.isAlquilado() ? "<html><font color='red'>Alquilado</font></html>" 
+                                                          : "<html><font color='green'>No alquilado</font></html>");
+            
+            // Crear el botón con el texto y tamaño ajustado
+            JButton botonVehiculo = new JButton("<html><body style='width:150px'>" + textoBoton + "</body></html>");
+            botonVehiculo.setPreferredSize(new Dimension(180, 150)); // Tamaño ajustado para el botón
+            botonVehiculo.setMaximumSize(new Dimension(180, 150)); // Limitar tamaño máximo del botón
 
+            // Cambiar el color del botón según el estado
+            if (vehiculo.isAlquilado()) {
+                botonVehiculo.setEnabled(false); // Deshabilitar el botón si está alquilado
+                botonVehiculo.setBackground(Color.GRAY); // Color gris para botones deshabilitados
+            } else {
+                botonVehiculo.setEnabled(true); // Habilitar el botón si no está alquilado
+                botonVehiculo.setBackground(Color.WHITE); // Color blanco para botones habilitados
+            }
+
+            // Acción al hacer clic en el botón
             botonVehiculo.addActionListener(e -> {
                 String mensaje = "Marca: " + vehiculo.getMarca() + "\n" + "Modelo: " + vehiculo.getModelo() + "\n"
                         + "Precio: " + vehiculo.getPrecio() + "\n" + "Tipo: " + vehiculo.getTipo() + "\n"
                         + "Combustible: " + vehiculo.gettCombustible() + "\n" + "Caja de Cambios: "
                         + vehiculo.gettCajaCambios() + "\n" + "Número de plazas: " + vehiculo.getNumPlazas();
-                Object[] opciones = { "Comprar", "Alquilar", "Cerrar" };
+                Object[] opciones = { "Alquilar", "Cerrar" };
 
                 int opcion = JOptionPane.showOptionDialog(this, mensaje, "Información del Vehículo",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[2]);
                 if (opcion == 0) {
-                    JOptionPane.showMessageDialog(this, "Vehículo COMPRADO");
-                } else if (opcion == 1) {
                     JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Operación cancelada.");
                 }
             });
+
+            // Añadir el botón al panel del catálogo
             panelCatalogo.add(botonVehiculo);
         }
     }
 
     private void actualizarCatalogoConFiltros(String tipoSeleccionado, String modeloSeleccionado, int precioMaximo, boolean esAutomatico, String tipoCombustible) {
-        panelCatalogo.removeAll();
-        for (Vehiculo vehiculo : listaVehiculos) {
-            boolean coincideTipo = tipoSeleccionado.equals("Todos") || vehiculo.getTipo().equalsIgnoreCase(tipoSeleccionado);
-            boolean coincideModelo = modeloSeleccionado.equals("Todos") || vehiculo.getModelo().equalsIgnoreCase(modeloSeleccionado);
-            boolean coincidePrecio = vehiculo.getPrecio() <= precioMaximo;
-            boolean coincideTransmision = !esAutomatico || (vehiculo.gettCajaCambios() != null && vehiculo.gettCajaCambios() == TipoCajaCambios.AUTOMATICO);
-            boolean coincideCombustible = tipoCombustible.equals("Todos") || (validarCombustible(tipoCombustible) && vehiculo.gettCombustible() == TipoCombustible.valueOf(tipoCombustible.toUpperCase()));
+        panelCatalogo.removeAll(); // Limpiar el catálogo actual
 
-            if (coincideTipo && coincideModelo && coincidePrecio && coincideTransmision && coincideCombustible) {
-                JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
-                botonVehiculo.setPreferredSize(new Dimension(200, 100));
-
-                botonVehiculo.addActionListener(e -> {
-                    String mensaje = "Marca: " + vehiculo.getMarca() + "\n" + "Modelo: " + vehiculo.getModelo() + "\n"
-                            + "Precio: " + vehiculo.getPrecio() + "\n" + "Tipo: " + vehiculo.getTipo() + "\n"
-                            + "Combustible: " + vehiculo.gettCombustible() + "\n" + "Caja de Cambios: "
-                            + vehiculo.gettCajaCambios() + "\n" + "Número de plazas: " + vehiculo.getNumPlazas();
-                    Object[] opciones = { "Comprar", "Alquilar", "Cerrar" };
-
-                    int opcion = JOptionPane.showOptionDialog(this, mensaje, "Información del Vehículo",
-                            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[2]);
-                    if (opcion == 0) {
-                        JOptionPane.showMessageDialog(this, "Vehículo COMPRADO");
-                    } else if (opcion == 1) {
-                        JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Operación cancelada.");
+        // Filtrar la lista de vehículos según los filtros seleccionados
+        List<Vehiculo> listaFiltrada = new ArrayList<>();
+        for (Vehiculo vehiculo : dbManager.obtenerTodosVehiculo()) {
+            // Filtrar por tipo de vehículo (Coche, Moto, Furgoneta)
+            if (tipoSeleccionado.equals("Todos") || (tipoSeleccionado.equals("Coche") && vehiculo instanceof Coche) ||
+                (tipoSeleccionado.equals("Moto") && vehiculo instanceof Moto) ||
+                (tipoSeleccionado.equals("Furgoneta") && vehiculo instanceof Furgoneta)) {
+                
+                // Filtrar por modelo
+                if (modeloSeleccionado.equals("Todos") || vehiculo.getModelo().equalsIgnoreCase(modeloSeleccionado)) {
+                    // Filtrar por precio
+                    if (vehiculo.getPrecio() <= precioMaximo) {
+                        // Filtrar por tipo de combustible
+                        if (tipoCombustible.equals("Todos") || vehiculo.gettCombustible().name().equalsIgnoreCase(tipoCombustible)) {
+                            // Filtrar si es automático
+                            if (!esAutomatico || vehiculo.gettCajaCambios().equals(TipoCajaCambios.AUTOMATICO)) {
+                                listaFiltrada.add(vehiculo);
+                            }
+                        }
                     }
-                });
-                panelCatalogo.add(botonVehiculo);
+                }
             }
         }
+
+        listaVehiculos = listaFiltrada;
+
+        // Volver a cargar los vehículos filtrados
+        cargarVehiculosEnCatalogo();
+
         panelCatalogo.revalidate();
         panelCatalogo.repaint();
     }
-
-    private boolean validarCombustible(String tipoCombustible) {
-        try {
-            TipoCombustible.valueOf(tipoCombustible.toUpperCase());
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-    }
-    
 }

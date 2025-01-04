@@ -72,7 +72,7 @@ public class DataBase {
 			dbManager.almacenarCliente(cliente10);
 			dbManager.almacenarCliente(cliente11);
 
-			Coche coche1 = new Coche("1234BCD", Marca.AUDI, "A3", 25, TipoCombustible.GASOLINA, TipoCajaCambios.MANUAL, 5, false, 5);
+			Coche coche1 = new Coche("1234BCD", Marca.AUDI, "A3", 25, TipoCombustible.GASOLINA, TipoCajaCambios.MANUAL, 5, true, 5);
 			Coche coche2 = new Coche("5678EFG", Marca.AUDI, "Q7", 60, TipoCombustible.DIESEL, TipoCajaCambios.AUTOMATICO, 7, false, 5);
 			Coche coche3 = new Coche("9101HIJ", Marca.AUDI, "A4", 35, TipoCombustible.HIBRIDO, TipoCajaCambios.MANUAL, 5, false, 4);
 			Coche coche4 = new Coche("1122JKL", Marca.TOYOTA, "Corolla", 20, TipoCombustible.HIBRIDO, TipoCajaCambios.AUTOMATICO, 5, false, 4);

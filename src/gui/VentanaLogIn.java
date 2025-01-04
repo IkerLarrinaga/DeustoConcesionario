@@ -177,6 +177,42 @@ public class VentanaLogIn extends JFrame {
                     if (String.valueOf(cliente.getContrasenna()).equals(contrasennaIntroducida)) {
                         contrasennaCorrecta = true;
                         dispose();
+                        
+                        JProgressBar barra = new JProgressBar(0, 100);
+                		barra.setValue(0);
+                		barra.setString("Cargando catálogo, por favor espere...");
+                		barra.setStringPainted(true);
+
+                		JOptionPane pane = new JOptionPane(barra, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null,
+                				new Object[] {}, null);
+                		JDialog dialog = pane.createDialog(null, "Cargando");
+
+                		Thread hilo = new Thread(new Runnable() {
+                			@Override
+                			public void run() {
+                				int contador = 0;
+                				try {
+                					while (contador <= 100) {
+                						barra.setValue(contador);
+                						Thread.sleep(10);
+                						contador++;
+                					}
+                					SwingUtilities.invokeLater(new Runnable() {
+                						@Override
+                						public void run() {
+                							dialog.setVisible(false);
+                							dialog.dispose();
+                						}
+                					});
+                				} catch (InterruptedException e) {
+                					e.printStackTrace();
+                				}
+                			}
+                		});
+
+                		hilo.start();
+                		dialog.setVisible(true);
+                        
                         new VentanaMarcas();
                         return;
                     }
