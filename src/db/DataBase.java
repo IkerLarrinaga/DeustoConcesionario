@@ -39,12 +39,14 @@ public class DataBase {
 			Empleado empleado3 = new Empleado("Juan", "Martínez", "Sánchez", "23456789C", LocalDate.of(1975, 5, 30), "juan.martinez@gmail.com", "juan789", "recursos humanos", 1800);
 			Empleado empleado4 = new Empleado("Elena", "Gómez", "Hernández", "34567890D", LocalDate.of(1995, 9, 15), "elena.gomez@gmail.com", "elena101", "ventas", 2000);
 			Empleado empleado5 = new Empleado("Pablo", "Díaz", "Pérez", "45678901E", LocalDate.of(2001, 4, 11), "pablo.diaz@gmail.com", "pablo202", "marketing", 1550);
+			Empleado empleado6 = new Empleado("admin", "admin", "admin", "15926487P", LocalDate.of(1995, 5, 3), "admin", "admin", "admin", 2500);
 			
 			dbManager.almacenarEmpleado(empleado1);
 			dbManager.almacenarEmpleado(empleado2);
 			dbManager.almacenarEmpleado(empleado3);
 			dbManager.almacenarEmpleado(empleado4);
 			dbManager.almacenarEmpleado(empleado5);
+			dbManager.almacenarEmpleado(empleado6);
 				
 			Cliente cliente1 = new Cliente("Paula", "Sánchez", "Rosa", "65983241H", LocalDate.of(1991, 4, 29), "paula.sanchez@gmail.com", "paula687", "15430698M");
 			Cliente cliente2 = new Cliente("Carlos", "Martín", "Gómez", "74589632J", LocalDate.of(1985, 11, 15), "carlos.martin@gmail.com", "carlos321", "32165487N");
@@ -56,6 +58,7 @@ public class DataBase {
 			Cliente cliente8 = new Cliente("David", "Moreno", "Martínez", "75395146Q", LocalDate.of(1996, 8, 30), "david.moreno@gmail.com", "david741", "39284756W");
 			Cliente cliente9 = new Cliente("Lucía", "Rodríguez", "Serrano", "84629137R", LocalDate.of(1987, 2, 28), "lucia.rodriguez@gmail.com", "lucia159", "72584931U");
 			Cliente cliente10 = new Cliente("Javier", "Alonso", "Gutiérrez", "47586932S", LocalDate.of(1994, 10, 19), "javier.alonso@gmail.com", "javier753", "18462739V");	
+			Cliente cliente11 = new Cliente("user", "user", "user", "12375690L", LocalDate.of(1997, 2, 28), "user", "user", "15234568P");
 			
 			dbManager.almacenarCliente(cliente1);
 			dbManager.almacenarCliente(cliente2);
@@ -67,6 +70,7 @@ public class DataBase {
 			dbManager.almacenarCliente(cliente8);
 			dbManager.almacenarCliente(cliente9);
 			dbManager.almacenarCliente(cliente10);
+			dbManager.almacenarCliente(cliente11);
 
 			Coche coche1 = new Coche("1234BCD", Marca.AUDI, "A3", 25, TipoCombustible.GASOLINA, TipoCajaCambios.MANUAL, 5, false, 5);
 			Coche coche2 = new Coche("5678EFG", Marca.AUDI, "Q7", 60, TipoCombustible.DIESEL, TipoCajaCambios.AUTOMATICO, 7, false, 5);
