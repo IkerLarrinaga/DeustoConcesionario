@@ -51,8 +51,8 @@ public class VentanaCatalogo extends JFrame {
         panelBotones.setBorder(new EmptyBorder(10, 10, 10, 10));
         panelBotones.setBackground(colorPersonalizado);
         panelBotones.setLayout(new GridLayout(0, 3, 10, 10));
-        panelBotones.add(botonCerrarSesion);
         panelBotones.add(botonAtras);
+        panelBotones.add(botonCerrarSesion);
 
         JPanel panelFiltros = new JPanel();
         panelFiltros.setBackground(colorPersonalizado);
