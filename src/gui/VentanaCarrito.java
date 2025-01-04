@@ -84,7 +84,7 @@ public class VentanaCarrito extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
                 dispose();
-                new VentanaCatalogo();
+                //new VentanaCatalogo();
             }
         });
 

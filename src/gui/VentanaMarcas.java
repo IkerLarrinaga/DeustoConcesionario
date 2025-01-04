@@ -240,8 +240,8 @@ public class VentanaMarcas extends JFrame {
 		}
 
 		JPanel panelMarca = new JPanel();
-		panelMarca.setLayout(new BorderLayout());
-		panelMarca.setPreferredSize(new Dimension(100, 100));
+		panelMarca.setLayout(new BoxLayout(panelMarca, BoxLayout.Y_AXIS));
+		panelMarca.setPreferredSize(new Dimension(100, 150));
 		panelMarca.setBackground(colorPersonalizado);
 		
 		// IAG ChatGPT
@@ -252,25 +252,24 @@ public class VentanaMarcas extends JFrame {
 						BorderFactory.createLineBorder(Color.WHITE, 2)));
 
 		JLabel imagenLabel = new JLabel(icono);
-		panelMarca.add(imagenLabel, BorderLayout.CENTER);
+		imagenLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panelMarca.add(imagenLabel);
 
 		JLabel nombreLabel = new JLabel("<html>" + nombreMarcaResaltado + "</html>", JLabel.CENTER);
-		panelMarca.add(nombreLabel, BorderLayout.SOUTH);
 		nombreLabel.setForeground(Color.WHITE);
+		nombreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panelMarca.add(nombreLabel);
 
-		// Crear botón "Seleccionar"
 		JButton botonSeleccionar = new JButton("Seleccionar");
+		botonSeleccionar.setAlignmentX(Component.CENTER_ALIGNMENT);
 		botonSeleccionar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 				new VentanaCatalogo(nombreMarca);
 			}
 		});
-
-		JPanel panelBoton = new JPanel();
-		panelBoton.setLayout(new BorderLayout());
-		panelBoton.add(botonSeleccionar, BorderLayout.CENTER);
-		panelMarca.add(panelBoton, BorderLayout.SOUTH);
+		panelMarca.add(botonSeleccionar);
 
 		panelImagenes.add(panelMarca);
 	}

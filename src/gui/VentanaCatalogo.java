@@ -303,7 +303,4 @@ public class VentanaCatalogo extends JFrame {
         }
     }
     
-    public static void main(String[] args) {
-    	new VentanaCatalogo(null);
-    }
 }
