@@ -123,9 +123,13 @@ public abstract class Vehiculo {
 	
 	@Override
 	public String toString() {
-		return "Vehiculo [id=" + id + ", matricula=" + matricula + ", marca=" + marca + ", modelo=" + modelo
-				+ ", precio=" + precio + ", tCombustible=" + tCombustible + ", tCajaCambios=" + tCajaCambios
-				+ ", numPlazas=" + numPlazas + ", alquilado=" + alquilado + "]";
+		return "Matrícula: " + matricula + "\n" +
+	               "Marca: " + marca + "\n" +
+	               "Modelo: " + modelo + "\n" +
+	               "Precio: " + precio + " €/dia\n" +
+	               "Tipo de Combustible: " + tCombustible + "\n" +
+	               "Tipo de Caja de Cambios: " + tCajaCambios + "\n" +
+	               "Número de Plazas: " + numPlazas + "\n";
 	}
 
 	public static List<Vehiculo> cargarVehiculos(String archivo) {

@@ -66,10 +66,9 @@ public class Moto extends Vehiculo{
 
 	@Override
 	public String toString() {
-		return "Moto [baul=" + baul + ", cilindrada=" + cilindrada + ", getId()=" + getId() + ", getMatricula()="
-				+ getMatricula() + ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()="
-				+ getPrecio() + ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios()
-				+ ", getNumPlazas()=" + getNumPlazas() + ", isAlquilado()=" + isAlquilado() + "]";
+		return super.toString() + "\n" + 
+	            "Baúl: " + (baul ? "Sí" : "No") + "\n" + 
+				"Cilindrada: " + cilindrada;
 	}
 
 	@Override

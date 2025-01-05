@@ -34,10 +34,8 @@ public class Coche extends Vehiculo{
 
 	@Override
 	public String toString() {
-		return "Coche [numPuertas=" + numPuertas + ", getId()=" + getId() + ", getMatricula()=" + getMatricula()
-				+ ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo() + ", getPrecio()=" + getPrecio()
-				+ ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()=" + gettCajaCambios()
-				+ ", getNumPlazas()=" + getNumPlazas() + ", isAlquilado()=" + isAlquilado() + "]";
+		 return super.toString() + "\n" +
+	               "Número de Puertas: " + numPuertas;
 	}
 
 	public void mostrarInformacion() {

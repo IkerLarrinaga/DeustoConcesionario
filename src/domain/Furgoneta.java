@@ -45,10 +45,9 @@ public class Furgoneta extends Vehiculo {
 
 	@Override
 	public String toString() {
-		return "Furgoneta [cargaMax=" + cargaMax + ", capacidadCarga=" + capacidadCarga + ", getId()=" + getId()
-				+ ", getMatricula()=" + getMatricula() + ", getMarca()=" + getMarca() + ", getModelo()=" + getModelo()
-				+ ", getPrecio()=" + getPrecio() + ", gettCombustible()=" + gettCombustible() + ", gettCajaCambios()="
-				+ gettCajaCambios() + ", getNumPlazas()=" + getNumPlazas() + ", isAlquilado()=" + isAlquilado() + "]";
+		return super.toString() + "\n" +
+	               "Peso Máximo de Carga: " + cargaMax + " kg\n" +
+	               "Volumen de Carga: " + capacidadCarga + " m³";
 	}
 
 	@Override

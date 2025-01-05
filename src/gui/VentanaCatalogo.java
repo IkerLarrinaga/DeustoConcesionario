@@ -12,6 +12,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import db.DataBaseManager;
+import domain.Coche;
+import domain.Furgoneta;
+import domain.Moto;
 import domain.TipoCajaCambios;
 import domain.TipoCombustible;
 import domain.Vehiculo;
@@ -72,9 +75,9 @@ public class VentanaCatalogo extends JFrame {
 		comboModelo = new JComboBox<>();
 		comboModelo.addItem("Todos");
 		for (Vehiculo vehiculo : filtrarPorMarca(marcaSeleccionada)) {
-		    if (!modeloYaAgregado(comboModelo, vehiculo.getModelo())) {
-		        comboModelo.addItem(vehiculo.getModelo());
-		    }
+			if (!modeloYaAgregado(comboModelo, vehiculo.getModelo())) {
+				comboModelo.addItem(vehiculo.getModelo());
+			}
 		}
 		comboModelo.setSelectedIndex(0);
 		gbc.gridy = 2;
@@ -84,7 +87,7 @@ public class VentanaCatalogo extends JFrame {
 
 		JLabel labelPrecio = new JLabel("Precio Máximo:");
 		labelPrecio.setForeground(Color.WHITE);
-		JSlider sliderPrecio = new JSlider(JSlider.HORIZONTAL, 0, 150, 100);
+		JSlider sliderPrecio = new JSlider(JSlider.HORIZONTAL, 0, 150, 150);
 		sliderPrecio.setMajorTickSpacing(15);
 		sliderPrecio.setPaintTicks(true);
 		JLabel labelPrecioValor = new JLabel("Valor máximo: " + sliderPrecio.getValue() + " €/dia");
@@ -237,21 +240,45 @@ public class VentanaCatalogo extends JFrame {
 					|| vehiculo.gettCombustible() == TipoCombustible.valueOf(tipoCombustible.toUpperCase());
 
 			if (coincideTipo && coincideModelo && coincidePrecio && coincideTransmision && coincideCombustible) {
-				JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
-				botonVehiculo.setPreferredSize(new Dimension(200, 100));
+				String textoBoton = "<html><center>" + "<b>" + vehiculo.getMarca() + " " + vehiculo.getModelo()
+						+ "</b><br>" + "Matrícula: " + vehiculo.getMatricula() + "<br>" + "<span style='color:"
+						+ (vehiculo.isAlquilado() ? "red" : "green") + ";'>"
+						+ (vehiculo.isAlquilado() ? "Alquilado" : "No alquilado") + "</span></center></html>";
+
+				JButton botonVehiculo = new JButton(textoBoton);
+				botonVehiculo.setPreferredSize(new Dimension(100, 100));
 
 				botonVehiculo.addActionListener(e -> {
 					String mensaje = "Marca: " + vehiculo.getMarca() + "\n" + "Modelo: " + vehiculo.getModelo() + "\n"
 							+ "Precio: " + vehiculo.getPrecio() + " €/dia\n" + "Tipo: " + vehiculo.getTipo() + "\n"
 							+ "Combustible: " + vehiculo.gettCombustible() + "\n" + "Caja de Cambios: "
 							+ vehiculo.gettCajaCambios() + "\n" + "Número de plazas: " + vehiculo.getNumPlazas();
+
+					if (vehiculo instanceof Coche) {
+						Coche coche = (Coche) vehiculo;
+						mensaje += "\nNúmero de puertas: " + coche.getNumPuertas();
+					} else if (vehiculo instanceof Furgoneta) {
+						Furgoneta furgoneta = (Furgoneta) vehiculo;
+						mensaje += "\nCapacidad de carga máximo: " + furgoneta.getCargaMax() + " kg\n"
+								+ "Volumen de Carga: " + furgoneta.getCapacidadCarga() + " m³";
+					} else if (vehiculo instanceof Moto) {
+						Moto moto = (Moto) vehiculo;
+						mensaje += "\nBaúl: " + moto.isBaul() + "\nCilindrada: " + moto.getCilindrada();
+					}
+					
 					Object[] opciones = { "Alquilar", "Cerrar" };
 					int opcion = JOptionPane.showOptionDialog(this, mensaje, "Información del Vehículo",
-							JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[1]);
+							JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
 					if (opcion == 0) {
-						JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
-					} else if (opcion == 1) {
-						JOptionPane.showMessageDialog(this, "Operación cancelada.");
+						if (vehiculo.isAlquilado()) {
+							JOptionPane.showMessageDialog(this, "Este vehículo ya está alquilado.", "No disponible",
+									JOptionPane.WARNING_MESSAGE);
+						} else {
+							vehiculo.setAlquilado(true);
+							JOptionPane.showMessageDialog(this, "Has alquilado el vehículo con éxito.", "Éxito",
+									JOptionPane.INFORMATION_MESSAGE);
+							cargarVehiculosEnCatalogo();
+						}
 					}
 				});
 				panelCatalogo.add(botonVehiculo);
@@ -264,20 +291,46 @@ public class VentanaCatalogo extends JFrame {
 	private void cargarVehiculosEnCatalogo() {
 		panelCatalogo.removeAll();
 		for (Vehiculo vehiculo : listaVehiculos) {
-			JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
-			botonVehiculo.setEnabled(!vehiculo.isAlquilado());
+			String textoBoton = "<html><center>" + "<b>" + vehiculo.getMarca() + " " + vehiculo.getModelo() + "</b><br>"
+					+ "Matrícula: " + vehiculo.getMatricula() + "<br>" + "<span style='color:"
+					+ (vehiculo.isAlquilado() ? "red" : "green") + ";'>"
+					+ (vehiculo.isAlquilado() ? "Alquilado" : "No alquilado") + "</span></center></html>";
+
+			JButton botonVehiculo = new JButton(textoBoton);
+
+			botonVehiculo.addActionListener(e -> {
+				String mensaje = "Marca: " + vehiculo.getMarca() + "\n" + "Modelo: " + vehiculo.getModelo() + "\n"
+						+ "Precio: " + vehiculo.getPrecio() + " €/dia\n" + "Tipo: " + vehiculo.getTipo() + "\n"
+						+ "Combustible: " + vehiculo.gettCombustible() + "\n" + "Caja de Cambios: "
+						+ vehiculo.gettCajaCambios() + "\n" + "Número de plazas: " + vehiculo.getNumPlazas();
+				Object[] opciones = { "Alquilar", "Cerrar" };
+				int opcion = JOptionPane.showOptionDialog(this, mensaje, "Información del Vehículo",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+				if (opcion == 0) {
+					if (vehiculo.isAlquilado()) {
+						JOptionPane.showMessageDialog(this, "Este vehículo ya está alquilado.", "No disponible",
+								JOptionPane.WARNING_MESSAGE);
+					} else {
+						vehiculo.setAlquilado(true);
+						JOptionPane.showMessageDialog(this, "Has alquilado el vehículo con éxito.", "Éxito",
+								JOptionPane.INFORMATION_MESSAGE);
+						cargarVehiculosEnCatalogo();
+					}
+				}
+			});
+
 			panelCatalogo.add(botonVehiculo);
 		}
 		panelCatalogo.revalidate();
 		panelCatalogo.repaint();
 	}
-	
+
 	private boolean modeloYaAgregado(JComboBox<String> combo, String modelo) {
-	    for (int i = 0; i < combo.getItemCount(); i++) {
-	        if (combo.getItemAt(i).equalsIgnoreCase(modelo)) {
-	            return true;
-	        }
-	    }
-	    return false;
+		for (int i = 0; i < combo.getItemCount(); i++) {
+			if (combo.getItemAt(i).equalsIgnoreCase(modelo)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
