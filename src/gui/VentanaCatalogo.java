@@ -48,9 +48,10 @@ public class VentanaCatalogo extends JFrame {
 		JButton botonAtras = new JButton("Atrás");
 
 		JPanel panelBotones = new JPanel();
+		FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER);
+		panelBotones.setLayout(flowLayout);
 		panelBotones.setBorder(new EmptyBorder(10, 10, 10, 10));
 		panelBotones.setBackground(colorPersonalizado);
-		panelBotones.setLayout(new GridLayout(0, 3, 10, 10));
 		panelBotones.add(botonAtras);
 		panelBotones.add(botonCerrarSesion);
 
