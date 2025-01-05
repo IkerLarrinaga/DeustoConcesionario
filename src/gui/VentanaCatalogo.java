@@ -1,20 +1,13 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import db.DataBaseManager;
-import domain.Coche;
-import domain.Furgoneta;
-import domain.Moto;
-import domain.TipoCajaCambios;
-import domain.Vehiculo;
+import domain.*;
 
 public class VentanaCatalogo extends JFrame {
 
@@ -22,19 +15,17 @@ public class VentanaCatalogo extends JFrame {
     private List<Vehiculo> listaVehiculos;
     private JPanel panelCatalogo;
     private DataBaseManager dbManager = new DataBaseManager();
+    private JComboBox<String> comboModelo;
+    private String marcaSeleccionada;
 
     public VentanaCatalogo(String marcaSeleccionada, String seleccion) {
-    	
-    	dbManager.conexion("resource/db/concesionario.db");
+        this.marcaSeleccionada = marcaSeleccionada;
+        dbManager.conexion("resource/db/concesionario.db");
+
+        listaVehiculos = dbManager.obtenerTodosVehiculo();
 
         if (marcaSeleccionada != null && !marcaSeleccionada.isEmpty()) {
-            List<Vehiculo> listaFiltrada = new ArrayList<>();
-            for (Vehiculo vehiculo : dbManager.obtenerTodosVehiculo()) {
-                if (vehiculo.getMarca().name().equalsIgnoreCase(marcaSeleccionada)) {
-                    listaFiltrada.add(vehiculo);
-                }
-            }
-            listaVehiculos = listaFiltrada;
+            listaVehiculos = filtrarPorMarca(listaVehiculos, marcaSeleccionada);
         }
 
         setTitle("Catálogo");
@@ -56,8 +47,7 @@ public class VentanaCatalogo extends JFrame {
 
         JPanel panelFiltros = new JPanel();
         panelFiltros.setBackground(colorPersonalizado);
-        GridBagLayout gridBagLayout = new GridBagLayout();
-        panelFiltros.setLayout(gridBagLayout);
+        panelFiltros.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.CENTER;
@@ -66,22 +56,18 @@ public class VentanaCatalogo extends JFrame {
         JLabel labelTipo = new JLabel("Tipo de Vehículo:");
         labelTipo.setForeground(Color.WHITE);
         JComboBox<String> comboTipo = new JComboBox<>(new String[] { "Todos", "Coche", "Furgoneta", "Moto" });
-        comboTipo.setMaximumSize(comboTipo.getPreferredSize());
         gbc.gridx = 0;
         gbc.gridy = 0;
         panelFiltros.add(labelTipo, gbc);
-        gbc.gridx = 0;
         gbc.gridy = 1;
         panelFiltros.add(comboTipo, gbc);
 
         JLabel labelModelo = new JLabel("Modelo:");
         labelModelo.setForeground(Color.WHITE);
-        JComboBox<String> comboModelo = new JComboBox<>(new String[] { "Todos", "Sedan", "SUV", "Hatchback", "Coupe" });
-        comboModelo.setMaximumSize(comboModelo.getPreferredSize());
-        gbc.gridx = 0;
+        comboModelo = new JComboBox<>();
+        actualizarModelosDisponibles();
         gbc.gridy = 2;
         panelFiltros.add(labelModelo, gbc);
-        gbc.gridx = 0;
         gbc.gridy = 3;
         panelFiltros.add(comboModelo, gbc);
 
@@ -89,34 +75,26 @@ public class VentanaCatalogo extends JFrame {
         labelPrecio.setForeground(Color.WHITE);
         JSlider sliderPrecio = new JSlider(JSlider.HORIZONTAL, 0, 50000, 25000);
         sliderPrecio.setMajorTickSpacing(10000);
-        sliderPrecio.setMinorTickSpacing(10000);
+        sliderPrecio.setMinorTickSpacing(5000);
         sliderPrecio.setPaintTicks(true);
         JLabel labelPrecioValor = new JLabel("Valor máximo: " + sliderPrecio.getValue());
-        labelPrecioValor.setFont(new Font("Arial", Font.ITALIC, 12));
-        labelPrecioValor.setForeground(new Color(250, 250, 250));
-        gbc.gridx = 0;
+        labelPrecioValor.setForeground(Color.WHITE);
         gbc.gridy = 4;
         panelFiltros.add(labelPrecio, gbc);
-        gbc.gridx = 0;
         gbc.gridy = 5;
         panelFiltros.add(sliderPrecio, gbc);
-        gbc.gridx = 0;
         gbc.gridy = 6;
         panelFiltros.add(labelPrecioValor, gbc);
 
         JLabel labelCombustible = new JLabel("Tipo de Combustible:");
         labelCombustible.setForeground(Color.WHITE);
         JComboBox<String> comboCombustible = new JComboBox<>(new String[] { "Todos", "Gasolina", "Diesel", "Híbrido", "Eléctrico" });
-        comboCombustible.setMaximumSize(comboCombustible.getPreferredSize());
-        gbc.gridx = 0;
         gbc.gridy = 7;
         panelFiltros.add(labelCombustible, gbc);
-        gbc.gridx = 0;
         gbc.gridy = 8;
         panelFiltros.add(comboCombustible, gbc);
 
         JCheckBox checkAutomatico = new JCheckBox("Automático");
-        gbc.gridx = 0;
         gbc.gridy = 9;
         panelFiltros.add(checkAutomatico, gbc);
 
@@ -126,8 +104,7 @@ public class VentanaCatalogo extends JFrame {
         JScrollPane scrollPane = new JScrollPane(panelCatalogo);
         scrollPane.setPreferredSize(new Dimension(800, 500));
 
-        JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setLayout(new BorderLayout());
+        JPanel panelPrincipal = new JPanel(new BorderLayout());
         panelPrincipal.add(panelFiltros, BorderLayout.WEST);
         panelPrincipal.add(scrollPane, BorderLayout.CENTER);
 
@@ -136,142 +113,147 @@ public class VentanaCatalogo extends JFrame {
 
         cargarVehiculosEnCatalogo();
 
-        botonCerrarSesion.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new VentanaIncio();
-                dispose();
-            }
-        });
-        
-        botonAtras.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	new VentanaMarcas();
-                dispose();
-            }
+        botonCerrarSesion.addActionListener(e -> {
+            new VentanaIncio();
+            dispose();
         });
 
-        comboTipo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String tipoSeleccionado = (String) comboTipo.getSelectedItem();
-                String modeloSeleccionado = (String) comboModelo.getSelectedItem();
-                int precioMaximo = sliderPrecio.getValue();
-                boolean esAutomatico = checkAutomatico.isSelected();
-                String tipoCombustible = (String) comboCombustible.getSelectedItem();
-                actualizarCatalogoConFiltros(tipoSeleccionado, modeloSeleccionado, precioMaximo, esAutomatico, tipoCombustible);
-            }
+        botonAtras.addActionListener(e -> {
+            new VentanaMarcas();
+            dispose();
         });
 
-        comboModelo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actualizarCatalogoConFiltros(comboTipo.getSelectedItem().toString(), comboModelo.getSelectedItem().toString(), sliderPrecio.getValue(),
-                        checkAutomatico.isSelected(), comboCombustible.getSelectedItem().toString());
-            }
+        comboTipo.addActionListener(e -> {
+            actualizarModelosDisponibles();
+            aplicarFiltros(comboTipo, comboModelo, sliderPrecio, comboCombustible, checkAutomatico);
         });
+        comboModelo.addActionListener(e -> aplicarFiltros(comboTipo, comboModelo, sliderPrecio, comboCombustible, checkAutomatico));
+        sliderPrecio.addChangeListener(e -> {
+            labelPrecioValor.setText("Valor máximo: " + sliderPrecio.getValue());
+            aplicarFiltros(comboTipo, comboModelo, sliderPrecio, comboCombustible, checkAutomatico);
+        });
+        comboCombustible.addActionListener(e -> aplicarFiltros(comboTipo, comboModelo, sliderPrecio, comboCombustible, checkAutomatico));
+        checkAutomatico.addActionListener(e -> aplicarFiltros(comboTipo, comboModelo, sliderPrecio, comboCombustible, checkAutomatico));
 
-        sliderPrecio.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                labelPrecioValor.setText("Valor máximo: " + sliderPrecio.getValue());
-                actualizarCatalogoConFiltros(comboTipo.getSelectedItem().toString(),
-                        comboModelo.getSelectedItem().toString(),
-                        sliderPrecio.getValue(),
-                        checkAutomatico.isSelected(),
-                        comboCombustible.getSelectedItem().toString());
-            }
-        });
-
-        checkAutomatico.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actualizarCatalogoConFiltros(comboTipo.getSelectedItem().toString(),
-                        comboModelo.getSelectedItem().toString(),
-                        sliderPrecio.getValue(),
-                        checkAutomatico.isSelected(),
-                        comboCombustible.getSelectedItem().toString());
-            }
-        });
-
-        comboCombustible.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actualizarCatalogoConFiltros(comboTipo.getSelectedItem().toString(),
-                        comboModelo.getSelectedItem().toString(),
-                        sliderPrecio.getValue(),
-                        checkAutomatico.isSelected(),
-                        comboCombustible.getSelectedItem().toString());
-            }
-        });
-        
         setVisible(true);
         dbManager.desconexion();
     }
 
-    private void cargarVehiculosEnCatalogo() {
+    private void aplicarFiltros(JComboBox<String> comboTipo, JComboBox<String> comboModelo, JSlider sliderPrecio,
+                                 JComboBox<String> comboCombustible, JCheckBox checkAutomatico) {
+        List<Vehiculo> vehiculosFiltrados = listaVehiculos;
+
+        String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+        if (!"Todos".equals(tipoSeleccionado)) {
+            vehiculosFiltrados = filtrarPorTipo(vehiculosFiltrados, tipoSeleccionado);
+        }
+
+        String modeloSeleccionado = (String) comboModelo.getSelectedItem();
+        if (!"Todos".equals(modeloSeleccionado)) {
+            vehiculosFiltrados = filtrarPorModelo(vehiculosFiltrados, modeloSeleccionado);
+        }
+
+        int precioMaximo = sliderPrecio.getValue();
+        vehiculosFiltrados = filtrarPorPrecio(vehiculosFiltrados, precioMaximo);
+
+        String combustibleSeleccionado = (String) comboCombustible.getSelectedItem();
+        if (!"Todos".equals(combustibleSeleccionado)) {
+            vehiculosFiltrados = filtrarPorCombustible(vehiculosFiltrados, combustibleSeleccionado);
+        }
+
+        if (checkAutomatico.isSelected()) {
+            vehiculosFiltrados = filtrarPorAutomatico(vehiculosFiltrados);
+        }
+
+        listaVehiculos = vehiculosFiltrados;
+        cargarVehiculosEnCatalogo();
+    }
+
+    private void actualizarModelosDisponibles() {
+        comboModelo.removeAllItems();
+        comboModelo.addItem("Todos");
+
+        String tipoSeleccionado = (String) comboModelo.getSelectedItem();
+        Set<String> modelos = new HashSet<>();
+
         for (Vehiculo vehiculo : listaVehiculos) {
-            String textoBoton = vehiculo.getMarca() + " " + vehiculo.getModelo() + "<br>"
-                               + "Matrícula: " + vehiculo.getMatricula() + "<br>"
-                               + (vehiculo.isAlquilado() ? "<html><font color='red'>Alquilado</font></html>" 
-                                                          : "<html><font color='green'>No alquilado</font></html>");
-            
-            JButton botonVehiculo = new JButton("<html><body style='width:150px'>" + textoBoton + "</body></html>");
-            botonVehiculo.setPreferredSize(new Dimension(180, 150));
-            botonVehiculo.setMaximumSize(new Dimension(180, 150));
-
-            if (vehiculo.isAlquilado()) {
-                botonVehiculo.setEnabled(false);
-                botonVehiculo.setBackground(Color.GRAY);
-            } else {
-                botonVehiculo.setEnabled(true);
-                botonVehiculo.setBackground(Color.WHITE);
+            if ("Todos".equals(tipoSeleccionado) || vehiculo.getTipo().equalsIgnoreCase(tipoSeleccionado)) {
+                modelos.add(vehiculo.getModelo());
             }
+        }
 
-            botonVehiculo.addActionListener(e -> {
-                String mensaje = "Marca: " + vehiculo.getMarca() + "\n" + "Modelo: " + vehiculo.getModelo() + "\n"
-                        + "Precio: " + vehiculo.getPrecio() + "\n" + "Tipo: " + vehiculo.getTipo() + "\n"
-                        + "Combustible: " + vehiculo.gettCombustible() + "\n" + "Caja de Cambios: "
-                        + vehiculo.gettCajaCambios() + "\n" + "Número de plazas: " + vehiculo.getNumPlazas();
-                Object[] opciones = { "Alquilar", "Cerrar" };
-
-                int opcion = JOptionPane.showOptionDialog(this, mensaje, "Información del Vehículo",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
-                if (opcion == 0) {
-                    JOptionPane.showMessageDialog(this, "Vehículo ALQUILADO");
-                }
-            });
-
-            panelCatalogo.add(botonVehiculo);
+        for (String modelo : modelos) {
+            comboModelo.addItem(modelo);
         }
     }
 
-    private void actualizarCatalogoConFiltros(String tipoSeleccionado, String modeloSeleccionado, int precioMaximo, boolean esAutomatico, String tipoCombustible) {
-        panelCatalogo.removeAll();
-
-        List<Vehiculo> listaFiltrada = new ArrayList<>();
-        for (Vehiculo vehiculo : dbManager.obtenerTodosVehiculo()) {
-            if (tipoSeleccionado.equals("Todos") || (tipoSeleccionado.equals("Coche") && vehiculo instanceof Coche) ||
-                (tipoSeleccionado.equals("Moto") && vehiculo instanceof Moto) ||
-                (tipoSeleccionado.equals("Furgoneta") && vehiculo instanceof Furgoneta)) {
-                
-                if (modeloSeleccionado.equals("Todos") || vehiculo.getModelo().equalsIgnoreCase(modeloSeleccionado)) {
-                    if (vehiculo.getPrecio() <= precioMaximo) {
-                        if (tipoCombustible.equals("Todos") || vehiculo.gettCombustible().name().equalsIgnoreCase(tipoCombustible)) {
-                            if (!esAutomatico || vehiculo.gettCajaCambios().equals(TipoCajaCambios.AUTOMATICO)) {
-                                listaFiltrada.add(vehiculo);
-                            }
-                        }
-                    }
-                }
+    private List<Vehiculo> filtrarPorMarca(List<Vehiculo> vehiculos, String marca) {
+        List<Vehiculo> filtrados = new ArrayList<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            if (vehiculo.getMarca().name().equalsIgnoreCase(marca)) {
+                filtrados.add(vehiculo);
             }
         }
+        return filtrados;
+    }
 
-        listaVehiculos = listaFiltrada;
+    private List<Vehiculo> filtrarPorTipo(List<Vehiculo> vehiculos, String tipo) {
+        List<Vehiculo> filtrados = new ArrayList<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            if (vehiculo.getTipo().equalsIgnoreCase(tipo)) {
+                filtrados.add(vehiculo);
+            }
+        }
+        return filtrados;
+    }
 
-        cargarVehiculosEnCatalogo();
+    private List<Vehiculo> filtrarPorModelo(List<Vehiculo> vehiculos, String modelo) {
+        List<Vehiculo> filtrados = new ArrayList<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            if (vehiculo.getModelo().equalsIgnoreCase(modelo)) {
+                filtrados.add(vehiculo);
+            }
+        }
+        return filtrados;
+    }
 
+    private List<Vehiculo> filtrarPorPrecio(List<Vehiculo> vehiculos, int precioMaximo) {
+        List<Vehiculo> filtrados = new ArrayList<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            if (vehiculo.getPrecio() <= precioMaximo) {
+                filtrados.add(vehiculo);
+            }
+        }
+        return filtrados;
+    }
+
+    private List<Vehiculo> filtrarPorCombustible(List<Vehiculo> vehiculos, String combustible) {
+        List<Vehiculo> filtrados = new ArrayList<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            if (vehiculo.gettCombustible().name().equalsIgnoreCase(combustible)) {
+                filtrados.add(vehiculo);
+            }
+        }
+        return filtrados;
+    }
+
+    private List<Vehiculo> filtrarPorAutomatico(List<Vehiculo> vehiculos) {
+        List<Vehiculo> filtrados = new ArrayList<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            if (vehiculo.gettCajaCambios().equals(TipoCajaCambios.AUTOMATICO)) {
+                filtrados.add(vehiculo);
+            }
+        }
+        return filtrados;
+    }
+
+    private void cargarVehiculosEnCatalogo() {
+        panelCatalogo.removeAll();
+        for (Vehiculo vehiculo : listaVehiculos) {
+            JButton botonVehiculo = new JButton(vehiculo.getMarca() + " " + vehiculo.getModelo());
+            botonVehiculo.setEnabled(!vehiculo.isAlquilado());
+            panelCatalogo.add(botonVehiculo);
+        }
         panelCatalogo.revalidate();
         panelCatalogo.repaint();
     }
