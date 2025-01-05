@@ -242,7 +242,8 @@ public class VentanaCatalogo extends JFrame {
 
 			if (coincideTipo && coincideModelo && coincidePrecio && coincideTransmision && coincideCombustible) {
 				String textoBoton = "<html><center>" + "<b>" + vehiculo.getMarca() + " " + vehiculo.getModelo()
-						+ "</b><br>" + "Matrícula: " + vehiculo.getMatricula() + "<br>" + "<span style='color:"
+						+ "</b><br>" + "Matrícula: " + vehiculo.getMatricula()
+						+ "</b><br>" + "Precio: " + (int) vehiculo.getPrecio() + "€/dia" + "<br>" + "<span style='color:"
 						+ (vehiculo.isAlquilado() ? "red" : "green") + ";'>"
 						+ (vehiculo.isAlquilado() ? "Alquilado" : "No alquilado") + "</span></center></html>";
 
@@ -292,10 +293,11 @@ public class VentanaCatalogo extends JFrame {
 	private void cargarVehiculosEnCatalogo() {
 		panelCatalogo.removeAll();
 		for (Vehiculo vehiculo : listaVehiculos) {
-			String textoBoton = "<html><center>" + "<b>" + vehiculo.getMarca() + " " + vehiculo.getModelo() + "</b><br>"
-					+ "Matrícula: " + vehiculo.getMatricula() + "<br>" + "<span style='color:"
-					+ (vehiculo.isAlquilado() ? "red" : "green") + ";'>"
-					+ (vehiculo.isAlquilado() ? "Alquilado" : "No alquilado") + "</span></center></html>";
+			String textoBoton = "<html><center>" + "<b>" + vehiculo.getMarca() + " " + vehiculo.getModelo()
+			+ "</b><br>" + "Matrícula: " + vehiculo.getMatricula()
+			+ "</b><br>" + "Precio: " + (int)vehiculo.getPrecio() + "€/dia" + "<br>" + "<span style='color:"
+			+ (vehiculo.isAlquilado() ? "red" : "green") + ";'>"
+			+ (vehiculo.isAlquilado() ? "Alquilado" : "No alquilado") + "</span></center></html>";
 
 			JButton botonVehiculo = new JButton(textoBoton);
 

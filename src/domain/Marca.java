@@ -8,5 +8,9 @@ public enum Marca {
     YAMAHA, KAWASAKI, SUZUKI, HARLEY_DAVIDSON, DUCATI,
     VESPA, JEEP, FIAT, CITROEN, OPEL, MAZDA, LEXUS, 
     MITSUBISHI;
+	
+	public String getNombre() {
+        return name();
+    }
 
 }

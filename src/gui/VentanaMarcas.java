@@ -1,20 +1,42 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-import db.DataBaseManager;
-import domain.Marca;
-import domain.Vehiculo;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import db.DataBaseManager;
+import domain.Cliente;
+import domain.Marca;
+import domain.Vehiculo;
 
 public class VentanaMarcas extends JFrame {
 
@@ -63,7 +85,19 @@ public class VentanaMarcas extends JFrame {
 		});
 
 		panelSuperior.add(buscador, BorderLayout.CENTER);
-
+		
+		JButton botonMisCoches = new JButton("Mis Coches");
+		configurarBoton(botonMisCoches, colorPersonalizado, new Color(230, 230, 230)); // Colores personalizados
+		botonMisCoches.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	//ARREGLAR ESTO: Que el "cliente" sea el propio usuario para poder ver los alquileres que ha hecho.
+		        new VentanaMisCoches(cliente);
+		        dispose();
+		    }
+		});
+		
+		
 		JButton botonCerrarSesion = new JButton("Cerrar Sesión");
 		botonCerrarSesion.addActionListener(new ActionListener() {
 			@Override
@@ -72,11 +106,12 @@ public class VentanaMarcas extends JFrame {
 				dispose();
 			}
 		});
-
-		JPanel panelCerrarSesion = new JPanel();
-		panelCerrarSesion.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		panelCerrarSesion.add(botonCerrarSesion);
-		panelSuperior.add(panelCerrarSesion, BorderLayout.EAST);
+		
+		JPanel panelBotones = new JPanel();
+		panelBotones.setLayout(new FlowLayout(FlowLayout.RIGHT)); 
+		panelBotones.add(botonMisCoches);
+		panelBotones.add(botonCerrarSesion);
+		panelSuperior.add(panelBotones, BorderLayout.EAST);
 
 		String[] opciones = { "Todas", "Vehiculo", "Moto", "Furgoneta" };
 		JComboBox<String> comboBox = new JComboBox<>(opciones);
