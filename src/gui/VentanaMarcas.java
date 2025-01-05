@@ -231,7 +231,7 @@ public class VentanaMarcas extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new VentanaCatalogo(nombreMarca, seleccion);
+				new VentanaCatalogo(nombreMarca);
 			}
 		});
 		panelMarca.add(botonSeleccionar);
