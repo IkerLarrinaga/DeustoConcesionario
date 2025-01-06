@@ -213,7 +213,7 @@ public class VentanaLogIn extends JFrame {
                 		hilo.start();
                 		dialog.setVisible(true);
                         
-                        new VentanaMarcas();
+                        new VentanaMarcas(cliente);
                         return;
                     }
                 }

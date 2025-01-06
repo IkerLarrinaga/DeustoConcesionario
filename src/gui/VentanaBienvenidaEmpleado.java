@@ -21,7 +21,6 @@ import domain.Coche;
 import domain.Furgoneta;
 import domain.Marca;
 import domain.Moto;
-import domain.TipoVehiculo;
 import domain.Vehiculo;
 
 public class VentanaBienvenidaEmpleado extends JFrame {

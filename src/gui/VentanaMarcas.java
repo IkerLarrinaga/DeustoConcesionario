@@ -39,6 +39,7 @@ import domain.Marca;
 import domain.Vehiculo;
 
 public class VentanaMarcas extends JFrame {
+	private Cliente cliente;
 
 	private Color colorPersonalizado = new Color(92, 184, 255);
 	private JPanel panelImagenes;
@@ -46,7 +47,8 @@ public class VentanaMarcas extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public VentanaMarcas() {
+	public VentanaMarcas(Cliente cliente) {
+		this.cliente = cliente;
 		setSize(800, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -20,7 +20,11 @@ import domain.Cliente;
 
 public class VentanaMisCoches extends JFrame {
 
-    private DataBaseManager dbManager = new DataBaseManager();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3124689292218739168L;
+	private DataBaseManager dbManager = new DataBaseManager();
 
     public VentanaMisCoches(Cliente cliente) {
         setTitle("Mis Coches");
@@ -39,7 +43,7 @@ public class VentanaMisCoches extends JFrame {
         JButton botonCerrar = new JButton("Cerrar");
         botonCerrar.addActionListener(e -> {
             dispose();
-            new VentanaMarcas(); // Regresa a la ventana de marcas
+            new VentanaMarcas(cliente); // Regresa a la ventana de marcas
         });
         panelSuperior.add(botonCerrar, BorderLayout.EAST);
         add(panelSuperior, BorderLayout.NORTH);
