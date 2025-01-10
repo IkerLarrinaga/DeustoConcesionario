@@ -88,13 +88,12 @@ public class VentanaMarcas extends JFrame {
 
 		panelSuperior.add(buscador, BorderLayout.CENTER);
 		
-		JButton botonMisCoches = new JButton("Mis Coches");
+		JButton botonMisCoches = new JButton("Mis Alquileres");
 		configurarBoton(botonMisCoches, colorPersonalizado, new Color(230, 230, 230)); // Colores personalizados
 		botonMisCoches.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	//ARREGLAR ESTO: Que el "cliente" sea el propio usuario para poder ver los alquileres que ha hecho.
-		        new VentanaMisCoches(cliente);
+		        new VentanaMisAlquileres(cliente);
 		        dispose();
 		    }
 		});
