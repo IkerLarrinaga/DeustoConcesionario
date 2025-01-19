@@ -75,7 +75,8 @@ public class VentanaMisAlquileres extends JFrame {
         double total = 0;
         for (Alquiler alquiler : alquileres) {
             String marca = "", modelo = "", matricula = "";
-            double precio = 0;
+            int dias = 0;
+            double precio = 0.00d, precioTotal = 0.00d;
 
             if (alquiler.getVehiculoCoche() != null) {
                 marca = alquiler.getVehiculoCoche().getMarca().getNombre();
