@@ -154,6 +154,7 @@ public class VentanaMarcas extends JFrame {
 		});
 
 		configurarBoton(botonCerrarSesion, new Color(255, 80, 80), new Color(255, 10, 30));
+		configurarBoton(botonMisCoches, new Color(40, 150, 255), new Color(20, 100, 220));
 
 		listener.actionPerformed(null);
 
