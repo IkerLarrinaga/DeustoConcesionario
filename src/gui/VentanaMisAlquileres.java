@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -82,22 +83,29 @@ public class VentanaMisAlquileres extends JFrame {
                 marca = alquiler.getVehiculoCoche().getMarca().getNombre();
                 modelo = alquiler.getVehiculoCoche().getModelo();
                 matricula = alquiler.getVehiculoCoche().getMatricula();
+                dias = (int) ChronoUnit.DAYS.between(alquiler.getFechaInicio(), alquiler.getFechaFin());
                 precio = alquiler.getVehiculoCoche().getPrecio();
+                precioTotal = precio * dias;
+                
             } else if (alquiler.getVehiculoFurgoneta() != null) {
                 marca = alquiler.getVehiculoFurgoneta().getMarca().getNombre();
                 modelo = alquiler.getVehiculoFurgoneta().getModelo();
                 matricula = alquiler.getVehiculoFurgoneta().getMatricula();
+                dias = (int) ChronoUnit.DAYS.between(alquiler.getFechaInicio(), alquiler.getFechaFin());
                 precio = alquiler.getVehiculoFurgoneta().getPrecio();
+                precioTotal = precio * dias;
             } else if (alquiler.getVehiculoMoto() != null) {
                 marca = alquiler.getVehiculoMoto().getMarca().getNombre();
                 modelo = alquiler.getVehiculoMoto().getModelo();
                 matricula = alquiler.getVehiculoMoto().getMatricula();
+                dias = (int) ChronoUnit.DAYS.between(alquiler.getFechaInicio(), alquiler.getFechaFin());
                 precio = alquiler.getVehiculoMoto().getPrecio();
+                precioTotal = precio * dias;
             }
 
             if (!marca.isEmpty()) {
-                modeloTabla.addRow(new Object[]{marca, modelo, matricula, precio});
-                total += precio;
+                modeloTabla.addRow(new Object[]{marca, modelo, matricula, dias, precio, precioTotal});
+                total += precioTotal;
             }
         }
 
