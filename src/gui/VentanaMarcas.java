@@ -274,7 +274,7 @@ public class VentanaMarcas extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new VentanaCatalogo(nombreMarca);
+				new VentanaCatalogo(nombreMarca, cliente);
 			}
 		});
 		

@@ -1,8 +1,11 @@
 package gui;
 
 import java.awt.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
@@ -12,6 +15,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import db.DataBaseManager;
+import domain.Cliente;
 import domain.Coche;
 import domain.Furgoneta;
 import domain.Moto;
@@ -19,15 +23,18 @@ import domain.TipoCajaCambios;
 import domain.TipoCombustible;
 import domain.Vehiculo;
 
+@SuppressWarnings("unused")
 public class VentanaCatalogo extends JFrame {
 	private static final long serialVersionUID = 1L;
+	private Cliente cliente; 
 	private List<Vehiculo> listaVehiculos;
 	private JPanel panelCatalogo;
 	private DataBaseManager dbManager = new DataBaseManager();
 	private List<Vehiculo> listaVehiculosOriginal;
 	private JComboBox<String> comboModelo;
 
-	public VentanaCatalogo(String marcaSeleccionada) {
+	public VentanaCatalogo(String marcaSeleccionada, Cliente cliente) {
+		this.cliente = cliente;
 		dbManager.conexion("resource/db/concesionario.db");
 		listaVehiculosOriginal = dbManager.obtenerTodosVehiculo();
 		listaVehiculos = new ArrayList<>(listaVehiculosOriginal);
@@ -46,6 +53,8 @@ public class VentanaCatalogo extends JFrame {
 
 		JButton botonCerrarSesion = new JButton("Cerrar Sesión");
 		JButton botonAtras = new JButton("Atrás");
+		configurarBoton(botonAtras, new Color(25, 130, 215), new Color(15, 80, 190));
+		configurarBoton(botonCerrarSesion, new Color(255, 80, 80), new Color(255, 10, 30));
 
 		JPanel panelBotones = new JPanel();
 		FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER);
@@ -141,7 +150,7 @@ public class VentanaCatalogo extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new VentanaMarcas(null);
+				new VentanaMarcas(cliente);
 			}
 		});
 
@@ -328,6 +337,23 @@ public class VentanaCatalogo extends JFrame {
 		panelCatalogo.repaint();
 	}
 
+	private void configurarBoton(JButton boton, Color colorAntes, Color colorDespues) {
+		boton.setBackground(colorAntes);
+		boton.setForeground(Color.WHITE);
+		boton.setFocusable(false);
+		boton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				boton.setBackground(colorDespues);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				boton.setBackground(colorAntes);
+			}
+		});
+	}
+	
 	private boolean modeloYaAgregado(JComboBox<String> combo, String modelo) {
 		for (int i = 0; i < combo.getItemCount(); i++) {
 			if (combo.getItemAt(i).equalsIgnoreCase(modelo)) {
