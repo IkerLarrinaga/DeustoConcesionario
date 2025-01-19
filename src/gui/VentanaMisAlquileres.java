@@ -19,7 +19,7 @@ import domain.Cliente;
 
 public class VentanaMisAlquileres extends JFrame {
 
-    private static final long serialVersionUID = 3124689292218739168L;
+    private static final long serialVersionUID = 1L;
 
     private Cliente cliente;
     private DataBaseManager dbManager = new DataBaseManager();
@@ -50,7 +50,7 @@ public class VentanaMisAlquileres extends JFrame {
         panelSuperior.add(botonCerrar, BorderLayout.EAST);
         add(panelSuperior, BorderLayout.NORTH);
 
-        String[] columnas = {"Marca", "Modelo", "Matrícula", "Precio"};
+        String[] columnas = {"Marca", "Modelo", "Matrícula", "Tiempo del alquiler", "Precio"};
         DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0);
         tabla = new JTable(modeloTabla);
         JScrollPane scrollPane = new JScrollPane(tabla);
@@ -101,7 +101,7 @@ public class VentanaMisAlquileres extends JFrame {
             }
         }
 
-        labelTotal.setText("Total: " + total + "€.");
+        labelTotal.setText("Total: " + total + "€");
         dbManager.desconexion();
     }
 }
