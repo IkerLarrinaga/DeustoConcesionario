@@ -2,12 +2,12 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -54,24 +54,20 @@ public class VentanaMisAlquileres extends JFrame {
             new VentanaMarcas(cliente);
         });
         configurarBoton(botonCerrar, new Color(255, 80, 80), new Color(255, 10, 30));
-        
-        
+
         panelSuperior.add(botonCerrar, BorderLayout.EAST);
         add(panelSuperior, BorderLayout.NORTH);
 
         String[] columnas = {"Marca", "Modelo", "Matrícula", "Tiempo del alquiler", "Precio/Día", "Total"};        
-        
-        
-        // DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0);
-        
+
         DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0) {
             private static final long serialVersionUID = 1L;
-			@Override
+            @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        
+
         tabla = new JTable(modeloTabla);
         JScrollPane scrollPane = new JScrollPane(tabla);
         add(scrollPane, BorderLayout.CENTER);
@@ -79,19 +75,24 @@ public class VentanaMisAlquileres extends JFrame {
         tabla.setForeground(Color.BLACK); 
         tabla.getTableHeader().setBackground(colorPersonalizado.darker());
         tabla.getTableHeader().setForeground(Color.WHITE);
-        
-        
-        
 
-        JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel panelInferior = new JPanel(new BorderLayout());
+
+        JLabel labelInfo = new JLabel("   Click en los títulos para ordenar ascendentemente.");
+        labelInfo.setFont(new Font("Arial", Font.PLAIN, 12));
+        labelInfo.setForeground(Color.WHITE);
+        panelInferior.add(labelInfo, BorderLayout.WEST);
+
         labelTotal = new JLabel("Total: 0.00€");
         labelTotal.setFont(new Font("Arial", Font.BOLD, 16));
-        panelInferior.add(labelTotal);
-        panelInferior.setBackground(colorPersonalizado);
         labelTotal.setForeground(Color.WHITE);
+        panelInferior.add(labelTotal, BorderLayout.EAST);
+
+        panelInferior.setBackground(colorPersonalizado);
         add(panelInferior, BorderLayout.SOUTH);
 
         cargarAlquileresPorCliente();
+        configurarOrdenamiento();
 
         setVisible(true);
     }
@@ -112,10 +113,9 @@ public class VentanaMisAlquileres extends JFrame {
             }
         });
     }
-    
-    
+
     private void cargarAlquileresPorCliente() {
-    	dbManager.conexion("resource/db/concesionario.db");
+        dbManager.conexion("resource/db/concesionario.db");
         List<Alquiler> alquileres = dbManager.obtenerAlquileresPorCliente(cliente);
 
         DefaultTableModel modeloTabla = (DefaultTableModel) tabla.getModel();
@@ -133,7 +133,7 @@ public class VentanaMisAlquileres extends JFrame {
                 dias = (int) ChronoUnit.DAYS.between(alquiler.getFechaInicio(), alquiler.getFechaFin());
                 precio = alquiler.getVehiculoCoche().getPrecio();
                 precioTotal = precio * dias;
-                
+
             } else if (alquiler.getVehiculoFurgoneta() != null) {
                 marca = alquiler.getVehiculoFurgoneta().getMarca().getNombre();
                 modelo = alquiler.getVehiculoFurgoneta().getModelo();
@@ -156,7 +156,63 @@ public class VentanaMisAlquileres extends JFrame {
             }
         }
 
-        labelTotal.setText("Total: " + total + "€");
+        labelTotal.setText("Total: " + total + "€   ");
         dbManager.desconexion();
+    }
+
+    private void ordenarTablaRecursivamente(int columna, boolean ascendente, int inicio) {
+        DefaultTableModel modeloTabla = (DefaultTableModel) tabla.getModel();
+        int rowCount = modeloTabla.getRowCount();
+
+        if (inicio >= rowCount - 1) {
+            return;
+        }
+
+        for (int i = inicio + 1; i < rowCount; i++) {
+            Object valor1 = modeloTabla.getValueAt(inicio, columna);
+            Object valor2 = modeloTabla.getValueAt(i, columna);
+
+            boolean condicion;
+
+            if (valor1 instanceof Comparable && valor2 instanceof Comparable) {
+                @SuppressWarnings("unchecked")
+                Comparable<Object> comparador1 = (Comparable<Object>) valor1;
+                @SuppressWarnings("unchecked")
+                Comparable<Object> comparador2 = (Comparable<Object>) valor2;
+
+                condicion = ascendente ? comparador1.compareTo(comparador2) > 0 : comparador1.compareTo(comparador2) < 0;
+
+                if (condicion) {
+                    intercambiarFilas(modeloTabla, inicio, i);
+                }
+            }
+        }
+
+        ordenarTablaRecursivamente(columna, ascendente, inicio + 1);
+    }
+
+    private void intercambiarFilas(DefaultTableModel modeloTabla, int fila1, int fila2) {
+        int columnCount = modeloTabla.getColumnCount();
+        Object[] tempRow = new Object[columnCount];
+
+        for (int col = 0; col < columnCount; col++) {
+            tempRow[col] = modeloTabla.getValueAt(fila1, col);
+        }
+
+        for (int col = 0; col < columnCount; col++) {
+            modeloTabla.setValueAt(modeloTabla.getValueAt(fila2, col), fila1, col);
+            modeloTabla.setValueAt(tempRow[col], fila2, col);
+        }
+    }
+
+    private void configurarOrdenamiento() {
+        tabla.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int columna = tabla.columnAtPoint(e.getPoint());
+                boolean ascendente = true;
+                ordenarTablaRecursivamente(columna, ascendente, 0);
+            }
+        });
     }
 }
