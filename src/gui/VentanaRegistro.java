@@ -224,65 +224,6 @@ public class VentanaRegistro extends JFrame {
         });
 
         setVisible(true);
-        
-//
-//                    // Comprobar duplicados en persona
-//                    for (Persona persona : dbManager.obtenerTodosPersonas()) {  // Aquí se consulta en la tabla 'persona'
-//                        if (persona == null) {
-//                            System.err.println("Null persona detected in database results.");
-//                            continue;
-//                        }
-//                        if (persona.getEmail().equals(fieldEmail.getText())) {
-//                            correoDuplicado = true;
-//                        }
-//                        if (persona.getContrasenna().equals(String.valueOf(fieldContrasenna.getPassword()))) {
-//                            contrasenaDuplicada = true;
-//                        }
-//                    }
-//
-//                    if (correoDuplicado && contrasenaDuplicada) {
-//                        JOptionPane.showMessageDialog(null,
-//                                "El correo y la contraseña ya están registrados.", "Error", JOptionPane.ERROR_MESSAGE);
-//                    } else if (correoDuplicado) {
-//                        JOptionPane.showMessageDialog(null,
-//                                "El correo ya está registrado.", "Error", JOptionPane.ERROR_MESSAGE);
-//                    } else if (contrasenaDuplicada) {
-//                        JOptionPane.showMessageDialog(null,
-//                                "La contraseña ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
-//                    } else {
-//                        // Registrar el usuario si no hay duplicados
-//                        String nombre = fieldNombre.getText();
-//                        String primerApellido = fieldPrimerApellido.getText();
-//                        String segundoApellido = fieldSegundoApellido.getText();
-//                        String dni = fieldDni.getText();
-//                        String email = fieldEmail.getText();
-//                        String contrasenna = String.valueOf(fieldContrasenna.getPassword());
-//                        LocalDate fechaNacimiento = LocalDate.parse(
-//                                new SimpleDateFormat("yyyy-MM-dd").format(fieldFechaNacimiento.getDate()), 
-//                                DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//
-//                        // Insertar en la tabla 'persona'
-//                        int idPersona = dbManager.insertarPersona(nombre, primerApellido, segundoApellido, dni, fechaNacimiento, email, contrasenna);
-//
-//                        if (cliente.isSelected()) {
-//                            Cliente cliente = new Cliente(idPersona, email, contrasenna);  // Crear el objeto cliente con el idPersona generado
-//                            dbManager.almacenarCliente(cliente);
-//                            dispose();
-//                            new VentanaLogIn();
-//                        } else if (trabajador.isSelected()) {
-//                            Empleado empleado = new Empleado(idPersona, email, contrasenna, 0);  // Crear el objeto empleado con el idPersona generado
-//                            dbManager.almacenarEmpleado(empleado);
-//                            dispose();
-//                            new VentanaLogIn();
-//                        }
-//                    }
-//                    dbManager.desconexion();
-//                } else {
-//                    JOptionPane.showMessageDialog(null,
-//                            "Todos los campos deben estar rellenados.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-//                }
-//            }
-//        });
 
         confirmar.addActionListener(new ActionListener() {
             @Override

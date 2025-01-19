@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.List;
 
@@ -14,13 +18,17 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.toedter.calendar.JDateChooser;
+
 import db.DataBaseManager;
+import domain.Alquiler;
 import domain.Cliente;
 import domain.Coche;
 import domain.Furgoneta;
 import domain.Moto;
 import domain.TipoCajaCambios;
 import domain.TipoCombustible;
+import domain.TipoVehiculo;
 import domain.Vehiculo;
 
 @SuppressWarnings("unused")
@@ -32,6 +40,7 @@ public class VentanaCatalogo extends JFrame {
 	private DataBaseManager dbManager = new DataBaseManager();
 	private List<Vehiculo> listaVehiculosOriginal;
 	private JComboBox<String> comboModelo;
+	private Vehiculo vehi;
 
 	public VentanaCatalogo(String marcaSeleccionada, Cliente cliente) {
 		this.cliente = cliente;
@@ -286,8 +295,12 @@ public class VentanaCatalogo extends JFrame {
 									JOptionPane.WARNING_MESSAGE);
 						} else {
 							vehiculo.setAlquilado(true);
+							vehi = vehiculo;
+							
+							/*
 							JOptionPane.showMessageDialog(this, "Has alquilado el vehículo con éxito.", "Éxito",
 									JOptionPane.INFORMATION_MESSAGE);
+									*/
 							cargarVehiculosEnCatalogo();
 						}
 					}
@@ -324,8 +337,12 @@ public class VentanaCatalogo extends JFrame {
 								JOptionPane.WARNING_MESSAGE);
 					} else {
 						vehiculo.setAlquilado(true);
+						vehi = vehiculo;
+						ventanaFechas();
+						/*
 						JOptionPane.showMessageDialog(this, "Has alquilado el vehículo con éxito.", "Éxito",
 								JOptionPane.INFORMATION_MESSAGE);
+						*/
 						cargarVehiculosEnCatalogo();
 					}
 				}
@@ -337,6 +354,32 @@ public class VentanaCatalogo extends JFrame {
 		panelCatalogo.repaint();
 	}
 
+	private void ventanaFechas() {
+		dbManager.conexion("resource/db/concesionario.db");
+		
+		JPanel panelFechas = new JPanel(new GridLayout(3, 2, 10, 10));
+		JDateChooser fechaIni = new JDateChooser();
+		JDateChooser fechaFin = new JDateChooser();
+		
+		panelFechas.add(fechaIni, fechaFin);
+		
+		int dias;
+		LocalDate fecha1 = LocalDate.parse(
+                new SimpleDateFormat("yyyy-MM-dd").format(fechaIni.getDate()), 
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate fecha2 = LocalDate.parse(
+                new SimpleDateFormat("yyyy-MM-dd").format(fechaFin.getDate()), 
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"));		
+		dias = (int) ChronoUnit.DAYS.between(fecha1, fecha2);
+		if (vehi instanceof Coche) {
+			dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.COCHE, fecha1, fecha2));
+		} else if (vehi instanceof Furgoneta) {
+			dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.FURGONETA, fecha1, fecha2));
+		} else if (vehi instanceof Moto){
+			dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.MOTO, fecha1, fecha2));
+		}
+	}
+	
 	private void configurarBoton(JButton boton, Color colorAntes, Color colorDespues) {
 		boton.setBackground(colorAntes);
 		boton.setForeground(Color.WHITE);
