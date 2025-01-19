@@ -336,9 +336,10 @@ public class VentanaCatalogo extends JFrame {
 						JOptionPane.showMessageDialog(this, "Este vehículo ya está alquilado.", "No disponible",
 								JOptionPane.WARNING_MESSAGE);
 					} else {
-						vehiculo.setAlquilado(true);
+						
 						vehi = vehiculo;
 						ventanaFechas();
+						vehiculo.setAlquilado(true);
 						/*
 						JOptionPane.showMessageDialog(this, "Has alquilado el vehículo con éxito.", "Éxito",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -359,25 +360,59 @@ public class VentanaCatalogo extends JFrame {
 		
 		JPanel panelFechas = new JPanel(new GridLayout(3, 2, 10, 10));
 		JDateChooser fechaIni = new JDateChooser();
-		JDateChooser fechaFin = new JDateChooser();
+		JDateChooser fechaFin = new JDateChooser();		
+		panelFechas.add(new JLabel("Fecha Inicio:"));
+	    panelFechas.add(fechaIni);
+	    panelFechas.add(new JLabel("Fecha Fin:"));
+	    panelFechas.add(fechaFin);
 		
-		panelFechas.add(fechaIni, fechaFin);
-		
-		int dias;
-		LocalDate fecha1 = LocalDate.parse(
-                new SimpleDateFormat("yyyy-MM-dd").format(fechaIni.getDate()), 
-                DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		LocalDate fecha2 = LocalDate.parse(
-                new SimpleDateFormat("yyyy-MM-dd").format(fechaFin.getDate()), 
-                DateTimeFormatter.ofPattern("yyyy-MM-dd"));		
+	    JButton bConfirmar = new JButton("Confirmar");
+	    bConfirmar.addActionListener(e -> {
+	    	if (fechaIni.getDate() == null || fechaFin.getDate() == null) {
+				JOptionPane.showMessageDialog(this, "Selecciona todas las fechas");
+				return;
+	    	}	
+	    		
+	    	LocalDate fecha1 = LocalDate.parse(
+	    			new SimpleDateFormat("yyyy-MM-dd").format(fechaIni.getDate()), 
+	    			DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				
+			LocalDate fecha2 = LocalDate.parse(
+					new SimpleDateFormat("yyyy-MM-dd").format(fechaFin.getDate()), 
+		            DateTimeFormatter.ofPattern("yyyy-MM-dd"));	
+			
+			if (fecha1.isAfter(fecha2)) {
+				JOptionPane.showMessageDialog(this, "La fecha de inicio no puede ser mayor que la fecha de fin");
+		        return;
+		    }
+				
+			if (vehi instanceof Coche) {
+				dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.COCHE, fecha1, fecha2));
+			} else if (vehi instanceof Furgoneta) {
+				dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.FURGONETA, fecha1, fecha2));
+			} else if (vehi instanceof Moto){
+				dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.MOTO, fecha1, fecha2));
+			}	
+			
+			JFrame ventanaFechas = (JFrame) SwingUtilities.getWindowAncestor(bConfirmar); // Obtener la ventana que contiene el botón
+	        ventanaFechas.dispose();
+	    });
+	    /*
+		int dias;			
 		dias = (int) ChronoUnit.DAYS.between(fecha1, fecha2);
-		if (vehi instanceof Coche) {
-			dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.COCHE, fecha1, fecha2));
-		} else if (vehi instanceof Furgoneta) {
-			dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.FURGONETA, fecha1, fecha2));
-		} else if (vehi instanceof Moto){
-			dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.MOTO, fecha1, fecha2));
-		}
+		*/
+		
+		panelFechas.add(new JLabel());
+		panelFechas.add(bConfirmar);
+		
+		JFrame ventanaFechas = new JFrame("Seleccion de fechas");
+		ventanaFechas.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	    ventanaFechas.setSize(400, 200);
+	    ventanaFechas.setLocationRelativeTo(null);
+	    ventanaFechas.setLayout(new BorderLayout());
+	    ventanaFechas.add(panelFechas, BorderLayout.CENTER);
+	    
+	    ventanaFechas.setVisible(true);
 	}
 	
 	private void configurarBoton(JButton boton, Color colorAntes, Color colorDespues) {
