@@ -28,6 +28,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -127,6 +128,9 @@ public class VentanaMarcas extends JFrame {
 		JScrollPane scrollPanel = new JScrollPane(panelImagenes);
 		scrollPanel.setBackground(colorPersonalizado);
 		add(scrollPanel, BorderLayout.CENTER);
+		JScrollBar verticalScrollBar = scrollPanel.getVerticalScrollBar();
+		verticalScrollBar.setUnitIncrement(20);
+		verticalScrollBar.setBlockIncrement(50);
 
 		ActionListener listener = new ActionListener() {
 			@Override
@@ -265,6 +269,7 @@ public class VentanaMarcas extends JFrame {
 
 		JButton botonSeleccionar = new JButton("Seleccionar");
 		botonSeleccionar.setAlignmentX(Component.CENTER_ALIGNMENT);
+		botonSeleccionar.setPreferredSize(new Dimension(100, 20));
 		botonSeleccionar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -272,6 +277,10 @@ public class VentanaMarcas extends JFrame {
 				new VentanaCatalogo(nombreMarca);
 			}
 		});
+		
+		configurarBoton(botonSeleccionar,  new Color(25, 130, 215), new Color(15, 80, 190));
+		
+		
 		panelMarca.add(botonSeleccionar);
 
 		panelImagenes.add(panelMarca);
