@@ -70,25 +70,11 @@ public class VentanaIncio extends JFrame {
         lBotones[1] = registro;
         lBotones[2] = salir;
         
-        Color colorLoginAntes = new Color(40, 150, 255);
-        Color colorLoginDespues = new Color(20, 100, 220);
+        configurarBoton(login, new Color(40, 150, 255), new Color(20, 100, 220));
+        configurarBoton(registro, new Color(25, 130, 215), new Color(15, 80, 190));
+        configurarBoton(salir, new Color(255, 80, 80), new Color(255, 10, 30));
         
         login.setPreferredSize(new Dimension(250, 30));
-        login.setBackground(colorLoginAntes);
-        login.setForeground(Color.WHITE);
-        login.setFocusable(false);
-        login.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                login.setBackground(colorLoginDespues);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                login.setBackground(colorLoginAntes);
-            }
-        });
-        
         login.addActionListener(new ActionListener() {
 			
 			@Override
@@ -97,26 +83,8 @@ public class VentanaIncio extends JFrame {
                 dispose();
 			}
 		});
-        
-        Color colorRegistroAntes = new Color(25, 130, 215);
-        Color colorRegistroDespues = new Color(15, 80, 190);
                 
-        registro.setPreferredSize(new Dimension(250, 30));
-        registro.setBackground(colorRegistroAntes);
-        registro.setForeground(Color.WHITE);
-        registro.setFocusable(false);
-        registro.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                registro.setBackground(colorRegistroDespues);
-            }
-            
-            @Override
-            public void mouseExited(MouseEvent e) {
-                registro.setBackground(colorRegistroAntes);
-            }
-        });
-        
+        registro.setPreferredSize(new Dimension(250, 30));        
         registro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -125,26 +93,7 @@ public class VentanaIncio extends JFrame {
             }
         });
         
-        Color colorSalirAntes = new Color(255, 80, 80);
-        Color colorSalirDespues = new Color(255, 10, 30);
-        
-        salir.setPreferredSize(new Dimension(250, 30));
-        salir.setBackground(colorSalirAntes);
-        salir.setForeground(Color.WHITE);
-        salir.setFocusable(false);
-        
-        salir.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                salir.setBackground(colorSalirDespues);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                salir.setBackground(colorSalirAntes);
-            }
-        });
-        
+        salir.setPreferredSize(new Dimension(250, 30));        
         salir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -224,5 +173,22 @@ public class VentanaIncio extends JFrame {
 		default:
 			break;
 		}
+    }
+    
+    private void configurarBoton(JButton boton, Color colorAntes, Color colorDespues) {
+        boton.setBackground(colorAntes);
+        boton.setForeground(Color.WHITE);
+        boton.setFocusable(false);
+        boton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                boton.setBackground(colorDespues);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                boton.setBackground(colorAntes);
+            }
+        });
     }
 }
