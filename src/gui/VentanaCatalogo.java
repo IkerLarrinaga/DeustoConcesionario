@@ -6,12 +6,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.List;
+import java.sql.Date;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -358,61 +362,100 @@ public class VentanaCatalogo extends JFrame {
 	private void ventanaFechas() {
 		dbManager.conexion("resource/db/concesionario.db");
 		
-		JPanel panelFechas = new JPanel(new GridLayout(3, 2, 10, 10));
+		JPanel panelFechas = new JPanel(new GridLayout(2, 2, 10, 10));
 		JDateChooser fechaIni = new JDateChooser();
-		JDateChooser fechaFin = new JDateChooser();		
+		fechaIni.setDateFormatString("yyyy-MM-dd");
+	    fechaIni.setDate(new java.util.Date());
+		
+		JDateChooser fechaFin = new JDateChooser();
+		fechaFin.setDateFormatString("yyyy-MM-dd");
+
+	    JTextField diasField = new JTextField();
+	    diasField.setEditable(false);
+		
+		
 		panelFechas.add(new JLabel("Fecha Inicio:"));
 	    panelFechas.add(fechaIni);
 	    panelFechas.add(new JLabel("Fecha Fin:"));
 	    panelFechas.add(fechaFin);
-		
-	    JButton bConfirmar = new JButton("Confirmar");
-	    bConfirmar.addActionListener(e -> {
-	    	if (fechaIni.getDate() == null || fechaFin.getDate() == null) {
-				JOptionPane.showMessageDialog(this, "Selecciona todas las fechas");
-				return;
-	    	}	
-	    		
-	    	LocalDate fecha1 = LocalDate.parse(
-	    			new SimpleDateFormat("yyyy-MM-dd").format(fechaIni.getDate()), 
-	    			DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-				
-			LocalDate fecha2 = LocalDate.parse(
-					new SimpleDateFormat("yyyy-MM-dd").format(fechaFin.getDate()), 
-		            DateTimeFormatter.ofPattern("yyyy-MM-dd"));	
-			
-			if (fecha1.isAfter(fecha2)) {
-				JOptionPane.showMessageDialog(this, "La fecha de inicio no puede ser mayor que la fecha de fin");
-		        return;
-		    }
-				
-			if (vehi instanceof Coche) {
-				dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.COCHE, fecha1, fecha2));
-			} else if (vehi instanceof Furgoneta) {
-				dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.FURGONETA, fecha1, fecha2));
-			} else if (vehi instanceof Moto){
-				dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.MOTO, fecha1, fecha2));
-			}	
-			
-			JFrame ventanaFechas = (JFrame) SwingUtilities.getWindowAncestor(bConfirmar); // Obtener la ventana que contiene el botón
-	        ventanaFechas.dispose();
-	    });
-	    /*
-		int dias;			
-		dias = (int) ChronoUnit.DAYS.between(fecha1, fecha2);
-		*/
-		
-		panelFechas.add(new JLabel());
-		panelFechas.add(bConfirmar);
-		
-		JFrame ventanaFechas = new JFrame("Seleccion de fechas");
-		ventanaFechas.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	    ventanaFechas.setSize(400, 200);
-	    ventanaFechas.setLocationRelativeTo(null);
-	    ventanaFechas.setLayout(new BorderLayout());
-	    ventanaFechas.add(panelFechas, BorderLayout.CENTER);
+	    panelFechas.add(new JLabel("Días de alquiler:"));
+	    panelFechas.add(diasField);
 	    
-	    ventanaFechas.setVisible(true);
+	    //FUENTE-EXTERNA
+	    //URL: https://github.com/inanevin/Course-Data-Analyzer/blob/master/Course%20Data%20Analyzer/jcalendar-1.4/src/com/toedter/calendar/JDateChooser.java
+	    //Se ha investigado como usar un listener para el JDateChooser, después se ha adaptado al proyecto	    
+	    fechaIni.addPropertyChangeListener("date", new PropertyChangeListener() {
+	        @Override
+	        public void propertyChange(PropertyChangeEvent evt) {
+	            actualizarDias(fechaIni, fechaFin, diasField);
+	        }
+	    });
+
+	    fechaFin.addPropertyChangeListener("date", new PropertyChangeListener() {
+	        @Override
+	        public void propertyChange(PropertyChangeEvent evt) {
+	            actualizarDias(fechaIni, fechaFin, diasField);
+	        }
+	    });
+		
+	    int result = JOptionPane.showConfirmDialog(null, panelFechas, "Seleccionar Fechas", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+	    if (result == JOptionPane.OK_OPTION) {
+	        try {
+	        	if (fechaIni.getDate() == null || fechaFin.getDate() == null) {
+	        	    JOptionPane.showMessageDialog(null, "Debe seleccionar ambas fechas.", "Error", JOptionPane.ERROR_MESSAGE);
+	        	    return;
+	        	}
+
+	        	//IAG ChatGPT
+	        	//Se ha pedido a ChatGPT como pasar de JDatChooser a LocaDate, el metodo instancia la fecha, en la hora local
+	            LocalDate fecha1 = fechaIni.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	            LocalDate fecha2 = fechaFin.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+	            if (!fecha2.isAfter(fecha1)) {
+            	    JOptionPane.showMessageDialog(null, "La fecha de fin debe ser posterior a la fecha de inicio.", "Error", JOptionPane.ERROR_MESSAGE);
+
+            	    fechaIni.setDate(Date.valueOf(LocalDate.now()));
+            	    fechaFin.setDate(null);
+            	}
+
+	            if (vehi instanceof Coche) {
+	                dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.COCHE, fecha1, fecha2));
+	            } else if (vehi instanceof Furgoneta) {
+	                dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.FURGONETA, fecha1, fecha2));
+	            } else if (vehi instanceof Moto) {
+	                dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.MOTO, fecha1, fecha2));
+	            }
+
+	            JOptionPane.showMessageDialog(null, "Se ha registrado el alquiler.", "Exito", JOptionPane.INFORMATION_MESSAGE);
+	            vehi.setAlquilado(true);
+
+	        } catch (IllegalArgumentException e) {
+	            e.printStackTrace();
+	        }
+	    } else {
+	        JOptionPane.showMessageDialog(null, "Se ha cancelado la operación.", "Información", JOptionPane.INFORMATION_MESSAGE);
+	    }
+
+	    dbManager.desconexion();
+	}
+	
+	private void actualizarDias(JDateChooser fechaIni, JDateChooser fechaFin, JTextField diasField) {
+	    if (fechaIni.getDate() != null && fechaFin.getDate() != null) {
+	        LocalDate fecha1 = fechaIni.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	        LocalDate fecha2 = fechaFin.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+	        long dias = ChronoUnit.DAYS.between(fecha1, fecha2);
+
+	        if (dias > 0) {
+	            diasField.setText(String.valueOf(dias));
+	        } else {
+	            diasField.setText("0");
+	        }
+
+	    } else {
+	        diasField.setText("0");
+	    }
 	}
 	
 	private void configurarBoton(JButton boton, Color colorAntes, Color colorDespues) {
