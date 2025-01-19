@@ -73,4 +73,4 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         long diasRestantes = java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), fechaFin);
         return diasRestantes < 0 ? 0 : diasRestantes;
     }
-}
+} 
