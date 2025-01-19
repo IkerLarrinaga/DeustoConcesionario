@@ -89,7 +89,7 @@ public class VentanaMarcas extends JFrame {
 		panelSuperior.add(buscador, BorderLayout.CENTER);
 		
 		JButton botonMisCoches = new JButton("Mis Alquileres");
-		configurarBoton(botonMisCoches, colorPersonalizado, new Color(230, 230, 230)); // Colores personalizados
+		configurarBoton(botonMisCoches, colorPersonalizado, new Color(230, 230, 230));
 		botonMisCoches.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {

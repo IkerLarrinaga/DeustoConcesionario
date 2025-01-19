@@ -68,6 +68,7 @@ public class VentanaMisAlquileres extends JFrame {
     }
 
     private void cargarAlquileresPorCliente() {
+    	dbManager.conexion("resource/db/concesionario.db");
         List<Alquiler> alquileres = dbManager.obtenerAlquileresPorCliente(cliente);
 
         DefaultTableModel modeloTabla = (DefaultTableModel) tabla.getModel();
@@ -101,5 +102,6 @@ public class VentanaMisAlquileres extends JFrame {
         }
 
         labelTotal.setText("Total: " + total + "€.");
+        dbManager.desconexion();
     }
 }
