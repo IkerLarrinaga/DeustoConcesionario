@@ -16,7 +16,7 @@ import domain.TipoVehiculo;
 
 public class DataBase {
 	
-	public void cargarDatosPrueba() {
+	public static void cargarDatosPrueba() {
 		DataBaseManager dbManager = new DataBaseManager();
 		
 		try {
