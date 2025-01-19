@@ -362,7 +362,7 @@ public class VentanaCatalogo extends JFrame {
 	private void ventanaFechas() {
 		dbManager.conexion("resource/db/concesionario.db");
 		
-		JPanel panelFechas = new JPanel(new GridLayout(2, 2, 10, 10));
+		JPanel panelFechas = new JPanel(new GridLayout(3, 2, 10, 10));
 		JDateChooser fechaIni = new JDateChooser();
 		fechaIni.setDateFormatString("yyyy-MM-dd");
 	    fechaIni.setDate(new java.util.Date());
