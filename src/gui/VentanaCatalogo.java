@@ -298,13 +298,7 @@ public class VentanaCatalogo extends JFrame {
 							JOptionPane.showMessageDialog(this, "Este vehículo ya está alquilado.", "No disponible",
 									JOptionPane.WARNING_MESSAGE);
 						} else {
-							vehiculo.setAlquilado(true);
 							vehi = vehiculo;
-							
-							/*
-							JOptionPane.showMessageDialog(this, "Has alquilado el vehículo con éxito.", "Éxito",
-									JOptionPane.INFORMATION_MESSAGE);
-									*/
 							cargarVehiculosEnCatalogo();
 						}
 					}
@@ -343,11 +337,6 @@ public class VentanaCatalogo extends JFrame {
 						
 						vehi = vehiculo;
 						ventanaFechas();
-						vehiculo.setAlquilado(true);
-						/*
-						JOptionPane.showMessageDialog(this, "Has alquilado el vehículo con éxito.", "Éxito",
-								JOptionPane.INFORMATION_MESSAGE);
-						*/
 						cargarVehiculosEnCatalogo();
 					}
 				}
@@ -404,7 +393,7 @@ public class VentanaCatalogo extends JFrame {
 	        try {
 	        	if (fechaIni.getDate() == null || fechaFin.getDate() == null) {
 	        	    JOptionPane.showMessageDialog(null, "Debe seleccionar ambas fechas.", "Error", JOptionPane.ERROR_MESSAGE);
-	        	    return;
+	        	    ventanaFechas();
 	        	}
 
 	        	//IAG ChatGPT
