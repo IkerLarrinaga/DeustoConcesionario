@@ -39,7 +39,6 @@ import domain.Cliente;
 import domain.Marca;
 import domain.Vehiculo;
 
-@SuppressWarnings("unused")
 public class VentanaMarcas extends JFrame {
 	private Cliente cliente;
 
