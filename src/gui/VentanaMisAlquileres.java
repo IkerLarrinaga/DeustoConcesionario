@@ -1,8 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -40,26 +43,52 @@ public class VentanaMisAlquileres extends JFrame {
         JPanel panelSuperior = new JPanel(new BorderLayout());
         JLabel titulo = new JLabel("Mis Coches", JLabel.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 20));
+        titulo.setForeground(Color.WHITE);
         panelSuperior.add(titulo, BorderLayout.CENTER);
+        Color colorPersonalizado = new Color(92, 184, 255);
+        panelSuperior.setBackground(colorPersonalizado);
 
         JButton botonCerrar = new JButton("Cerrar");
         botonCerrar.addActionListener(e -> {
             dispose();
             new VentanaMarcas(cliente);
         });
+        configurarBoton(botonCerrar, new Color(255, 80, 80), new Color(255, 10, 30));
+        
+        
         panelSuperior.add(botonCerrar, BorderLayout.EAST);
         add(panelSuperior, BorderLayout.NORTH);
 
-        String[] columnas = {"Marca", "Modelo", "Matrícula", "Tiempo del alquiler", "Precio/Día", "Total"};
-        DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0);
+        String[] columnas = {"Marca", "Modelo", "Matrícula", "Tiempo del alquiler", "Precio/Día", "Total"};        
+        
+        
+        // DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0);
+        
+        DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0) {
+            private static final long serialVersionUID = 1L;
+			@Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
         tabla = new JTable(modeloTabla);
         JScrollPane scrollPane = new JScrollPane(tabla);
         add(scrollPane, BorderLayout.CENTER);
+        tabla.setGridColor(Color.WHITE); 
+        tabla.setForeground(Color.BLACK); 
+        tabla.getTableHeader().setBackground(colorPersonalizado.darker());
+        tabla.getTableHeader().setForeground(Color.WHITE);
+        
+        
+        
 
         JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         labelTotal = new JLabel("Total: 0.00€");
         labelTotal.setFont(new Font("Arial", Font.BOLD, 16));
         panelInferior.add(labelTotal);
+        panelInferior.setBackground(colorPersonalizado);
+        labelTotal.setForeground(Color.WHITE);
         add(panelInferior, BorderLayout.SOUTH);
 
         cargarAlquileresPorCliente();
@@ -67,6 +96,24 @@ public class VentanaMisAlquileres extends JFrame {
         setVisible(true);
     }
 
+    private void configurarBoton(JButton boton, Color colorAntes, Color colorDespues) {
+        boton.setBackground(colorAntes);
+        boton.setForeground(Color.WHITE);
+        boton.setFocusable(false);
+        boton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                boton.setBackground(colorDespues);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                boton.setBackground(colorAntes);
+            }
+        });
+    }
+    
+    
     private void cargarAlquileresPorCliente() {
     	dbManager.conexion("resource/db/concesionario.db");
         List<Alquiler> alquileres = dbManager.obtenerAlquileresPorCliente(cliente);
