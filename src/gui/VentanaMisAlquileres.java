@@ -36,7 +36,6 @@ public class VentanaMisAlquileres extends JFrame {
         setIconImage(new ImageIcon("resource/img/car-icon.png").getImage());
         setLayout(new BorderLayout());
 
-        // Panel superior
         JPanel panelSuperior = new JPanel(new BorderLayout());
         JLabel titulo = new JLabel("Mis Coches", JLabel.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 20));
@@ -50,14 +49,14 @@ public class VentanaMisAlquileres extends JFrame {
         panelSuperior.add(botonCerrar, BorderLayout.EAST);
         add(panelSuperior, BorderLayout.NORTH);
 
-        String[] columnas = {"Marca", "Modelo", "Matrícula", "Tiempo del alquiler", "Precio"};
+        String[] columnas = {"Marca", "Modelo", "Matrícula", "Tiempo del alquiler", "Precio/Día", "Total"};
         DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0);
         tabla = new JTable(modeloTabla);
         JScrollPane scrollPane = new JScrollPane(tabla);
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        labelTotal = new JLabel("Total: 0€");
+        labelTotal = new JLabel("Total: 0.00€");
         labelTotal.setFont(new Font("Arial", Font.BOLD, 16));
         panelInferior.add(labelTotal);
         add(panelInferior, BorderLayout.SOUTH);
