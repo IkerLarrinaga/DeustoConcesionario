@@ -282,7 +282,7 @@ public class VentanaMarcas extends JFrame {
 		
 		
 		panelMarca.add(botonSeleccionar);
-
+		
 		panelImagenes.add(panelMarca);
 	}
 }
