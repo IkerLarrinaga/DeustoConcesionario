@@ -394,6 +394,7 @@ public class VentanaCatalogo extends JFrame {
 	        	if (fechaIni.getDate() == null || fechaFin.getDate() == null) {
 	        	    JOptionPane.showMessageDialog(null, "Debe seleccionar ambas fechas.", "Error", JOptionPane.ERROR_MESSAGE);
 	        	    ventanaFechas();
+	        	    return;
 	        	}
 
 	        	//IAG ChatGPT
@@ -404,8 +405,9 @@ public class VentanaCatalogo extends JFrame {
 	            if (!fecha2.isAfter(fecha1)) {
             	    JOptionPane.showMessageDialog(null, "La fecha de fin debe ser posterior a la fecha de inicio.", "Error", JOptionPane.ERROR_MESSAGE);
 
-            	    fechaIni.setDate(Date.valueOf(LocalDate.now()));
-            	    fechaFin.setDate(null);
+            	    
+            	    ventanaFechas();
+            	    return;
             	}
 
 	            if (vehi instanceof Coche) {
