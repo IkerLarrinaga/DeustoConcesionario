@@ -28,6 +28,7 @@ import db.DataBaseManager;
 import domain.Alquiler;
 import domain.Cliente;
 import domain.Coche;
+import domain.Factura;
 import domain.Furgoneta;
 import domain.Moto;
 import domain.TipoCajaCambios;
@@ -404,18 +405,37 @@ public class VentanaCatalogo extends JFrame {
 
 	            if (!fecha2.isAfter(fecha1)) {
             	    JOptionPane.showMessageDialog(null, "La fecha de fin debe ser posterior a la fecha de inicio.", "Error", JOptionPane.ERROR_MESSAGE);
-
-            	    
             	    ventanaFechas();
             	    return;
             	}
 
 	            if (vehi instanceof Coche) {
-	                dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.COCHE, fecha1, fecha2));
+	            	Alquiler alquilerCoche = new Alquiler(cliente, vehi, TipoVehiculo.COCHE, fecha1, fecha2);
+	                dbManager.almacenarAlquiler(alquilerCoche);
+	                
+	                int diasAlquiler = (int) ChronoUnit.DAYS.between(fecha1, fecha2);
+	                double precioCoche = vehi.getPrecio();
+	                double dinero = diasAlquiler * precioCoche;	                
+	                
+	                dbManager.almacenarFactura(new Factura(alquilerCoche, dinero, LocalDate.now()));
 	            } else if (vehi instanceof Furgoneta) {
-	                dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.FURGONETA, fecha1, fecha2));
+	            	Alquiler alquilerFurgoneta = new Alquiler(cliente, vehi, TipoVehiculo.FURGONETA, fecha1, fecha2);
+	            	dbManager.almacenarAlquiler(alquilerFurgoneta);
+	            	
+	            	int diasAlquiler = (int) ChronoUnit.DAYS.between(fecha1, fecha2);
+	                double precioCoche = vehi.getPrecio();
+	                double dinero = diasAlquiler * precioCoche;	
+	            	
+	                dbManager.almacenarFactura(new Factura(alquilerFurgoneta, dinero, LocalDate.now()));
 	            } else if (vehi instanceof Moto) {
-	                dbManager.almacenarAlquiler(new Alquiler(cliente, vehi, TipoVehiculo.MOTO, fecha1, fecha2));
+	            	Alquiler alquilerMoto = new Alquiler(cliente, vehi, TipoVehiculo.MOTO, fecha1, fecha2);
+	                dbManager.almacenarAlquiler(alquilerMoto);
+	                
+	                int diasAlquiler = (int) ChronoUnit.DAYS.between(fecha1, fecha2);
+	                double precioCoche = vehi.getPrecio();
+	                double dinero = diasAlquiler * precioCoche;	
+	                
+	                dbManager.almacenarFactura(new Factura(alquilerMoto, dinero, LocalDate.now()));
 	            }
 
 	            JOptionPane.showMessageDialog(null, "Se ha registrado el alquiler.", "Exito", JOptionPane.INFORMATION_MESSAGE);
