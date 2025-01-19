@@ -573,13 +573,13 @@ public class DataBaseManager {
 
 	                String tipoVehiculo = resultSet.getString("tipoVehiculo");
 	                switch (tipoVehiculo) {
-	                case "Coche":
+	                case "COCHE":
 	                	alquiler.setVehiculoCoche(obtenerCoche(resultSet.getInt("idVehiculo")));
 	                    break;
-	                case "Furgoneta":
+	                case "FURGONETA":
 	                	alquiler.setVehiculoFurgoneta(obtenerFurgoneta(resultSet.getInt("idVehiculo")));
 	                    break;
-	                case "Moto":
+	                case "MOTO":
 	                	alquiler.setVehiculoMoto(obtenerMoto(resultSet.getInt("idVehiculo")));
 	                    break;
 	                default:
@@ -1346,13 +1346,13 @@ public class DataBaseManager {
 
                 String tipoVehiculo = resultSet.getString("tipoVehiculo");                
                 switch (tipoVehiculo) {
-                case "Coche":
+                case "COCHE":
                 	alquiler.setVehiculoCoche(obtenerCoche(resultSet.getInt("idVehiculo")));
                     break;
-                case "Furgoneta":
+                case "FURGONETA":
                 	alquiler.setVehiculoFurgoneta(obtenerFurgoneta(resultSet.getInt("idVehiculo")));
                     break;
-                case "Moto":
+                case "MOTO":
                 	alquiler.setVehiculoMoto(obtenerMoto(resultSet.getInt("idVehiculo")));
                     break;
                 default:
