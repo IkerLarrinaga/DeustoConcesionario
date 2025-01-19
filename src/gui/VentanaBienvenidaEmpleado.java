@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -32,14 +34,25 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         setIconImage(new ImageIcon("resource/img/car-icon.png").getImage());
         setLayout(new BorderLayout());
 
+        Color colorPersonalizado = new Color(92, 184, 255);
+        
         // Encabezado con un diseño atractivo
+        JPanel panelSuperior = new JPanel(new BorderLayout());
         JLabel headerLabel = new JLabel("Lista de Alquileres Activos", SwingConstants.CENTER);
-        headerLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        headerLabel.setForeground(new Color(34, 34, 34)); // Color gris oscuro
-        headerLabel.setBackground(new Color(70, 130, 180)); // Color de fondo azul
-        headerLabel.setOpaque(true);
-        headerLabel.setPreferredSize(new java.awt.Dimension(0, 60));
-        add(headerLabel, BorderLayout.NORTH);
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        headerLabel.setForeground(Color.WHITE); // Color gris oscuro
+        panelSuperior.add(headerLabel, BorderLayout.CENTER);
+        panelSuperior.setBackground(colorPersonalizado); // Color de fondo azul
+        panelSuperior.setOpaque(true);
+        
+        JButton botonCerrarSesion = new JButton("Cerrar sesion");
+        botonCerrarSesion.addActionListener(e -> {
+        	dispose();
+        	new VentanaIncio();
+        });
+        configurarBoton(botonCerrarSesion, new Color(255, 80, 80), new Color(255, 10, 30));
+        panelSuperior.add(botonCerrarSesion, BorderLayout.EAST);
+        add(panelSuperior, BorderLayout.NORTH);
 
         String[] columnNames = {
             "Nombre de Usuario", "Matrícula", "Marca", "Fecha de Inicio", 
@@ -98,6 +111,10 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         table.setFillsViewportHeight(true);
         table.setBackground(new Color(245, 245, 245)); // Fondo de la tabla claro
         table.setGridColor(new Color(220, 220, 220)); // Color de la cuadrícula
+        table.setGridColor(Color.WHITE); 
+        table.setForeground(Color.BLACK); 
+        table.getTableHeader().setBackground(colorPersonalizado.darker());
+        table.getTableHeader().setForeground(Color.WHITE);
 
         // Aplicar borde a la tabla
         Border tableBorder = BorderFactory.createLineBorder(new Color(100, 100, 100));
@@ -155,5 +172,22 @@ public class VentanaBienvenidaEmpleado extends JFrame {
             return java.time.temporal.ChronoUnit.DAYS.between(hoy, fechaFin);
         }
         return 0;
+    }
+    
+    private void configurarBoton(JButton boton, Color colorAntes, Color colorDespues) {
+        boton.setBackground(colorAntes);
+        boton.setForeground(Color.WHITE);
+        boton.setFocusable(false);
+        boton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                boton.setBackground(colorDespues);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                boton.setBackground(colorAntes);
+            }
+        });
     }
 }
