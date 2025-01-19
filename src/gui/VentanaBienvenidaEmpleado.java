@@ -21,6 +21,7 @@ public class VentanaBienvenidaEmpleado extends JFrame {
 
     private static final long serialVersionUID = 1L;
     DataBaseManager dbManager = new DataBaseManager();
+    private JTable table;
 
     public VentanaBienvenidaEmpleado() {
         dbManager.conexion("resource/db/concesionario.db");
@@ -91,8 +92,13 @@ public class VentanaBienvenidaEmpleado extends JFrame {
         }
 
         // Crear la tabla
-        JTable table = new JTable(tableModel) {
-            @Override
+        table = new JTable(tableModel) {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             public Class<?> getColumnClass(int column) {
                 if (column == 5) {  // La columna de los días restantes (barra de progreso)
                     return JProgressBar.class;
@@ -133,7 +139,7 @@ public class VentanaBienvenidaEmpleado extends JFrame {
                 return progressBar;
             }
         });
-
+        configurarOrdenamiento();
         setVisible(true);
     }
 
@@ -187,6 +193,62 @@ public class VentanaBienvenidaEmpleado extends JFrame {
             @Override
             public void mouseExited(MouseEvent e) {
                 boton.setBackground(colorAntes);
+            }
+        });
+    }
+    
+    private void ordenarTablaRecursivamente(int columna, boolean ascendente, int inicio) {
+        DefaultTableModel modeloTabla = (DefaultTableModel) table.getModel();
+        int rowCount = modeloTabla.getRowCount();
+
+        if (inicio >= rowCount - 1) {
+            return;
+        }
+
+        for (int i = inicio + 1; i < rowCount; i++) {
+            Object valor1 = modeloTabla.getValueAt(inicio, columna);
+            Object valor2 = modeloTabla.getValueAt(i, columna);
+
+            boolean condicion;
+
+            if (valor1 instanceof Comparable && valor2 instanceof Comparable) {
+                @SuppressWarnings("unchecked")
+                Comparable<Object> comparador1 = (Comparable<Object>) valor1;
+                @SuppressWarnings("unchecked")
+                Comparable<Object> comparador2 = (Comparable<Object>) valor2;
+
+                condicion = ascendente ? comparador1.compareTo(comparador2) > 0 : comparador1.compareTo(comparador2) < 0;
+
+                if (condicion) {
+                    intercambiarFilas(modeloTabla, inicio, i);
+                }
+            }
+        }
+
+        ordenarTablaRecursivamente(columna, ascendente, inicio + 1);
+    }
+
+    private void intercambiarFilas(DefaultTableModel modeloTabla, int fila1, int fila2) {
+        int columnCount = modeloTabla.getColumnCount();
+        Object[] tempRow = new Object[columnCount];
+
+        for (int col = 0; col < columnCount; col++) {
+            tempRow[col] = modeloTabla.getValueAt(fila1, col);
+        }
+
+        for (int col = 0; col < columnCount; col++) {
+            modeloTabla.setValueAt(modeloTabla.getValueAt(fila2, col), fila1, col);
+            modeloTabla.setValueAt(tempRow[col], fila2, col);
+        }
+    }
+
+    private void configurarOrdenamiento() {
+        table.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int columna = table.columnAtPoint(e.getPoint());
+                boolean ascendente = true;
+                ordenarTablaRecursivamente(columna, ascendente, 0);
             }
         });
     }
